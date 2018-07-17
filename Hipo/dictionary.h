@@ -33,6 +33,8 @@ class schema {
     int groupid;
     std::string schemaName;
     std::string getTypeString(int type);
+    std::string getRootTypeString(int type);
+    std::string getTypeStringSimple(int type);
     int         getMaxStringLength();
     std::string getBranchVariable(const char *var, int max);
 
@@ -68,6 +70,9 @@ class schema {
     std::vector<std::string> branchesCode();
     std::vector<std::string> branchesAccessCode();
 
+    std::vector<std::string>  getRootBranchesCode();
+    std::vector<std::string>  getRootFillCode();
+
     void operator = (const schema &D ) {
          schemaName = D.schemaName;
          groupid    = D.groupid;
@@ -87,6 +92,7 @@ class dictionary {
         //node(hipo::reader &reader, int group, int item);
         void          ls(int mode = 0);
         bool          hasSchema(const char* name){ return mapDict.count(name)>0;}
+        bool          hasEntry(const char* name, const char* entry);
         hipo::schema  getSchema(const char *name){ return mapDict[name];}
         void          parse(std::string dictString);
         std::vector<std::string> getSchemaList();
