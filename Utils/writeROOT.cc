@@ -18034,5 +18034,6 @@ int main(int argc, char** argv) {
       if(entry%100000==0) printf("processed events....%d\n",entry);
    }
    f->Write();
+   f->Close();
 }
 //### END OF GENERATED CODE

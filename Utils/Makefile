@@ -6,7 +6,8 @@ ROOTGLIBS   := $(shell root-config --glibs)
 HIPOCFLAGS  := -I../Hipo
 HIPOLIBS    := -L../lib -lhipo
 
-LZ4LIBS     := -L../Lz4 -llz4
+LZ4LIBS     := -L../Lz4/lib -llz4
+LZ4INCLUDES := -I../Lz4/lib
 
 CXX       := g++
 CXXFLAGS  += -Wall -fPIC $(ROOTCFLAGS)
@@ -21,4 +22,4 @@ clean:
 	@rm -rf *.o writeROOT *~
 
 %.o: %.cc
-	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS)
+	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)
