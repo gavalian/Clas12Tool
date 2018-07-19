@@ -1,0 +1,5 @@
+
+*.o
+*.a
+Lz4/lz4
+Utils/writeROOT
