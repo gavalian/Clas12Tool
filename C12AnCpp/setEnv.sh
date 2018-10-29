@@ -10,7 +10,7 @@ function setEnvironment {
 
   export HIPO=${CLAS12TOOL}/Hipo
 
-  export CLAS12CPPBASE=$HOME/software/c12anCpp
+  export CLAS12CPPBASE=${CLAS12TOOL}/C12AnCpp
   echo $CLAS12CPPBASE
 
   export CORE=$CLAS12CPPBASE"/Core"
