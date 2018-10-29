@@ -9,6 +9,8 @@ LZ4INCLUDES := -I../Lz4/lib/
 
 libhipo: checkdirs $(OBJECTS)
 	ar cr ../lib/libhipo.a $(OBJECTS)
+	$(CXX) -shared -fPIC  -o ../lib/libhipo.so $(OBJECTS) -llz4
+
 
 show:
 	@echo $(OBJECTS)
@@ -23,4 +25,4 @@ clean:
 	@rm -rf *~ *.o
 
 %.o: %.cpp
-	$(CXX) -c $< -O2 -D__LZ4__ $(LZ4INCLUDES)
+	$(CXX) -fPIC -c $< -O2 -D__LZ4__ $(LZ4INCLUDES)
