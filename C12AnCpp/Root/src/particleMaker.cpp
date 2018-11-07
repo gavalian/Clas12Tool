@@ -16,7 +16,7 @@
 
 #include <vector>
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <iostream>
 using std::vector;
 
@@ -42,7 +42,7 @@ void particleMaker::processEvent(){
   core::objVector *v = (core::objVector *)getObject("protoParticles");
   if( ! v ) return;
 
-  std::map<int, std::shared_ptr<core::objVector>> particles;  
+  std::unordered_map<int, std::shared_ptr<core::objVector>> particles;  
 
   for( int i=0; i<v->size();i++){
     clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*v)[i].get() );

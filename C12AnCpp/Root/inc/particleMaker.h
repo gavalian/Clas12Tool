@@ -3,7 +3,7 @@
 
 #include "algorithm.h"
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 namespace root {
@@ -17,7 +17,7 @@ namespace root {
 
     private:
 
-      std::map<int,std::string> _pname;
+      std::unordered_map<int,std::string> _pname;
   };
 };
 

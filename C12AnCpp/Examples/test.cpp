@@ -8,16 +8,19 @@
 #include <vector>
 //#include <unordered_map>
 #include <map>
-//#include "particle.h"
 using namespace root;
 
 #include "TH1F.h"
 
 using namespace std;
 
+#include "recTrack.h"
+#include "recTrackReader.h"
+using namespace clas12;
 
+#include "objMap.h"
 #include "objVector.h"
-
+using namespace core;
 
 #include "histogram.h"
 
@@ -50,8 +53,10 @@ void test::terminate(){
 
 void test::processEvent(){
 
-  core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
-  if( ! protoparticles ) return;
+  core::objMap<int> *tracks = (core::objMap<int> *)getObject("recTracks");
+  if( ! tracks ) return;
+  //core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
+  //if( ! protoparticles ) return;
   //cout << " ++++ new event " << protoparticles->size() << endl;
   //for( int i=0;i<protoparticles->size();i++){
     //clas12::protoParticle *a = (clas12::protoParticle*) (*protoparticles)[i].get();
@@ -61,6 +66,15 @@ void test::processEvent(){
       //<< a->charge <<" "
       //<< a->beta << endl;
   //}
+
+  core::objVector *e = (core::objVector*) getObject("electrons");
+  if( ! e ) return;
+  if( e->size() == 0 ) return;
+
+  recTrack* tr = (recTrack*)(*tracks)[1].get();
+
+  cout << tr->NDF << " " << tr->getP() << endl;
+  
 
   core::objVector *photons = (core::objVector*) getObject("photons");
   if( ! photons ){ 
@@ -90,10 +104,12 @@ int main( int argn, const char* argv[]) {
   M->addDataReader( &reader );
 
   clas12::protoParticleReader pr;
+  clas12::recTrackReader tr;
   root::particleMaker pm;
   test ta;
 
   M->addAlgorithm( &pr );
+  M->addAlgorithm( &tr );
   M->addAlgorithm( &pm );
   M->addAlgorithm( &ta );
 
