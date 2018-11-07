@@ -208,7 +208,7 @@ namespace hipo {
         reader_sequence                 sequence;
 
         long    inputStreamSize;
-        
+
         long    recordsProcessed;
         long    eventsProcessed;
 
@@ -241,6 +241,7 @@ namespace hipo {
         bool  next();
         hipo::event    *getEvent(){return &inEventStream;}
         template<class T> hipo::node<T> *getBranch(int group, int item);
+        hipo::generic_node              *getGenericBranch(int group, int item);
         template<class T> hipo::node<T> *getBranch(const char* group, const char* item);
         std::vector<generic_node*>      *getAllBranches(){return inEventStream.getAllBranches();}
     };
@@ -251,6 +252,12 @@ namespace hipo {
   template<class T> hipo::node<T> *reader::getBranch(int group, int item){
       return inEventStream.getBranch<T>(group,item);
   }
+
+/*
+  hipo::generic_node    *reader::getGenericBranch(int group, int item){
+       return inEventStream.getEventGenericBranch(group, item);
+  }*/
+
   template<class T> hipo::node<T> *reader::getBranch(const char* group, const char* item){
       if(schemaDictionary.hasSchema(group)==true){
         hipo::schema schema = schemaDictionary.getSchema(group);

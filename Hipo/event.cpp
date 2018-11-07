@@ -19,6 +19,14 @@ namespace hipo {
 
     }
 
+    hipo::generic_node *event::getEventGenericBranch(int group, int item){
+      int size = nodes.size();
+      int key  =  ((0x00000000|group)<<16)  | ( (0x00000000|item)<<8);
+      registeredNodes[key] = size;
+      hipo::generic_node *type = new hipo::generic_node(group,item);
+      nodes.push_back(type);
+      return type;
+    }
 
    hipo::node<int>    *event::getIntNode(int group, int item){
      int size = nodes.size();
@@ -301,8 +309,11 @@ namespace hipo {
                   case 8: elements = length/8; break;
                   default: break;
                }
+               nodes[order]->type(type);
                nodes[order]->length(elements);
                nodes[order]->setAddress(&dataBuffer[position+8]);
+               //nodes[order]->address(&dataBuffer[position+8]);
+
                //printf(" found the key %d %d order = %d\n" , gid,iid, order);
             }
             //printf(" adding node : %4d %4d %X\n",gid,iid,position);

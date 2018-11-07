@@ -29,9 +29,13 @@ namespace hipo {
 
   std::vector<std::string> schema::getEntryList(){
        std::vector<std::string> entries;
+       /*
        for (std::map<std::string, std::pair<int,int> >::iterator it=schemaEntries.begin();
             it!=schemaEntries.end(); ++it){
               entries.push_back(it->first);
+       }*/
+       for(int i = 0; i < entryNames.size(); i++){
+          entries.push_back(entryNames[i]);
        }
        return entries;
   }

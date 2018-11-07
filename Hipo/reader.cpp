@@ -93,6 +93,10 @@ namespace hipo {
     readDictionary();
 }
 
+
+hipo::generic_node    *reader::getGenericBranch(int group, int item){
+       return inEventStream.getEventGenericBranch(group, item);
+}
 /**
  * Reads the file header. The endiannes is determined for bytes
  * swap. The header structure will be filled with file parameters.
