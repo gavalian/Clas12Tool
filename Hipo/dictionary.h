@@ -60,7 +60,7 @@ class schema {
     std::string getName() { return schemaName;}
 
     void  setGroup( int grp){ groupid = grp;}
-    bool  hasEntry(const char* entry){ return schemaEntries.count(entry);}
+    bool  hasEntry( const char* entry){ return schemaEntries.count(entry);}
     void  addEntry( const char* name, int id, int type)
       {
         schemaEntries[name] = std::make_pair(id, type);
@@ -75,9 +75,9 @@ class schema {
     int   getTypeByString(const char *typestring);
     void  ls();
 
-    std::vector<std::string> getEntryList();
-    std::vector<std::string> branchesCode();
-    std::vector<std::string> branchesAccessCode();
+    std::vector<std::string>  getEntryList();
+    std::vector<std::string>  branchesCode();
+    std::vector<std::string>  branchesAccessCode();
 
     std::vector<std::string>  getRootBranchesCode();
     std::vector<std::string>  getRootFillCode();

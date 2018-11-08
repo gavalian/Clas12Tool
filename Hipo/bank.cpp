@@ -20,7 +20,10 @@ bank::bank(const char *bankName, hipo::reader &r){
   hipo::dictionary *dict = r.getSchemaDictionary();
   if(dict->hasSchema(bankName)==true){
       hipo::schema schema = dict->getSchema(bankName);
-      int group = schema.getGroup();
+
+      bankSchema = schema;
+      int  group = schema.getGroup();
+
       std::vector<std::string> entries = schema.getEntryList();
       //printf("bank : %s %d\n",schema.getName().c_str(),group);
       for(int i = 0; i < entries.size(); i++){
@@ -28,20 +31,94 @@ bank::bank(const char *bankName, hipo::reader &r){
           hipo::generic_node *node = r.getGenericBranch( group, item);
           //printf("adding node  %s : %d\n", entries[i].c_str(),item);
           bankNodes.push_back(node);
+          bankEntryOrder[entries[i]] = i;
       }
   }
+}
+/**
+* returns the order of entry for the item in a bank
+* with name=entryName
+*/
+int bank::getEntryOrder(const char *entryName){
+  if(bankEntryOrder.count(entryName)==0){
+    printf("bank %s does not have entry %s\n",
+      bankSchema.getName().c_str(),entryName);
+    return -1;
+  }
+  return bankEntryOrder[entryName];
 }
 
 void bank::show(){
    int size = bankNodes.size();
-   printf("-------------->>>>>>\n");
+   printf("-------------->>>>>> hipo::bank >>> %s\n",bankSchema.getName().c_str());
    for(int i = 0; i < size; i++){
-      printf(" NODE %d type = %d , item = %d size = %d\n",
-          i, bankNodes[i]->type(), bankNodes[i]->item(),
-          bankNodes[i]->length());
+     int type = bankNodes[i]->type();
+      //printf(" NODE %d type = %d , item = %d size = %d\n",
+      //    i, bankNodes[i]->type(), bankNodes[i]->item(),
+      //    bankNodes[i]->length());
+          if(type==1||type==2||type==3){
+             std::string dataString = getDataStringInt(i);
+             printf("%3d : %s\n",i,dataString.c_str());
+          }
+          if(type==4){
+            std::string dataString = getDataStringFloat(i);
+            printf("%3d : %s\n",i,dataString.c_str());
+          }
+          if(type==5){
+            std::string dataString = getDataStringDouble(i);
+            printf("%3d : %s\n",i,dataString.c_str());
+          }
+          if(type==8){
+            std::string dataString = getDataStringLong(i);
+            printf("%3d : %s\n",i,dataString.c_str());
+          }
+
    }
 }
 
+std::string bank::getDataStringInt(int item){
+  std::string dataString;
+  int rows = getSize();
+  char line[36];
+  for(int i = 0; i < rows; i++){
+    sprintf(line,"%10d ",getInt(item,i));
+    dataString.append(line);
+  }
+  return dataString;
+}
+
+std::string bank::getDataStringLong(int item){
+  std::string dataString;
+  int rows = getSize();
+  char line[36];
+  for(int i = 0; i < rows; i++){
+    sprintf(line,"%10lu ",getLong(item,i));
+    dataString.append(line);
+  }
+  return dataString;
+}
+
+std::string bank::getDataStringFloat(int item){
+  std::string dataString;
+  int rows = getSize();
+  char line[36];
+  for(int i = 0; i < rows; i++){
+    sprintf(line,"%10.4f ",getFloat(item,i));
+    dataString.append(line);
+  }
+  return dataString;
+}
+
+std::string bank::getDataStringDouble(int item){
+  std::string dataString;
+  int rows = getSize();
+  char line[36];
+  for(int i = 0; i < rows; i++){
+    sprintf(line,"%10.4f ",getDouble(item,i));
+    dataString.append(line);
+  }
+  return dataString;
+}
 
 int    bank::getSize(){
   return bankNodes[0]->length();
@@ -52,17 +129,17 @@ int    bank::getInt(   int item, int order){
   int type = ptr->type();
   switch(type){
     case 1: {
-        uint8_t *__ptr8 = reinterpret_cast<uint8_t *>(ptr->getAddress());
+        int8_t *__ptr8 = reinterpret_cast<int8_t *>(ptr->getAddress());
         return (int) (__ptr8[order]);
       }
       break;
     case 2: {
-        uint16_t *__ptr16 = reinterpret_cast<uint16_t *>(ptr->getAddress());
+        int16_t *__ptr16 = reinterpret_cast<int16_t *>(ptr->getAddress());
         return (int) (__ptr16[order]);
       }
       break;
     case 3: {
-        uint32_t *__ptr32 = reinterpret_cast<uint32_t *>(ptr->getAddress());
+        int32_t *__ptr32 = reinterpret_cast<int32_t *>(ptr->getAddress());
         return (int) (__ptr32[order]);
       }
       break;
@@ -70,6 +147,36 @@ int    bank::getInt(   int item, int order){
       printf("wrong type");
   }
   return 0;
+}
+
+long   bank::getLong(   int item, int order){
+  generic_node *ptr = bankNodes[item];
+  int type = ptr->type();
+  switch(type){
+    case 8: {
+        long *__ptr8 = reinterpret_cast<long *>(ptr->getAddress());
+        return (__ptr8[order]);
+      }
+      break;
+    default:
+      printf("wrong type");
+  }
+  return 0;
+}
+
+double     bank::getDouble(   int item, int order){
+  generic_node *ptr = bankNodes[item];
+  int type = ptr->type();
+  switch(type){
+    case 5: {
+        double *__ptr8 = reinterpret_cast<double *>(ptr->getAddress());
+        return (__ptr8[order]);
+      }
+      break;
+    default:
+      printf("wrong type");
+  }
+  return 0.0;
 }
 
 float  bank::getFloat( int item, int order){

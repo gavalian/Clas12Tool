@@ -3,8 +3,8 @@ ROOTLDFLAGS := $(shell root-config --ldflags)
 ROOTLIBS    := $(shell root-config --libs) -lEG
 ROOTGLIBS   := $(shell root-config --glibs)
 
-HIPOCFLAGS  := -I../Hipo
-HIPOLIBS    := -L../lib -lhipo
+HIPOCFLAGS  := -I../Hipo -I../Banks
+HIPOLIBS    := -L../lib -lhipo -lclas12banks
 
 LZ4LIBS     := -L../Lz4/lib -llz4
 LZ4INCLUDES := -I../Lz4/lib

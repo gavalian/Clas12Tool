@@ -10,6 +10,9 @@ namespace hipo {
 
     event::event(){
         reset();
+        #if __cplusplus > 199711L
+            printf("\n*****>>>>> compiled with c++11 support.\n");
+        #endif
         //printf("creating event class.....\n");
         //hipo::node<int> *type = new hipo::node<int>();
         //nodes.push_back(type);

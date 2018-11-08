@@ -20,17 +20,20 @@
 #include "reader.h"
 #include "node.h"
 #include "bank.h"
+#include "particle.h"
+#include "detector.h"
+
 
 int main(int argc, char** argv) {
 
-   std::cout << " reading file example program (HIPO) " << std::endl;
+   std::cout << " reading file example program (HIPO) "  << __cplusplus << std::endl;
 
    char inputFile[256];
    char outputFile[256];
 
-   if(argc>2) {
+   if(argc>1) {
       sprintf(inputFile,"%s",argv[1]);
-      sprintf(outputFile,"%s",argv[2]);
+      //sprintf(outputFile,"%s",argv[2]);
    } else {
       std::cout << " *** please provide a file name..." << std::endl;
      exit(0);
@@ -39,29 +42,54 @@ int main(int argc, char** argv) {
    hipo::reader  reader;
    reader.open(inputFile);
 
-   hipo::dictionary *dictionary = reader.getSchemaDictionary();
+   /*hipo::dictionary *dictionary = reader.getSchemaDictionary();
    dictionary->ls();
 
    hipo::schema schema = dictionary->getSchema("REC::Particle");
    schema.ls();
+   */
 
-   std::vector<std::string> entries = schema.getEntryList();
+   //std::vector<std::string> entries = schema.getEntryList();
    /*printf(" Entries List = %lu\n" , entries.size());
    for(int i = 0; i < entries.size(); i++){
      printf(" %d ----> %s\n",i,entries[i].c_str());
    }*/
 
-   hipo::bank  recBank("REC::Particle",reader);
+   //hipo::bank  recBank("REC::Particle",reader);
+
+   clas12::particle  particles("REC::Particle",reader);
+   clas12::detector  tof("REC::Scintillator",reader);
+   clas12::detector  cal("REC::Calorimeter",reader);
 
    while(reader.next()==true){
-      recBank.show();
-      int k = 0;
+
+     /*particles.show();
+     tof.show();
+     cal.show();
+     */
+     int size = particles.getSize();
+
+     double momentum = 0.0;
+     for(int i = 0; i < size; i++){
+       double px = particles.getPx(i);
+       double py = particles.getPy(i);
+       double pz = particles.getPz(i);
+       momentum = sqrt(px*px+py*py+pz*pz);
+       /*std::cout << i << " : "  << particles.getPid(i) << "  "
+            << particles.getPx(i) << "  "
+            << particles.getPy(i) << "  "
+            << particles.getPz(i) << "  " << std::endl;
+            */
+     }
+
+      //recBank.show();
+      /*int k = 0;
       int size = recBank.getSize();
       for(int i = 0; i < size ; i++){
         printf("%12d ", recBank.getInt(0,i));
         k += recBank.getInt(0,i);
-      }
-      printf("\n");
+      }*/
+      //printf("\n");
       /*for(int i = 0; i < size ; i++){
         printf("%12d ", recBank.getInt(10,i));
       }

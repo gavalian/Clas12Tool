@@ -23,6 +23,14 @@
 #include <map>
 #include "node.h"
 
+// if the library is compiled with C++11
+// support we will use unordered map which
+// is faster than standard map
+#if __cplusplus > 199711L
+#include <unordered_map>
+#endif
+
+
 namespace hipo {
 
   //typedef std::auto_ptr<hipo::generic_node> node_pointer;
@@ -33,10 +41,16 @@ namespace hipo {
         std::vector<char> dataBuffer;
         std::map<int,int> eventNodes;
 
+// if the library is compiled with C++11
+// define registeredNodes as unordered_map
+#if __cplusplus > 199711L
+        std::unordered_map<int,int> registeredNodes;
+#else
         std::map<int,int> registeredNodes;
+#endif
+
         std::vector<hipo::generic_node*> nodes;
         //std::vector<std::auto_ptr<hipo::generic_node>> regiteredNodesPtr;
-
         //void scanEvent();
         void resetNodes();
     public:
