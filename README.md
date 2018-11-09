@@ -1,5 +1,7 @@
 # Clas12Tool
-CLAS12 Data Analysis Tools
+
+Data Analysis Tools based on HIPO data format. Implementations
+for CLAS12 data structures and convertor to ROOT.
 
 ## To Download
 
