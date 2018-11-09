@@ -43,11 +43,11 @@ namespace hipo {
 
 // if the library is compiled with C++11
 // define registeredNodes as unordered_map
-#if __cplusplus > 199711L
-        std::unordered_map<int,int> registeredNodes;
-#else
+//#if __cplusplus > 199711L
+//        std::unordered_map<int,int> registeredNodes;
+//#else
         std::map<int,int> registeredNodes;
-#endif
+//#endif
 
         std::vector<hipo::generic_node*> nodes;
         //std::vector<std::auto_ptr<hipo::generic_node>> regiteredNodesPtr;

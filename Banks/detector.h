@@ -21,16 +21,33 @@
 #include <vector>
 #include <stdint.h>
 #include <stdlib.h>
+#include <map>
 #include "bank.h"
 
 
 namespace clas12 {
+
+  class detectorHit {
+    public:
+        int   detector;
+        int   layer;
+       double time;
+       double energy;
+       double path;
+       double x,y,z;
+
+       detectorHit(){};
+       ~detectorHit(){};
+
+       void show();
+  };
 
   class detector : public hipo::bank {
 
   private:
 
     int detector_id_order;
+    int   layer_order;
     int  energy_order;
     int  pindex_order;
     int    path_order;
@@ -39,9 +56,13 @@ namespace clas12 {
     int       y_order;
     int       z_order;
 
+    std::map<int,int> rmap;
+
   public:
+
     detector(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){
        detector_id_order = getEntryOrder("detector");
+       layer_order   = getEntryOrder("layer");
        energy_order  = getEntryOrder("energy");
        path_order    = getEntryOrder("path");
        time_order    = getEntryOrder("time");
@@ -53,9 +74,11 @@ namespace clas12 {
 
     ~detector();
 
-    int    getDetector(int index) { return getInt(detector_id_order,index);}
+    void   scanIndex();
 
-    float  getIndex(int index) { return getFloat(pindex_order,index);}
+    int    getDetector(int index) { return getInt(detector_id_order,index);}
+    int    getLayer(int index) { return getInt(layer_order,index);}
+    int    getIndex(int index) { return getInt(pindex_order,index);}
     float  getPath(int index) { return getFloat(path_order,index);}
     float  getTime(int index) { return getFloat(time_order,index);}
     float  getEnergy(int index) { return getFloat(energy_order,index);}
@@ -63,6 +86,8 @@ namespace clas12 {
     float  getY(int index) { return getFloat(y_order,index);}
     float  getZ(int index) { return getFloat(z_order,index);}
 
+
+    void   getDetectorHit(int detector, int layer, int index, detectorHit &hit);
   };
 
 }

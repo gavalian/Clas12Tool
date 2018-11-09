@@ -61,26 +61,43 @@ int main(int argc, char** argv) {
    clas12::detector  tof("REC::Scintillator",reader);
    clas12::detector  cal("REC::Calorimeter",reader);
 
+   clas12::detectorHit caloHit;
+   clas12::detectorHit tofHit;
+
    while(reader.next()==true){
 
      /*particles.show();
      tof.show();
      cal.show();
      */
+
      int size = particles.getSize();
 
-     double momentum = 0.0;
+     cal.scanIndex();
+     tof.scanIndex();
+
+     if(size>0){
+       int pid = particles.getPid(0);
+       if(pid==11){
+          cal.getDetectorHit(7,1,0,caloHit);
+          tof.getDetectorHit(12,2,0,tofHit);
+        /*  printf("----> electron hits\n");
+          caloHit.show();
+          tofHit.show(); */
+       }
+     }
+    /* double momentum = 0.0;
      for(int i = 0; i < size; i++){
        double px = particles.getPx(i);
        double py = particles.getPy(i);
        double pz = particles.getPz(i);
        momentum = sqrt(px*px+py*py+pz*pz);
-       /*std::cout << i << " : "  << particles.getPid(i) << "  "
+       std::cout << i << " : "  << particles.getPid(i) << "  "
             << particles.getPx(i) << "  "
             << particles.getPy(i) << "  "
             << particles.getPz(i) << "  " << std::endl;
-            */
-     }
+
+     }*/
 
       //recBank.show();
       /*int k = 0;

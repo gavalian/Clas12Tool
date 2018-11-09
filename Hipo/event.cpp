@@ -285,6 +285,13 @@ namespace hipo {
         resetNodes();
         //printf("scanning event\n");
         //int position = 8;
+
+        /*unsigned nbuckets = registeredNodes.bucket_count();
+        printf(" buckets = %d\n",nbuckets);
+
+        for(int i = 0; i < nbuckets; i++){
+          printf(" bucket # %d size = %d\n",i,registeredNodes.bucket_size(i));
+        }*/
         int position  = 16;
         int eventSize = *(reinterpret_cast<uint32_t*>(&dataBuffer[8]));
 
@@ -300,6 +307,8 @@ namespace hipo {
             int info =  ( (0x00000000|type)<<24) | (position);
             //eventNodes.insert(std::make_pair(key,info));
             //printf("map count = %d \n" ,registeredNodes.size());
+
+
             if(registeredNodes.count(key)>0){
                int order = registeredNodes[key];
                //nodes[order]->setType(type);
@@ -316,7 +325,6 @@ namespace hipo {
                nodes[order]->length(elements);
                nodes[order]->setAddress(&dataBuffer[position+8]);
                //nodes[order]->address(&dataBuffer[position+8]);
-
                //printf(" found the key %d %d order = %d\n" , gid,iid, order);
             }
             //printf(" adding node : %4d %4d %X\n",gid,iid,position);
