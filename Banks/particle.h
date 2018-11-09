@@ -49,10 +49,18 @@ namespace clas12 {
     ~particle();
 
     int    getPid(int index) { return getInt(pid_order,index);}
-    float  getPx(int index) { return getFloat(px_order,index);}
-    float  getPy(int index) { return getFloat(py_order,index);}
-    float  getPz(int index) { return getFloat(pz_order,index);}
+    float  getPx(int index)  { return getFloat(px_order,index);}
+    float  getPy(int index)  { return getFloat(py_order,index);}
+    float  getPz(int index)  { return getFloat(pz_order,index);}
 
+    /**
+    * This is virtual method from hipo::bank it will be called
+    * every time a bank is read in the reader. Can be used to sort
+    * particles and or map particles by pid or type (i.e. charge)
+    */
+    void notify(){
+      //printf("particle class is read again\n");
+    }
   };
 
 }

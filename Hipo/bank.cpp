@@ -34,6 +34,7 @@ bank::bank(const char *bankName, hipo::reader &r){
           bankEntryOrder[entries[i]] = i;
       }
   }
+  r.addListener(this);
 }
 /**
 * returns the order of entry for the item in a bank

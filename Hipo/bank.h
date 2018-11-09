@@ -27,7 +27,7 @@ namespace hipo {
 
   //typedef std::auto_ptr<hipo::generic_node> node_pointer;
 
-    class bank {
+    class bank : public hipo::notification {
 
     private:
       // pointers of the nodes belonging to the bank
@@ -44,7 +44,7 @@ namespace hipo {
       std::string   getDataStringDouble(int item);
 
     protected:
-      
+
       int getEntryOrder(const char *entryName);
 
     public:
@@ -69,6 +69,8 @@ namespace hipo {
         long       getLong(   int item, int order);
         double     getDouble(   int item, int order);
         float      getFloat( int item, int order);
+
+        virtual  void notify(){ };
   };
 
 }

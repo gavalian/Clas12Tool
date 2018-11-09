@@ -222,6 +222,11 @@ bool reader::next(){
    eventsProcessed++;
    //printf("2\n");
    sequence.setCurrentEvent(current_event+1);
+
+   int nNotify = readerNotifications.size();
+   for(int i = 0; i < nNotify; i++){
+     readerNotifications[i]->notify();
+   }
    return true;
  }
   return true;

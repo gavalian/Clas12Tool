@@ -88,6 +88,12 @@ namespace clas12 {
 
 
     void   getDetectorHit(int detector, int layer, int index, detectorHit &hit);
+    /**
+    * this method is called everytime the reader reads next event.
+    * used for indexing the detector response array for particle
+    * detector hit retrieval.
+    */
+    void notify(){ scanIndex(); }
   };
 
 }

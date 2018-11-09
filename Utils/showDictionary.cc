@@ -73,17 +73,17 @@ int main(int argc, char** argv) {
 
      int size = particles.getSize();
 
-     cal.scanIndex();
-     tof.scanIndex();
+     //cal.scanIndex();
+     //tof.scanIndex();
 
      if(size>0){
        int pid = particles.getPid(0);
        if(pid==11){
           cal.getDetectorHit(7,1,0,caloHit);
           tof.getDetectorHit(12,2,0,tofHit);
-        /*  printf("----> electron hits\n");
+          printf("----> electron hits\n");
           caloHit.show();
-          tofHit.show(); */
+          tofHit.show();
        }
      }
     /* double momentum = 0.0;
