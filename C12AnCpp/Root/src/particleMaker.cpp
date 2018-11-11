@@ -44,7 +44,7 @@ void particleMaker::processEvent(){
 
   std::unordered_map<int, std::shared_ptr<core::objVector>> particles;  
 
-  for( int i=0; i<v->size();i++){
+  for( unsigned int i=0; i<v->size();i++){
     clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*v)[i].get() );
     //std::cout << " p "
          //<< p->id << " "

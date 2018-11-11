@@ -17,22 +17,30 @@ manager::~manager() {
 void manager::addAlgorithm( algorithm *a ){
   a->setObjContainer(_obj);
   a->setDataReader(_reader);
+  a->setOutMgr( _outmgr );
   _alg->push_back(a);
 }
 
 
 void manager::run() {
   cout << " ======================  RUN " << endl; 
+
+  // initialization of all the algorithms
   for( auto alg : (*_alg) ){  alg->init() ;}
+
+  // loop over entries
   while( _reader->next() ){
+    
+    // run algorithms over the entry
     for( auto alg : (*_alg) ){ alg->processEvent(); }
+  
+    // clear the temporary object container
     _obj->clear();
   }
 
   // at the end of the loop on events call terminate
   for( auto alg : (*_alg) ) alg->terminate() ;
 
-  // 
 }
 
 

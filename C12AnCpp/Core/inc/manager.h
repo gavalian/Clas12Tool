@@ -16,9 +16,12 @@ namespace core {
       static manager* instance();
 
       void addDataReader( dataReader *dr ) { _reader = dr; }
-      void addDataWriter( dataWriter *dw ) { _writer = dw; }
       dataReader* getDataReader(){ return _reader; }
+
+      void addDataWriter( dataWriter *dw ) { _writer = dw; }
       dataWriter* getDataWriter(){ return _writer; }
+      
+      void setOutObjMgr( outObjMgr *oom ) { _outmgr = oom; } 
 
       void addAlgorithm( algorithm* );
 
@@ -32,6 +35,8 @@ namespace core {
 
       objContainer *_obj;
       algContainer *_alg;
+
+      outObjMgr *_outmgr;
   };
 
 };

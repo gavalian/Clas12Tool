@@ -5,9 +5,7 @@
 #include "particle.h"
 #include "hipoReader.h"
 #include "manager.h"
-#include <vector>
-//#include <unordered_map>
-#include <map>
+#include "rootOutObjMgr.h"
 using namespace root;
 
 #include "TH1F.h"
@@ -20,9 +18,9 @@ using namespace clas12;
 
 #include "objMap.h"
 #include "objVector.h"
+#include "tuple.h"
 using namespace core;
 
-#include "histogram.h"
 
 class test : public core::algorithm {
 
@@ -30,25 +28,12 @@ class test : public core::algorithm {
     virtual void init();
     virtual void terminate();
     virtual void processEvent();
-
-  private:
-    hist *H;
-    TH1F *h;
 };
 
 void test::init(){
-  H = new hist(1000,0,1.);
-  h = new TH1F("pi0","pi0",1000,0,1.);
 }
 
-#include <fstream>
 void test::terminate(){
-  //H->show();
-  std::ofstream of("of.txt",std::ios::out);
-  H->write(of);
-  of.close();
-
-  h->SaveAs("h.root");
 }
 
 void test::processEvent(){
@@ -73,7 +58,7 @@ void test::processEvent(){
 
   recTrack* tr = (recTrack*)(*tracks)[1].get();
 
-  cout << tr->NDF << " " << tr->getP() << endl;
+  //cout << tr->NDF << " " << tr->getP() << endl;
   
 
   core::objVector *photons = (core::objVector*) getObject("photons");
@@ -82,23 +67,40 @@ void test::processEvent(){
     return; 
   }
 
+  core::tuple *tpl = this->ntuple("pi0");
+
+  core::hist *h = this->histo("hpi0",500,0,0.5);
+
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
     for( int j=i+1; j < photons->size(); j++){
       particle *p2 = (root::particle*) (*photons)[j].get();
       auto l = *p1 + *p2;
       //cout << l.M() << endl;
-      H->fill(l.M());
-      h->Fill(l.M());
+      h->fill(l.M());
+      float M = l.M(); 
+      float P = l.Mag();
+      float theta = l.Theta();
+      float phi = l.Phi();
+      tpl->column( "M", M );
+      tpl->column( "P", P );
+      tpl->column( "Theta", theta );
+      tpl->column( "Phi", phi );
+      
+      tpl->fill();
     }
   }
   
 }
 
+#include "TFile.h"
+
 int main( int argn, const char* argv[]) {
 
-  core::manager *M = core::manager::instance();
+  TFile *of = TFile::Open("prova.root","recreate");
 
+  core::manager *M = core::manager::instance();
+  M->setOutObjMgr( new rootOutObjMgr() );
   clas12::hipoReader reader( argv[argn-1] );
   reader.open();
   M->addDataReader( &reader );
@@ -116,6 +118,8 @@ int main( int argn, const char* argv[]) {
 cout << "aaaa \n";
   M->run();
 
+  of->Write();
+  of->Close();
   return 0;
 
 }
