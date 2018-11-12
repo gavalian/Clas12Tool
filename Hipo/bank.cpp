@@ -51,27 +51,29 @@ int bank::getEntryOrder(const char *entryName){
 
 void bank::show(){
    int size = bankNodes.size();
+   std::vector<std::string> entries = bankSchema.getEntryList();
    printf("-------------->>>>>> hipo::bank >>> %s\n",bankSchema.getName().c_str());
    for(int i = 0; i < size; i++){
      int type = bankNodes[i]->type();
       //printf(" NODE %d type = %d , item = %d size = %d\n",
       //    i, bankNodes[i]->type(), bankNodes[i]->item(),
       //    bankNodes[i]->length());
+      printf("%12s : ", entries[i].c_str());
           if(type==1||type==2||type==3){
              std::string dataString = getDataStringInt(i);
-             printf("%3d : %s\n",i,dataString.c_str());
+             printf("%s\n",dataString.c_str());
           }
           if(type==4){
             std::string dataString = getDataStringFloat(i);
-            printf("%3d : %s\n",i,dataString.c_str());
+            printf("%s\n",dataString.c_str());
           }
           if(type==5){
             std::string dataString = getDataStringDouble(i);
-            printf("%3d : %s\n",i,dataString.c_str());
+            printf("%s\n",dataString.c_str());
           }
           if(type==8){
             std::string dataString = getDataStringLong(i);
-            printf("%3d : %s\n",i,dataString.c_str());
+            printf("%s\n",dataString.c_str());
           }
 
    }
