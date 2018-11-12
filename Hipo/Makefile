@@ -11,7 +11,7 @@ CXXFLAGS = -std=c++11
 
 libhipo: checkdirs $(OBJECTS)
 	ar cr ../lib/libhipo.a $(OBJECTS)
-	$(CXX) -shared -fPIC  -o ../lib/libhipo.so $(OBJECTS) -llz4
+#	$(CXX) -shared -fPIC  -o ../lib/libhipo.so $(OBJECTS) -llz4
 
 
 show:
