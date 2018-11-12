@@ -5,21 +5,22 @@
 #include "particle.h"
 #include "hipoReader.h"
 #include "manager.h"
-#include <vector>
-//#include <unordered_map>
-#include <map>
-//#include "particle.h"
+#include "rootOutObjMgr.h"
 using namespace root;
 
 #include "TH1F.h"
 
 using namespace std;
 
+#include "recTrack.h"
+#include "recTrackReader.h"
+using namespace clas12;
 
+#include "objMap.h"
 #include "objVector.h"
+#include "tuple.h"
+using namespace core;
 
-
-#include "histogram.h"
 
 class test : public core::algorithm {
 
@@ -27,31 +28,20 @@ class test : public core::algorithm {
     virtual void init();
     virtual void terminate();
     virtual void processEvent();
-
-  private:
-    hist *H;
-    TH1F *h;
 };
 
 void test::init(){
-  H = new hist(1000,0,1.);
-  h = new TH1F("pi0","pi0",1000,0,1.);
 }
 
-#include <fstream>
 void test::terminate(){
-  //H->show();
-  std::ofstream of("of.txt",std::ios::out);
-  H->write(of);
-  of.close();
-
-  h->SaveAs("h.root");
 }
 
 void test::processEvent(){
 
-  core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
-  if( ! protoparticles ) return;
+  core::objMap<int> *tracks = (core::objMap<int> *)getObject("recTracks");
+  if( ! tracks ) return;
+  //core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
+  //if( ! protoparticles ) return;
   //cout << " ++++ new event " << protoparticles->size() << endl;
   //for( int i=0;i<protoparticles->size();i++){
     //clas12::protoParticle *a = (clas12::protoParticle*) (*protoparticles)[i].get();
@@ -62,11 +52,24 @@ void test::processEvent(){
       //<< a->beta << endl;
   //}
 
+  core::objVector *e = (core::objVector*) getObject("electrons");
+  if( ! e ) return;
+  if( e->size() == 0 ) return;
+
+  recTrack* tr = (recTrack*)(*tracks)[1].get();
+
+  //cout << tr->NDF << " " << tr->getP() << endl;
+  
+
   core::objVector *photons = (core::objVector*) getObject("photons");
   if( ! photons ){ 
     //cout << "no photons!!\n"; 
     return; 
   }
+
+  core::tuple *tpl = this->ntuple("pi0");
+
+  core::hist *h = this->histo("hpi0",500,0,0.5);
 
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
@@ -74,32 +77,49 @@ void test::processEvent(){
       particle *p2 = (root::particle*) (*photons)[j].get();
       auto l = *p1 + *p2;
       //cout << l.M() << endl;
-      H->fill(l.M());
-      h->Fill(l.M());
+      h->fill(l.M());
+      float M = l.M(); 
+      float P = l.Mag();
+      float theta = l.Theta();
+      float phi = l.Phi();
+      tpl->column( "M", M );
+      tpl->column( "P", P );
+      tpl->column( "Theta", theta );
+      tpl->column( "Phi", phi );
+      
+      tpl->fill();
     }
   }
   
 }
 
+#include "TFile.h"
+
 int main( int argn, const char* argv[]) {
 
-  core::manager *M = core::manager::instance();
+  TFile *of = TFile::Open("prova.root","recreate");
 
+  core::manager *M = core::manager::instance();
+  M->setOutObjMgr( new rootOutObjMgr() );
   clas12::hipoReader reader( argv[argn-1] );
   reader.open();
   M->addDataReader( &reader );
 
   clas12::protoParticleReader pr;
+  clas12::recTrackReader tr;
   root::particleMaker pm;
   test ta;
 
   M->addAlgorithm( &pr );
+  M->addAlgorithm( &tr );
   M->addAlgorithm( &pm );
   M->addAlgorithm( &ta );
 
 cout << "aaaa \n";
   M->run();
 
+  of->Write();
+  of->Close();
   return 0;
 
 }

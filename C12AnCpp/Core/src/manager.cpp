@@ -5,7 +5,6 @@ using namespace std;
 using namespace core;
 
 manager::manager() {
-  cout << " +++++++++++++++++++++++++++++\n";
   _obj = new objContainer();
   _alg = new algContainer();
 }
@@ -18,31 +17,34 @@ manager::~manager() {
 void manager::addAlgorithm( algorithm *a ){
   a->setObjContainer(_obj);
   a->setDataReader(_reader);
+  a->setOutMgr( _outmgr );
   _alg->push_back(a);
 }
 
 
 void manager::run() {
- cout << " ======================  RUN " << endl; 
- //void *ev = 0x0;
-  for( auto alg : (*_alg) ){  alg->init() ;}
-  while( _reader->next() ){
-    //cout << " next " << endl;
-    //(*_obj)["Event"] = std::make_unique<ev>();
-    //cout << (*_alg).size() << "  ... " << endl;
-    for( auto alg : (*_alg) ){ alg->processEvent(); }
+  cout << " ======================  RUN " << endl; 
 
-    // TODO clean objects
-    //for( auto o : (*_obj) ) { if( o.second != NULL ){ cout << o.first << endl;  delete (o.second); } }
+  // initialization of all the algorithms
+  for( auto alg : (*_alg) ){  alg->init() ;}
+
+  // loop over entries
+  while( _reader->next() ){
+    
+    // run algorithms over the entry
+    for( auto alg : (*_alg) ){ alg->processEvent(); }
+  
+    // clear the temporary object container
     _obj->clear();
   }
 
   // at the end of the loop on events call terminate
   for( auto alg : (*_alg) ) alg->terminate() ;
 
-  // 
 }
 
+
+// implementation of manager as singleton
 manager* manager::_manager = 0;
 
 manager* manager::instance(){
