@@ -5,6 +5,7 @@
  */
 
 #include "bank.h"
+#include "utils.h"
 
 namespace hipo {
 
@@ -17,6 +18,7 @@ bank::~bank(){
 }
 
 bank::bank(const char *bankName, hipo::reader &r){
+
   hipo::dictionary *dict = r.getSchemaDictionary();
   if(dict->hasSchema(bankName)==true){
       hipo::schema schema = dict->getSchema(bankName);
@@ -47,6 +49,16 @@ int bank::getEntryOrder(const char *entryName){
     return -1;
   }
   return bankEntryOrder[entryName];
+}
+
+void bank::require(const char *rows){
+  std::string expression = rows;
+  std::vector<std::string> tokens;
+  hipo::utils::tokenize(expression,tokens,std::string(":"));
+  for(int i = 0; i < tokens.size(); i++){
+    int order = getEntryOrder(tokens[i].c_str());
+    printf("requiring row = %s entry order = %d\n",tokens[i].c_str(),order);
+  }
 }
 
 void bank::show(){

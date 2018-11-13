@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "bank.h"
-
+#include "vectors.h"
 
 namespace clas12 {
 
@@ -53,6 +53,15 @@ namespace clas12 {
     float  getPy(int index)  { return getFloat(py_order,index);}
     float  getPz(int index)  { return getFloat(pz_order,index);}
 
+    void  getVector3(int index, vector3 &vect){
+      vect.setXYZ(getFloat(px_order,index),getFloat(py_order,index),
+            getFloat(pz_order,index));
+    }
+
+    void getVector4(int index, vector4 &vect, double mass){
+      vect.setXYZM(getFloat(px_order,index),getFloat(py_order,index),
+            getFloat(pz_order,index),mass);
+    }
     /**
     * This is virtual method from hipo::bank it will be called
     * every time a bank is read in the reader. Can be used to sort

@@ -37,6 +37,7 @@ namespace hipo {
       // copy of the schema kept in the bank
       hipo::schema                bankSchema;
       std::map<std::string,int>   bankEntryOrder;
+      std::vector<int>            bankRows;
 
       std::string   getDataStringInt(int item);
       std::string   getDataStringLong(int item);
@@ -58,6 +59,8 @@ namespace hipo {
         ~bank();
         // display the content of the bank
         void show();
+
+        void require(const char *rows);
         // returns the rows of the bank
         int        getSize();
 
