@@ -39,6 +39,9 @@ namespace clas12 {
     int vz_order;
 
   public:
+
+    particle(){};
+
     particle(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){
        pid_order = getEntryOrder("pid");
        px_order  = getEntryOrder("px");
@@ -48,6 +51,8 @@ namespace clas12 {
 
     ~particle();
 
+
+    void   init(const char *bankName, hipo::reader &r);
     int    getPid(int index) { return getInt(pid_order,index);}
     float  getPx(int index)  { return getFloat(px_order,index);}
     float  getPy(int index)  { return getFloat(py_order,index);}

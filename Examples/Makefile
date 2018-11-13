@@ -15,7 +15,7 @@ LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
 
-all: readBanks readParticles analysis
+all: readBanks readParticles analysis clas12event_example
 
 readBanks: readBanks.o
 	$(CXX) -o readBanks $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
@@ -26,9 +26,12 @@ readParticles: readParticles.o
 analysis: analysis.o
 	$(CXX) -o analysis $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
+clas12event_example: clas12event_example.o
+	$(CXX) -o clas12event_example $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+
 clean:
 	@echo 'Removing all build files'
-	@rm -rf *.o readParticles readBanks analysis *~
+	@rm -rf *.o readParticles readBanks analysis clas12event_example *~
 
 %.o: %.cc
 	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)

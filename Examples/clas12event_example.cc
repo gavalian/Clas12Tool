@@ -18,10 +18,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "reader.h"
-#include "node.h"
-#include "bank.h"
-#include "particle.h"
-#include "detector.h"
+#include "clas12event.h"
 
 
 int main(int argc, char** argv) {
@@ -41,23 +38,30 @@ int main(int argc, char** argv) {
    hipo::reader  reader;
    reader.open(inputFile);
 
-   clas12::particle  particles("REC::Particle",reader);
+   clas12::clas12event  event(reader);
 
-   clas12::vector4 beam(   0.0, 0.0, 10.5, 10.5   );
-   clas12::vector4 target( 0.0, 0.0,  0.0,  0.938 );
-   clas12::vector4 electron;
+   clas12::vector3      electron;
 
    while(reader.next()==true){
+      int np = event.particles().getSize();
 
-     int size = particles.getSize();
-     for(int i = 0; i < size; i++){
-       int pid = particles.getPid(i);
-       if(pid==11){
-         particles.getVector4(i,electron,0.0005);
-         clas12::vector4 w2 = beam + target - electron;
-         printf("w2 = %12.5f\n",w2.m());
-       }
-     }
+      double starttime = event.header().getStartTime();
+
+      for(int i = 0; i < np; i++){
+        int     pid = event.particles().getPid(i);
+        if(pid==11){
+
+           event.particles().getVector3(i,electron);
+
+           double beta = event.getBeta(clas12::FTOF1A,i);
+           double time = event.getTime(clas12::FTOF1A,i);
+           double ecEnergy   = event.getEnergy(clas12::EC,i);
+           double pcalEnergy = event.getEnergy(clas12::PCAL,i);
+           double sf         = ecEnergy/electron.mag();
+           printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f sf = %8.3f beta = %8.3f\n",
+                  pid,time-starttime,ecEnergy,pcalEnergy,sf, beta);
+        }
+      }
    }
 }
 //### END OF GENERATED CODE

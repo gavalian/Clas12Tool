@@ -11,7 +11,20 @@ namespace clas12 {
 
   detector::~detector(){}
 
-  void   detector::scanIndex(){
+void   detector::init(const char *bankName, hipo::reader &r){
+  initBranches(bankName,r);
+  detector_id_order = getEntryOrder("detector");
+  layer_order   = getEntryOrder("layer");
+  energy_order  = getEntryOrder("energy");
+  path_order    = getEntryOrder("path");
+  time_order    = getEntryOrder("time");
+  pindex_order  = getEntryOrder("pindex");
+  x_order  = getEntryOrder("x");
+  y_order  = getEntryOrder("y");
+  z_order  = getEntryOrder("z");
+}
+
+void   detector::scanIndex(){
     rmap.clear();
     int size = getSize();
     for(int i = 0; i < size; i++){
@@ -23,6 +36,32 @@ namespace clas12 {
     }
   }
 
+  double   detector::getTime(int detector, int layer, int pindex){
+    int key = (detector<<16)|(layer<<8)|pindex;
+    if(rmap.count(key)>0) {
+        int position = rmap[key];
+        return getTime(position);
+    }
+    return 0.0;
+  }
+
+  double   detector::getEnergy(int detector, int layer, int pindex){
+    int key = (detector<<16)|(layer<<8)|pindex;
+    if(rmap.count(key)>0) {
+        int position = rmap[key];
+        return getEnergy(position);
+    }
+    return 0.0;
+  }
+
+  double   detector::getPath(int detector, int layer, int pindex){
+    int key = (detector<<16)|(layer<<8)|pindex;
+    if(rmap.count(key)>0) {
+        int position = rmap[key];
+        return getPath(position);
+    }
+    return 0.0;
+  }
 
   void   detector::getDetectorHit(int detector, int layer, int pindex, detectorHit &hit){
       int key = (detector<<16)|(layer<<8)|pindex;

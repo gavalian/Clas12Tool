@@ -5,10 +5,14 @@
  */
 
 /*
- * File:   particle.h
+ * File:   vectors.h
  * Author: gavalian
  *
- * Created on April 27, 2017, 10:01 AM
+ * Created on November 12, 2018, 10:24 AM
+ * This is a clone from data mining library
+ * implementations of physics vectors. Not
+ * all the methods have been ported, they
+ * will be in time.
  */
 
 #ifndef VECTORS_H
@@ -76,7 +80,7 @@ namespace clas12 {
   vector4 (double _px, double _py, double _pz, double _e){
      fVect.setXYZ(_px,_py, _pz); fE = _e;
   }
-  
+
   vector4 (vector3 v, double energy) { fVect = v; fE = energy;};
 
   ~vector4(){}

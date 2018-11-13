@@ -44,10 +44,14 @@ namespace hipo {
       std::string   getDataStringFloat(int item);
       std::string   getDataStringDouble(int item);
 
+
+
+
     protected:
 
-      int getEntryOrder(const char *entryName);
-
+      int    getEntryOrder(const char *entryName);
+      void   initBranches(const char *bank, hipo::reader &r);
+      
     public:
 
         bank();

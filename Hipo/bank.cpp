@@ -18,10 +18,13 @@ bank::~bank(){
 }
 
 bank::bank(const char *bankName, hipo::reader &r){
+  initBranches(bankName,r);
+}
 
+void bank::initBranches(const char *bank, hipo::reader &r){
   hipo::dictionary *dict = r.getSchemaDictionary();
-  if(dict->hasSchema(bankName)==true){
-      hipo::schema schema = dict->getSchema(bankName);
+  if(dict->hasSchema(bank)==true){
+      hipo::schema schema = dict->getSchema(bank);
 
       bankSchema = schema;
       int  group = schema.getGroup();

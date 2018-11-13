@@ -60,6 +60,9 @@ namespace clas12 {
 
   public:
 
+
+    detector(){};
+    
     detector(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){
        detector_id_order = getEntryOrder("detector");
        layer_order   = getEntryOrder("layer");
@@ -74,6 +77,12 @@ namespace clas12 {
 
     ~detector();
 
+    double   getEnergy(int detector, int layer, int pindex);
+    double   getTime(int detector, int layer, int pindex);
+    double   getPath(int detector, int layer, int pindex);
+
+
+    void   init(const char *bankName, hipo::reader &r);
     void   scanIndex();
 
     int    getDetector(int index) { return getInt(detector_id_order,index);}
