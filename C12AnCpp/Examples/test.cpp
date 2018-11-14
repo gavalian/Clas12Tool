@@ -21,6 +21,7 @@ using namespace clas12;
 #include "tuple.h"
 using namespace core;
 
+#include "kineTool.h"
 
 class test : public core::algorithm {
 
@@ -67,6 +68,8 @@ void test::processEvent(){
     return; 
   }
 
+  tools::kineTool tool;
+
   core::tuple *tpl = this->ntuple("pi0");
 
   core::hist *h = this->histo("hpi0",500,0,0.5);
@@ -82,11 +85,13 @@ void test::processEvent(){
       float P = l.Mag();
       float theta = l.Theta();
       float phi = l.Phi();
-      tpl->column( "M", M );
-      tpl->column( "P", P );
-      tpl->column( "Theta", theta );
-      tpl->column( "Phi", phi );
+      tpl->column( "M", l.M() );
+      tpl->column( "P", l.P() );
+      tpl->column( "Theta", l.Theta() );
+      tpl->column( "Phi", l.Phi() );
       
+      tool.execute( tpl, p1, "pi0_" );     
+
       tpl->fill();
     }
   }

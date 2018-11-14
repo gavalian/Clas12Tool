@@ -1,0 +1,43 @@
+
+INCDIR := inc
+SRCDIR := src
+OBJDIR := build
+
+INCCORE := $(CORE)/inc
+LIBCORE := $(CORE)
+
+INCClas := $(CLAS)/inc
+LIBClas := $(CLAS)
+
+INCRoot := $(TOOL)/inc
+LIBRoot := $(TOOL)
+
+
+ROOT := $(shell root-config --cflags) $(shell root-config --libs)
+
+SOURCES := $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+
+CFLAGS  := -Wall -O2 -fPIC -std=c++14
+
+BUILD := $(shell mkdir -p build)
+
+CFLAGS := $(ROOT) $(CFLAGS)
+
+INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO)
+LIBS :=	-L$(LIBClas) \
+				-L$(LIBRoot) \
+			  -L$(LIBCORE) \
+				-L$(LIBHIPO) \
+				-lClas12 -lRootTools -lC12Core
+  
+
+.PHONY: all clean
+all: $(BUILD) $(OBJECTS)
+	$(CXX) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libTools.so -shared $(CFLAGS)  $(OBJECTS)	
+
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	$(CXX) $(CFLAGS) -I$(INCDIR)  $(INCLUDES) $(LIBS) -c $< -o $@
+
+clean:
+	rm build/*; rm libTools.so; rm -rf build

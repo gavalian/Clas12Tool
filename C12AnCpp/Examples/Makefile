@@ -7,6 +7,9 @@ LIBClas := $(CLAS)
 INCRoot := $(TOOL)/inc
 LIBRoot := $(TOOL)
 
+INCTools := $(TOOLS)/inc
+LIBTools := $(TOOLS)
+
 INCHIPO := $(HIPO)
 LIBHIPO := $(CLAS12TOOL)/lib
 
@@ -20,12 +23,13 @@ CFLAGS  := -Wall -O2 -fPIC -std=c++14
 
 CFLAGS := $(ROOT) $(CFLAGS)
 
-INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO)
+INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO) -I$(INCTools)
 LIBS :=	-L$(LIBClas) \
 				-L$(LIBRoot) \
 			  -L$(LIBCORE) \
+        -L$(LIBTools) \
 				-L$(LIBHIPO) \
-				-lClas12 -lRootTools -lC12Core  -lhipo
+				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
   
 
 all: $(patsubst %.cpp, %.out, $(wildcard *.cpp))

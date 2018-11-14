@@ -14,7 +14,7 @@ namespace root {
       rTuple( string, string );
       virtual ~rTuple() { delete tree; }
 
-      void column( string, float& );
+      /*void column( string, float * );*/
       void fill();
       void write();
     private:

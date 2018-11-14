@@ -16,7 +16,8 @@ function setEnvironment {
   export CORE=$CLAS12CPPBASE"/Core"
   export CLAS=$CLAS12CPPBASE"/Clas12"
   export TOOL=$CLAS12CPPBASE"/Root"
-  export CLAS12CPP=$CORE:$CLAS:$TOOL
+  export TOOLS=$CLAS12CPPBASE"/Tools"
+  export CLAS12CPP=$CORE:$CLAS:$TOOL:$TOOLS
 
   export LD_LIBRARY_PATH=$CLAS12CPP:$CLAS12TOOL/lib:$HIPO:$LD_LIBRARY_PATH
   echo $LD_LIBRARY_PATH
@@ -28,7 +29,6 @@ then
   setEnvironment
 else
   echo "already set"
-  exit
 fi
   
 

@@ -3,8 +3,8 @@
 
 #include "object.h"
 
+#include <unordered_map>
 #include <string>
-using std::string;
 
 namespace core {
   class tuple : public object {
@@ -12,11 +12,14 @@ namespace core {
     public:
       virtual ~tuple() {};
 
-      virtual void column( string, float &) = 0;
+      virtual void column( std::string, float );
+      virtual void column( std::string, float, std::string );
 
       virtual void fill() = 0;
 
       virtual void write() = 0;
+    protected:
+      std::unordered_map<std::string,float> _vars;
   };
 
 };

@@ -1,6 +1,6 @@
 .PHONY: all
 
-list = Core Clas12 Root
+list = Core Clas12 Root Tools
 all: 
 	for i in $(list); do	$(MAKE) -C $$i ; done
 
