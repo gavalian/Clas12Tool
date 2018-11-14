@@ -60,6 +60,7 @@ namespace clas12 {
   public:
 
     clas12event(){ }
+
     clas12event(hipo::reader &r) {
       banks.push_back("REC::Event");
       banks.push_back("REC::Particle");
@@ -79,8 +80,8 @@ namespace clas12 {
     double  getBeta(   int detector, int pindex);
     void    getHitPosition(int detector, int pindex, vector3 &vec);
 
-    clas12::particle &particles(){return clas12particle;}
-    clas12::header   &header(){ return clas12header;}
+    clas12::particle  &particles(){return clas12particle;}
+    clas12::header    &header(){ return clas12header;}
 
   };
 

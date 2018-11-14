@@ -62,7 +62,7 @@ namespace clas12 {
 
 
     detector(){};
-    
+
     detector(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){
        detector_id_order = getEntryOrder("detector");
        layer_order   = getEntryOrder("layer");

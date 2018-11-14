@@ -10,7 +10,6 @@ namespace clas12 {
 
   header::~header(){}
 
-
   void header::init(const char *bankName, hipo::reader &r){
     initBranches(bankName,r);
     rn_order = getEntryOrder("NRUN");
