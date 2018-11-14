@@ -76,8 +76,10 @@ void test::processEvent(){
 
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
+    if ( p1->P() < 2.5 ) continue;
     for( int j=i+1; j < photons->size(); j++){
       particle *p2 = (root::particle*) (*photons)[j].get();
+      if ( p2->P() < 1.5 ) continue;
       auto l = *p1 + *p2;
       //cout << l.M() << endl;
       h->fill(l.M());
