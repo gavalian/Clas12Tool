@@ -36,48 +36,40 @@ void particleMaker::init(){
   _pname[0]    = "unidentified"; 
 }
 
-
+//
+// transform protoParitcles in particles, sorting them by species
 void particleMaker::processEvent(){
 
-  core::objVector *v = (core::objVector *)getObject("protoParticles");
-  if( ! v ) return;
+  // get protoparticles from temporary container
+  core::objVector *vpp = (core::objVector *)getObject("protoParticles");
+  if( ! vpp ) return;
 
+  // map of particle vectors
   std::unordered_map<int, std::shared_ptr<core::objVector>> particles;  
 
-  for( unsigned int i=0; i<v->size();i++){
-    clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*v)[i].get() );
-    //std::cout << " p "
-         //<< p->id << " "
-         //<< p->pid << " "
-         //<< p->charge << " "
-         //<< p->px << " "
-         //<< p->py << " "
-         //<< p->pz << " "
-         //<< p->status << " \n";
+  // loop over protoparticles
+  for( unsigned int i=0; i<vpp->size();i++){
+    clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*vpp)[i].get() );
 
     // skip NAN value particles
     if( p->px != p->px ) continue;
 
+    // create paticles and sort them by type
     if( particles.find(p->pid) == particles.end() ){
-      //printf("debug 0 ");
-      //particles[p->pid] = new core::objVector();
       particles[p->pid] = std::make_shared<core::objVector>();
-      //printf("debug 1 ");
-
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      part->setProtoParticle( p );
       particles[p->pid]->push_back( std::move(part) );
     }
     else {
-      //std::unique_ptr<particle> part = std::make_unique<particle>(particle::getParticle( p->pid, p->px, p->py, p->pz ));
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      part->setProtoParticle( p );
       particles[p->pid]->push_back( std::move(part) );
     }
   }
 
   for( auto const &p : particles ){
-    //std::unique_ptr<core::objVector> v = std::move( (p.second) );
     bookObject( _pname[p.first], p.second  );
-    //bookObject( _pname[p.first], std::move( p.second ) );
   }
 }
 

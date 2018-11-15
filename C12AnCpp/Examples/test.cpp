@@ -22,6 +22,7 @@ using namespace clas12;
 using namespace core;
 
 #include "kineTool.h"
+#include "combineParticles.h"
 
 class test : public core::algorithm {
 
@@ -68,11 +69,12 @@ void test::processEvent(){
     return; 
   }
 
-  tools::kineTool tool;
+
+  tools::kineTool Ktool;
 
   core::tuple *tpl = this->ntuple("pi0");
 
-  core::hist *h = this->histo("hpi0",500,0,0.5);
+  core::hist *h = this->histo("hpi0",500,0, 1);
 
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
@@ -80,7 +82,7 @@ void test::processEvent(){
     for( int j=i+1; j < photons->size(); j++){
       particle *p2 = (root::particle*) (*photons)[j].get();
       if ( p2->P() < 1.5 ) continue;
-      auto l = *p1 + *p2;
+      root::particle l = *p1 + *p2;
       //cout << l.M() << endl;
       h->fill(l.M());
       float M = l.M(); 
@@ -92,12 +94,41 @@ void test::processEvent(){
       tpl->column( "Theta", l.Theta() );
       tpl->column( "Phi", l.Phi() );
       
-      tool.execute( tpl, p1, "pi0_" );     
+      Ktool.execute( tpl, p1, "pi0_" );     
 
       tpl->fill();
     }
   }
+ 
   
+  core::objVector *pi0s = (core::objVector*) getObject("pi0s");
+  if( ! pi0s ){ 
+    cout << "no pi0s!!\n"; 
+    return; 
+  }
+  cout << " debug 00\n";
+  core::tuple *tplpi0 = this->ntuple("tuplePi0");
+  for( int i=0; i<pi0s->size(); i++ ){
+  cout << " debug 01\n";
+    particle *pi = (root::particle*) (*pi0s)[i].get();
+  cout << " debug 02\n";
+    tplpi0->column( "M", pi->M(), "pi0_" );
+  cout << " debug 03\n";
+    tplpi0->column( "Theta", pi->Theta(), "pi0_" );
+  cout << " debug 04\n";
+    tplpi0->column( "Phi", pi->Phi(), "pi0_" );
+    
+  cout << " debug 05\n";
+    Ktool.execute( tplpi0, pi, "pi0_");
+  cout << " debug 06\n";
+    Ktool.execute( tplpi0, pi->getDaughter(0), "gamma1_");
+  cout << " debug 07\n";
+    Ktool.execute( tplpi0, pi->getDaughter(1), "gamma1_");
+  cout << " debug 08\n";
+
+    tplpi0->fill();
+  cout << " debug 10\n";
+  } 
 }
 
 #include "TFile.h"
@@ -115,11 +146,14 @@ int main( int argn, const char* argv[]) {
   clas12::protoParticleReader pr;
   clas12::recTrackReader tr;
   root::particleMaker pm;
+  tools::combineParticles pi0m( "pi0s","photons+photons");
+
   test ta;
 
   M->addAlgorithm( &pr );
   M->addAlgorithm( &tr );
   M->addAlgorithm( &pm );
+  M->addAlgorithm( &pi0m );
   M->addAlgorithm( &ta );
 
 cout << "aaaa \n";
