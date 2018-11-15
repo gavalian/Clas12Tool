@@ -3,7 +3,8 @@
 
 #include "object.h"
 
-#include <unordered_map>
+#include <map>
+/*#include <unordered_map>*/
 #include <string>
 
 namespace core {
@@ -19,7 +20,8 @@ namespace core {
 
       virtual void write() = 0;
     protected:
-      std::unordered_map<std::string,float> _vars;
+      std::map<std::string,float> _vars;
+      /*std::unordered_map<std::string,float> _vars;*/
   };
 
 };

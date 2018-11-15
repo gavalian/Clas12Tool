@@ -25,7 +25,9 @@ namespace root {
       
       void setProtoParticle( clas12::protoParticle *p ) { _ppart = p; }
       clas12::protoParticle* getProtoParticle() const { return _ppart; }
+  
       virtual particle operator + ( particle&) const;
+      virtual particle operator - ( particle&) const;
     private:
       int _pid;
       std::vector<particle*> _daughters;

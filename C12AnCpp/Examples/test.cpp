@@ -42,23 +42,12 @@ void test::processEvent(){
 
   core::objMap<int> *tracks = (core::objMap<int> *)getObject("recTracks");
   if( ! tracks ) return;
-  //core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
-  //if( ! protoparticles ) return;
-  //cout << " ++++ new event " << protoparticles->size() << endl;
-  //for( int i=0;i<protoparticles->size();i++){
-    //clas12::protoParticle *a = (clas12::protoParticle*) (*protoparticles)[i].get();
-    //cout << " patricle: " 
-      //<< a->id <<" "
-      //<< a->pid <<" "
-      //<< a->charge <<" "
-      //<< a->beta << endl;
-  //}
 
-  core::objVector *e = (core::objVector*) getObject("electrons");
-  if( ! e ) return;
-  if( e->size() == 0 ) return;
+  //core::objVector *e = (core::objVector*) getObject("electrons");
+  //if( ! e ) return;
+  //if( e->size() == 0 ) return;
 
-  recTrack* tr = (recTrack*)(*tracks)[1].get();
+  //recTrack* tr = (recTrack*)(*tracks)[1].get();
 
   //cout << tr->NDF << " " << tr->getP() << endl;
   
@@ -78,17 +67,13 @@ void test::processEvent(){
 
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
-    if ( p1->P() < 2.5 ) continue;
+    //if ( p1->P() < 2.5 ) continue;
     for( int j=i+1; j < photons->size(); j++){
       particle *p2 = (root::particle*) (*photons)[j].get();
-      if ( p2->P() < 1.5 ) continue;
+      //if ( p2->P() < 1.5 ) continue;
       root::particle l = *p1 + *p2;
       //cout << l.M() << endl;
       h->fill(l.M());
-      float M = l.M(); 
-      float P = l.Mag();
-      float theta = l.Theta();
-      float phi = l.Phi();
       tpl->column( "M", l.M() );
       tpl->column( "P", l.P() );
       tpl->column( "Theta", l.Theta() );
@@ -106,28 +91,18 @@ void test::processEvent(){
     cout << "no pi0s!!\n"; 
     return; 
   }
-  cout << " debug 00\n";
   core::tuple *tplpi0 = this->ntuple("tuplePi0");
   for( int i=0; i<pi0s->size(); i++ ){
-  cout << " debug 01\n";
     particle *pi = (root::particle*) (*pi0s)[i].get();
-  cout << " debug 02\n";
     tplpi0->column( "M", pi->M(), "pi0_" );
-  cout << " debug 03\n";
     tplpi0->column( "Theta", pi->Theta(), "pi0_" );
-  cout << " debug 04\n";
     tplpi0->column( "Phi", pi->Phi(), "pi0_" );
     
-  cout << " debug 05\n";
     Ktool.execute( tplpi0, pi, "pi0_");
-  cout << " debug 06\n";
     Ktool.execute( tplpi0, pi->getDaughter(0), "gamma1_");
-  cout << " debug 07\n";
-    Ktool.execute( tplpi0, pi->getDaughter(1), "gamma1_");
-  cout << " debug 08\n";
+    Ktool.execute( tplpi0, pi->getDaughter(1), "gamma2_");
 
     tplpi0->fill();
-  cout << " debug 10\n";
   } 
 }
 
@@ -146,7 +121,7 @@ int main( int argn, const char* argv[]) {
   clas12::protoParticleReader pr;
   clas12::recTrackReader tr;
   root::particleMaker pm;
-  tools::combineParticles pi0m( "pi0s","photons+photons");
+  tools::combineParticles pi0m( "pi0s","  photons +   photons ");
 
   test ta;
 

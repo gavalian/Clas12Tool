@@ -20,10 +20,10 @@ BUILD := $(shell mkdir -p build)
 
 .PHONY: all clean
 all: $(BUILD) $(OBJECTS)
-	$(CXX) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libClas12.so -shared $(CFLAGS)  $(OBJECTS)	
+	$(CXX) $(DEBUG) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libClas12.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(INCDIR) $(INCLUDES) $(LIBS) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) -I$(INCDIR) $(INCLUDES) $(LIBS) -c $< -o $@
 
 clean:
 	rm build/*; rm libClas12.so

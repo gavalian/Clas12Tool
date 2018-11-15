@@ -13,10 +13,10 @@ BUILD := $(shell mkdir -p build)
 
 .PHONY: all clean
 all: $(BUILD) $(OBJECTS)
-	$(CXX) -I$(INCDIR) -o libC12Core.so -shared $(CFLAGS)  $(OBJECTS)	
+	$(CXX) $(DEBUG) -I$(INCDIR) -o libC12Core.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
 clean:
 	rm build/*; rm libC12Core.so; rm -rf build

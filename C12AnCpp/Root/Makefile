@@ -26,10 +26,10 @@ LIBS := -L$(LIBCORE) -L$(LIBClas)
 
 .PHONY: all clean
 all: $(BUILD) $(OBJECTS)
-	$(CXX) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libRootTools.so -shared $(CFLAGS)  $(OBJECTS)	
+	$(CXX) $(DEBUG) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libRootTools.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(INCDIR)  $(INCLUDES) $(LIBS) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) -I$(INCDIR)  $(INCLUDES) $(LIBS) -c $< -o $@
 
 clean:
 	rm build/*; rm libRootTools.so; rm -rf build

@@ -35,4 +35,4 @@ LIBS :=	-L$(LIBClas) \
 all: $(patsubst %.cpp, %.out, $(wildcard *.cpp))
 
 %.out: %.cpp Makefile
-	g++ $< -o $@ $(CFLAGS) -I. $(INCLUDES) $(LIBS) $(ROOT)
+	g++ $(DEBUG) $< -o $@ $(CFLAGS) -I. $(INCLUDES) $(LIBS) $(ROOT)
