@@ -6,7 +6,7 @@ using namespace core;
 
 manager::manager() {
   _obj = new objContainer();
-  _alg = new algContainer();
+  _alg = algContainer::instance();
 }
 
 manager::~manager() {

@@ -1,11 +1,32 @@
+//   ___________  ___        _____        
+//  / ___<  /_  |/ _ | ___  / ___/__  ___ 
+// / /__ / / __// __ |/ _ \/ /__/ _ \/ _ \
+// \___//_/____/_/ |_/_//_/\___/ .__/ .__/
+//                           /_/  /_/    
+// Yet another analysis framework for CLAS12 data, but in C++
+//
+// Author: fbossu (@ jlab.org)
+// Date:   2018/11/16
+//
+// License: GPLv3 attached
+//
+
 #pragma once
 
-#include "particle.h"
-
+//________ Core includes __________
 #include "algorithm.h"
 
+// _______ Root includes __________
+#include "particle.h"
+
+// _______ STL includes __________
 #include <string>
 
+//////////////////////////////////////////////////////////////////////
+//
+// Algorithm to create all candidates from two input particles
+// It stores the candidates as root::particle in the Temp. Data Cont.
+//////////////////////////////////////////////////////////////////////
 namespace tools {
 
   class combineParticles : public core::algorithm  {
