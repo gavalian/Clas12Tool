@@ -1,15 +1,12 @@
-#include "particleMaker.h"
+#include "Root/particleMaker.h"
 
 // core includes 
-#include "objVector.h"
-#include "object.h"
-
-// clas12 includes
-#include "protoParticle.h"
-//using clas12::protoParticle;
+#include "Core/objVector.h"
+#include "Core/object.h"
+#include "Core/protoParticle.h"
 
 // root includes
-#include "particle.h"
+#include "Root/particle.h"
 
 // ROOT include
 #include "TDatabasePDG.h"
@@ -50,7 +47,7 @@ void particleMaker::processEvent(){
 
   // loop over protoparticles
   for( unsigned int i=0; i<vpp->size();i++){
-    clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*vpp)[i].get() );
+    core::protoParticle *p = dynamic_cast<core::protoParticle*>( (*vpp)[i].get() );
 
     // skip NAN value particles
     if( p->px != p->px ) continue;

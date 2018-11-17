@@ -14,10 +14,10 @@
 #pragma once
 
 //________ Core includes __________
-#include "algorithm.h"
+#include "Core/algorithm.h"
 
 // _______ Root includes __________
-#include "particle.h"
+#include "Root/particle.h"
 
 // _______ STL includes __________
 #include <string>

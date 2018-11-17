@@ -3,14 +3,13 @@ INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(C12CORE)/inc
 LIBCORE := $(C12CORE)
 
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 CFLAGS  := -Wall -O2 -fPIC -std=c++14
-INCLUDES := -I$(INCCORE)
+INCLUDES := -I$(CLAS12CPPBASE)/includes
 LIBS := -L$(LIBCORE)
 
 BUILD := $(shell mkdir -p build)

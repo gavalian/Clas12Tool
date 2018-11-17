@@ -1,16 +1,17 @@
-#include "ex01_alg.h"
+#include "ex_lund_alg.h"
 
 #include "Root/particle.h"
+
 #include "Core/objVector.h"
 #include "Core/tuple.h"
 
-void ex01_alg::init(){
+void ex_lund_alg::init(){
 }
 
-void ex01_alg::terminate(){
+void ex_lund_alg::terminate(){
 }
 
-void ex01_alg::processEvent(){
+void ex_lund_alg::processEvent(){
 
   // get the electrons from the temporary data container
   // ----------------------------------------------------

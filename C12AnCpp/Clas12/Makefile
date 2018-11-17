@@ -1,9 +1,8 @@
 
-INCDIR := inc
+#INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(C12CORE)/inc
 LIBCORE := $(C12CORE)
 
 INCHIPO := $(HIPO)
@@ -13,7 +12,7 @@ SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 CFLAGS  := -Wall -O2 -fPIC -std=c++14
-INCLUDES := -I$(INCCORE) -I$(INCHIPO)
+INCLUDES := -I$(CLAS12CPPBASE)/includes -I$(INCHIPO)
 LIBS := -L$(LIBCORE) -L$(LIBHIPO)
 
 BUILD := $(shell mkdir -p build)
@@ -23,7 +22,7 @@ all: $(BUILD) $(OBJECTS)
 	$(CXX) $(DEBUG) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libClas12.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(DEBUG) $(CFLAGS) -I$(INCDIR) $(INCLUDES) $(LIBS) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) $(INCLUDES) $(LIBS) -c $< -o $@
 
 clean:
 	rm build/*; rm libClas12.so

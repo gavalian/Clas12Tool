@@ -1,4 +1,4 @@
-#include "kineTool.h"
+#include "Tools/kineTool.h"
 
 void tools::kineTool::execute( core::tuple *tpl, root::particle *p, std::string prefix){
 

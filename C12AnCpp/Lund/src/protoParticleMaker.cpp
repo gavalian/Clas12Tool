@@ -1,9 +1,9 @@
-#include "protoParticleMaker.h"
-#include "protoParticle.h"
-#include "lundReader.h"
+#include "Lund/protoParticleMaker.h"
+#include "Lund/protoParticle.h"
+#include "Lund/lundReader.h"
 using namespace lund;
 
-#include "objVector.h"
+#include "Core/objVector.h"
 
 #include <memory>
 using namespace std;

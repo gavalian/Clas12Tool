@@ -17,10 +17,10 @@
 #include "node.h"
 
 // _______ Core includes __________
-#include "algorithm.h"
+#include "Core/algorithm.h"
 
 // _______ Clas12 includes __________
-#include "protoParticle.h"
+#include "Clas12/protoParticle.h"
 
 namespace clas12 {
 

@@ -1,9 +1,9 @@
-#include "rootOutObjMgr.h"
+#include "Root/rootOutObjMgr.h"
 
 using namespace root;
 
-#include "rTuple.h"
-#include "rHist.h"
+#include "Root/rTuple.h"
+#include "Root/rHist.h"
 #include <memory>
 
 rootOutObjMgr::rootOutObjMgr( string foutname ) : _fout(0x0){

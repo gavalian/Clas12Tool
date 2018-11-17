@@ -1,14 +1,15 @@
 #include <iostream>
 
 #include "Core/manager.h"
+#include "Core/tuple.h"
 
 #include "Root/rootOutObjMgr.h"
 #include "Root/particleMaker.h"
 
-#include "Clas12/protoParticleReader.h"
-#include "Clas12/hipoReader.h"
+#include "Lund/lundReader.h"
+#include "Lund/protoParticleMaker.h"
 
-#include "ex01_alg.h"
+#include "ex_lund_alg.h"
 
 int main( int argn, const char* argv[]) {
 
@@ -22,22 +23,18 @@ int main( int argn, const char* argv[]) {
   root::rootOutObjMgr oom("test.root");
   M->setOutObjMgr( &oom );
 
-  // We want to analyse DST in hipo format
-  // So we create an hipoReader.
-  // We can pass either:
-  //   - a .hipo file 
-  //   - a .txt file that conatins a list hipo file paths
+  // We want to analyse LUND files
+  // So we create a lundReader
   // --------------------------------------------------------------
-  clas12::hipoReader reader( argv[argn-1] );
-  reader.open();
+  lund::lundReader reader( argv[argn-1] );
   M->addDataReader( &reader );
 
   // =========== ALGORITHMS =========================
   // Here we specify the set of algorithms needed for our analysis
   // -------------------------------------------------------------
 
-  // algorithm that reads the particle bank
-  clas12::protoParticleReader pr;
+  // algorithm that reads the particles in the lund format
+  lund::protoParticleMaker pr;
   M->addAlgorithm( &pr );
 
   // algorithm that creates particles species containers
@@ -47,7 +44,7 @@ int main( int argn, const char* argv[]) {
   // -----------------------------
   // USER SPECIFIC ALGORITHM
   // -----------------------------
-  ex01_alg ta;
+  ex_lund_alg ta;
   M->addAlgorithm( &ta );
 
 

@@ -1,4 +1,4 @@
-#include "lundReader.h"
+#include "Lund/lundReader.h"
 using namespace lund;
 
 #include <memory>

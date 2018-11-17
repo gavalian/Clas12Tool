@@ -11,7 +11,7 @@
 # C12AnCpp
 C++ based analysis framework for CLAS12 data
 
-The current implementation allows the user to anaylise **CLAS12 DST** data in hipo or **LUND** files. 
+The current implementation allows the user to analyse **CLAS12 DST** data in hipo or **LUND** files. 
 
 The goal of this framework it to make easy for the user to extract information from the data and to save ntuples or histograms. The current implementation allows the user to save ROOT TTree and TH1F or CSV histograms and ntuples.
 
@@ -22,10 +22,10 @@ The main feature of this framework are:
 
 # Installation
 
-## Prerequisits
+## Prerequisites
 
 + This code is written in C++14. Check if your compiler is compatible, if not..  why are you living in the past?, install a newer compiler!! :)
-For exemple, g++-5 or newer
+For example, g++-5 or newer
 
 + ROOT6 is required. If not installed, [here](https://root.cern.ch/)
 
@@ -65,7 +65,7 @@ User analyses are indeed algorithms.
 
 An algorithm should inherit from `core::algorithm` and it should implement (at least) three methods:
 ```c++
-void init(); // called once at the beinning of the execution
+void init(); // called once at the beginning of the execution
 
 void processEvent(); // this method will contain the _actual_ code of analysis
 
@@ -76,7 +76,7 @@ As an example:
 
 ```c++
 // ex01_alg.h
-#include "algorithm.h"
+#include "Core/algorithm.h"
 
 class test : public core::algorithm {
 
@@ -91,9 +91,9 @@ class test : public core::algorithm {
 // ex01_alg.cpp
 #include "ex01_alg.h"
 
-#include "particle.h"
-#include "objVector.h"
-#include "tuple.h"
+#include "Root/particle.h"
+#include "Core/objVector.h"
+#include "Core/tuple.h"
 
 void ex01_alg::init(){
 }

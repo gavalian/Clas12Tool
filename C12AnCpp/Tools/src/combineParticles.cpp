@@ -1,4 +1,4 @@
-#include "combineParticles.h"
+#include "Tools/combineParticles.h"
 
 using namespace tools;
 
@@ -10,8 +10,8 @@ using namespace tools;
 using namespace std;
 
 // core includes 
-#include "objVector.h"
-#include "object.h"
+#include "Core/objVector.h"
+#include "Core/object.h"
 
 combineParticles::combineParticles( string n, string o ) : _name(n), _opt(o){ } 
 

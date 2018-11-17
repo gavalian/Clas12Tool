@@ -14,10 +14,10 @@
 #pragma once
 
 // _______ Core includes __________
-#include "algorithm.h"
+#include "Core/algorithm.h"
 
 // _______ Lund includes __________
-#include "lundReader.h"
+#include "Lund/lundReader.h"
 
 
 namespace lund {

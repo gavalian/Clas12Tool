@@ -1,13 +1,13 @@
-INCCORE := $(C12CORE)/inc
+#INCCORE := $(C12CORE)/inc
 LIBCORE := $(C12CORE)
 
-INCClas := $(C12CLAS12)/inc
+#INCClas := $(C12CLAS12)/inc
 LIBClas := $(C12CLAS12)
 
-INCRoot := $(C12RTOOL)/inc
+#INCRoot := $(C12RTOOL)/inc
 LIBRoot := $(C12RTOOL)
 
-INCTools := $(C12TOOLS)/inc
+#INCTools := $(C12TOOLS)/inc
 LIBTools := $(C12TOOLS)
 
 INCHIPO := $(HIPO)
@@ -23,7 +23,7 @@ CFLAGS  := -Wall -O2 -fPIC -std=c++14
 
 CFLAGS := $(ROOT) $(CFLAGS)
 
-INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO) -I$(INCTools)
+INCLUDES := -I$(CLAS12CPPBASE)/includes -I$(INCHIPO)
 LIBS :=	-L$(LIBClas) \
 				-L$(LIBRoot) \
 			  -L$(LIBCORE) \

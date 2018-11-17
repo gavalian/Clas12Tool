@@ -14,24 +14,21 @@
 #pragma once
 
 // _______ Core includes __________
-#include "Core/algorithm.h"
+#include "object.h"
 
-// _______ STL includes __________
-#include <unordered_map>
-#include <string>
+namespace core {
 
-namespace root {
-
-  class particleMaker : public core::algorithm {
-   
+  class protoParticle : public core::object {
     public:
-      virtual void init();
-      virtual void processEvent();
-      virtual void terminate() {} 
-
-    private:
-
-      std::unordered_map<int,std::string> _pname;
+      virtual ~protoParticle() {}
+      int id;
+      int pid;
+      float px;
+      float py;
+      float pz;
+      float vx;
+      float vy;
+      float vz;
   };
 }
 

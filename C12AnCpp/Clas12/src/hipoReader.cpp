@@ -1,4 +1,4 @@
-#include "hipoReader.h"
+#include "Clas12/hipoReader.h"
 
 using namespace clas12;
 

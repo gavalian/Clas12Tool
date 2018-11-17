@@ -14,30 +14,31 @@
 #pragma once
 
 // _______ Core includes __________
-#include "object.h"
+#include "Core/object.h"
+#include "Core/protoParticle.h"
 
 namespace lund {
 
-  class protoParticle : public core::object {
+  class protoParticle : public core::protoParticle {
     public:
       virtual ~protoParticle() {}
 
       // following the definitions at:
       // https://gemc.jlab.org/gemc/html/documentation/generator/lund.html
-      int id;
+      /*int id;*/
       float lifetime;
       int type;
-      int pid;
+      /*int pid;*/
       int motherID;
       int daughterID;
-      float px;
-      float py;
-      float pz;
+      /*float px;*/
+      /*float py;*/
+      /*float pz;*/
       float E;
       float M;
-      float vx;
-      float vy;
-      float vz;
+      /*float vx;*/
+      /*float vy;*/
+      /*float vz;*/
   };
 }
 

@@ -14,9 +14,9 @@
 #pragma once
 
 // _______ Core includes __________
-#include "outObjMgr.h"
-#include "tuple.h"
-#include "hist.h"
+#include "Core/outObjMgr.h"
+#include "Core/tuple.h"
+#include "Core/hist.h"
 
 // _______ STL includes __________
 #include <string>

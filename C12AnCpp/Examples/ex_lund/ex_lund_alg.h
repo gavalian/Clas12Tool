@@ -2,7 +2,7 @@
 
 #include "Core/algorithm.h"
 
-class ex01_alg : public core::algorithm {
+class ex_lund_alg : public core::algorithm {
 
   public:
     virtual void init();

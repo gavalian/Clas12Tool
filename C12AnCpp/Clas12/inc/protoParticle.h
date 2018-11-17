@@ -14,25 +14,26 @@
 #pragma once
 
 // _______ Core includes __________
-#include "object.h"
+#include "Core/object.h"
+#include "Core/protoParticle.h"
 
 namespace clas12 {
 
-  class protoParticle : public core::object {
+  class protoParticle : public core::protoParticle {
     public:
       virtual ~protoParticle() {}
-      int id;
+      /*int id;*/
       float beta;
       int charge;
       float chi2pid;
-      int pid;
-      float px;
-      float py;
-      float pz;
+      /*int pid;*/
+      /*float px;*/
+      /*float py;*/
+      /*float pz;*/
       int status;
-      float vx;
-      float vy;
-      float vz;
+      /*float vx;*/
+      /*float vy;*/
+      /*float vz;*/
   };
 }
 

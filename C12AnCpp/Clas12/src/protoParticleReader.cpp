@@ -1,8 +1,8 @@
-#include "objVector.h"
+#include "Core/objVector.h"
 
 #include "reader.h"
-#include "hipoReader.h"
-#include "protoParticleReader.h"
+#include "Clas12/hipoReader.h"
+#include "Clas12/protoParticleReader.h"
 using namespace clas12;
 
 #include <iostream>

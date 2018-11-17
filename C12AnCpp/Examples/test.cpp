@@ -1,29 +1,30 @@
 #include <iostream>
 #include <memory>
-#include "algorithm.h"
-#include "protoParticleReader.h"
-#include "particleMaker.h"
-#include "particle.h"
-#include "hipoReader.h"
-#include "manager.h"
-#include "rootOutObjMgr.h"
-using namespace root;
-
-#include "TH1F.h"
-
 using namespace std;
 
-#include "recTrack.h"
-#include "recTrackReader.h"
-using namespace clas12;
-
-#include "objMap.h"
-#include "objVector.h"
-#include "tuple.h"
+#include "Core/algorithm.h"
+#include "Core/objMap.h"
+#include "Core/objVector.h"
+#include "Core/tuple.h"
 using namespace core;
 
-#include "kineTool.h"
-#include "combineParticles.h"
+#include "Root/particle.h"
+#include "Core/manager.h"
+#include "Root/rootOutObjMgr.h"
+#include "Root/particleMaker.h"
+using namespace root;
+
+
+
+#include "Clas12/hipoReader.h"
+#include "Clas12/protoParticleReader.h"
+#include "Clas12/recTrack.h"
+#include "Clas12/recTrackReader.h"
+using namespace clas12;
+
+
+#include "Tools/kineTool.h"
+#include "Tools/combineParticles.h"
 
 class test : public core::algorithm {
 

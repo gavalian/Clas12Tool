@@ -10,6 +10,9 @@ LIBRoot := $(C12RTOOL)
 #INCTools := $(C12TOOLS)/inc
 LIBTools := $(C12TOOLS)
 
+#INCLUND := $(C12LUND)/inc
+LIBLUND := $(C12LUND)
+
 INCHIPO := $(HIPO)
 LIBHIPO := $(CLAS12TOOL)/lib
 
@@ -25,13 +28,14 @@ CFLAGS := $(ROOT) $(CFLAGS)
 
 INCLUDES := -I$(CLAS12CPPBASE)/includes -I$(INCHIPO)
 LIBS :=	-L$(LIBClas) \
+        -L$(LIBLUND) \
 				-L$(LIBRoot) \
 			  -L$(LIBCORE) \
         -L$(LIBTools) \
 				-L$(LIBHIPO) \
-				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
+				-lClas12 -lRootTools -lTools -lC12Core  -lhipo -lC12Lund
   
 
 all:
-	g++ $(DEBUG) -o ex01.exe ex01.cpp ex01_alg.cpp -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 
+	g++ $(DEBUG) -o ex_lund.exe ex_lund.cpp ex_lund_alg.cpp -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 
 

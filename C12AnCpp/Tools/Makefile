@@ -1,14 +1,14 @@
-INCDIR := inc
+#INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(C12CORE)/inc
+#INCCORE := $(C12CORE)/inc
 LIBCORE := $(C12CORE)
 
-INCClas := $(C12CLAS12)/inc
+#INCClas := $(C12CLAS12)/inc
 LIBClas := $(C12CLAS12)
 
-INCRoot := $(C12RTOOL)/inc
+#INCRoot := $(C12RTOOL)/inc
 LIBRoot := $(C12RTOOL)
 
 
@@ -23,7 +23,8 @@ BUILD := $(shell mkdir -p build)
 
 CFLAGS := $(ROOT) $(CFLAGS)
 
-INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO)
+#INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO)
+INCLUDES := -I$(CLAS12CPPBASE)/includes -I$(INCHIPO)
 LIBS :=	-L$(LIBClas) \
 				-L$(LIBRoot) \
 			  -L$(LIBCORE) \
@@ -36,7 +37,7 @@ all: $(BUILD) $(OBJECTS)
 	$(CXX) $(DEBUG) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libTools.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(DEBUG) $(CFLAGS) -I$(INCDIR)  $(INCLUDES) $(LIBS) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) $(INCLUDES) $(LIBS) -c $< -o $@
 
 clean:
 	rm build/*; rm libTools.so; rm -rf build

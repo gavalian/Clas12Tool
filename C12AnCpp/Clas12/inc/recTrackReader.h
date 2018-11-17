@@ -1,9 +1,9 @@
 #ifndef RECTRACKREADER_H
 #define RECTRACKREADER_H
 
-#include "algorithm.h"
+#include "Core/algorithm.h"
+#include "Clas12/recTrack.h"
 #include "node.h"
-#include "recTrack.h"
 
 namespace clas12 {
   class recTrackReader : public core::algorithm {
