@@ -3,8 +3,8 @@ INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(CORE)/inc
-LIBCORE := $(CORE)
+INCCORE := $(C12CORE)/inc
+LIBCORE := $(C12CORE)
 
 INCHIPO := $(HIPO)
 LIBHIPO := $(CLAS12TOOL)/lib

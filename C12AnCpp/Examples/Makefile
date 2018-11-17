@@ -1,14 +1,14 @@
-INCCORE := $(CORE)/inc
-LIBCORE := $(CORE)
+INCCORE := $(C12CORE)/inc
+LIBCORE := $(C12CORE)
 
-INCClas := $(CLAS)/inc
-LIBClas := $(CLAS)
+INCClas := $(C12CLAS)/inc
+LIBClas := $(C12CLAS)
 
-INCRoot := $(TOOL)/inc
-LIBRoot := $(TOOL)
+INCRoot := $(C12RTOOL)/inc
+LIBRoot := $(C12RTOOL)
 
-INCTools := $(TOOLS)/inc
-LIBTools := $(TOOLS)
+INCTools := $(C12TOOLS)/inc
+LIBTools := $(C12TOOLS)
 
 INCHIPO := $(HIPO)
 LIBHIPO := $(CLAS12TOOL)/lib

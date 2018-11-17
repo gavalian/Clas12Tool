@@ -2,14 +2,14 @@ INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(CORE)/inc
-LIBCORE := $(CORE)
+INCCORE := $(C12CORE)/inc
+LIBCORE := $(C12CORE)
 
-INCClas := $(CLAS)/inc
-LIBClas := $(CLAS)
+INCClas := $(C12CLAS12)/inc
+LIBClas := $(C12CLAS12)
 
-INCRoot := $(TOOL)/inc
-LIBRoot := $(TOOL)
+INCRoot := $(C12RTOOL)/inc
+LIBRoot := $(C12RTOOL)
 
 
 ROOT := $(shell root-config --cflags) $(shell root-config --libs)
