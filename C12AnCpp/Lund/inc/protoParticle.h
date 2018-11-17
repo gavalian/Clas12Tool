@@ -16,23 +16,29 @@
 // _______ Core includes __________
 #include "object.h"
 
-namespace clas12 {
+namespace lund {
 
   class protoParticle : public core::object {
     public:
       virtual ~protoParticle() {}
+
+      // following the definitions at:
+      // https://gemc.jlab.org/gemc/html/documentation/generator/lund.html
       int id;
-      float beta;
-      int charge;
-      float chi2pid;
+      float lifetime;
+      int type;
       int pid;
+      int motherID;
+      int daughterID;
       float px;
       float py;
       float pz;
-      int status;
+      float E;
+      float M;
       float vx;
       float vy;
       float vz;
   };
 }
+
 

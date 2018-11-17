@@ -14,25 +14,23 @@
 #pragma once
 
 // _______ Core includes __________
-#include "object.h"
+#include "algorithm.h"
 
-namespace clas12 {
+// _______ Lund includes __________
+#include "lundReader.h"
 
-  class protoParticle : public core::object {
+
+namespace lund {
+
+  class protoParticleMaker : public core::algorithm {
+
     public:
-      virtual ~protoParticle() {}
-      int id;
-      float beta;
-      int charge;
-      float chi2pid;
-      int pid;
-      float px;
-      float py;
-      float pz;
-      int status;
-      float vx;
-      float vy;
-      float vz;
+
+      virtual void init() {}
+      virtual void processEvent();
+      virtual void  terminate() {}
+
   };
+
 }
 

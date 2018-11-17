@@ -1,12 +1,13 @@
-#include "protoParticleReader.h"
-#include <vector>
 #include "objVector.h"
-#include <memory>
+
 #include "reader.h"
 #include "hipoReader.h"
+#include "protoParticleReader.h"
 using namespace clas12;
 
 #include <iostream>
+#include <memory>
+#include <vector>
 using namespace std;
 
 
