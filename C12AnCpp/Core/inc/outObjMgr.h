@@ -41,6 +41,8 @@ namespace core {
       virtual tuple* mkTuple( string ) = 0;
       virtual hist* mkHist( string, int, float, float ) = 0;
 
+      virtual void open() = 0;
+      virtual void close() = 0;
     protected:
       objMap<string> _tuples;
       objMap<string> _hists;

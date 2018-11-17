@@ -18,6 +18,7 @@
 #include <memory>
 #include <unordered_map>
 #include <iostream>
+#include <cmath>
 using std::vector;
 
 
@@ -55,16 +56,16 @@ void particleMaker::processEvent(){
     if( p->px != p->px ) continue;
 
     // create paticles and sort them by type
-    if( particles.find(p->pid) == particles.end() ){
-      particles[p->pid] = std::make_shared<core::objVector>();
+    if( particles.find(abs(p->pid)) == particles.end() ){
+      particles[abs(p->pid)] = std::make_shared<core::objVector>();
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
       part->setProtoParticle( p );
-      particles[p->pid]->push_back( std::move(part) );
+      particles[abs(p->pid)]->push_back( std::move(part) );
     }
     else {
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
       part->setProtoParticle( p );
-      particles[p->pid]->push_back( std::move(part) );
+      particles[abs(p->pid)]->push_back( std::move(part) );
     }
   }
 

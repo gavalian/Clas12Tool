@@ -32,7 +32,6 @@ LIBS :=	-L$(LIBClas) \
 				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
   
 
-all: $(patsubst %.cpp, %.out, $(wildcard *.cpp))
+all:
+	g++ $(DEBUG) -o ex01.exe ex01.cpp ex01_alg.cpp -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 
 
-%.out: %.cpp Makefile
-	g++ $(DEBUG) $< -o $@  -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 

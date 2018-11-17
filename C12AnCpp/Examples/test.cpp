@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "algorithm.h"
 #include "protoParticleReader.h"
 #include "particleMaker.h"
@@ -110,10 +111,10 @@ void test::processEvent(){
 
 int main( int argn, const char* argv[]) {
 
-  TFile *of = TFile::Open("prova.root","recreate");
 
   core::manager *M = core::manager::instance();
-  M->setOutObjMgr( new rootOutObjMgr() );
+  rootOutObjMgr p("prova.root");
+  M->setOutObjMgr( &p );
   clas12::hipoReader reader( argv[argn-1] );
   reader.open();
   M->addDataReader( &reader );
@@ -133,9 +134,9 @@ int main( int argn, const char* argv[]) {
 
 cout << "aaaa \n";
   M->run();
+cout << "bbbb \n";
 
-  of->Write();
-  of->Close();
+  p.close();
   return 0;
 
 }
