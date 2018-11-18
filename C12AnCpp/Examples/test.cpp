@@ -1,26 +1,30 @@
 #include <iostream>
-#include "algorithm.h"
-#include "protoParticleReader.h"
-#include "particleMaker.h"
-#include "particle.h"
-#include "hipoReader.h"
-#include "manager.h"
-#include "rootOutObjMgr.h"
-using namespace root;
-
-#include "TH1F.h"
-
+#include <memory>
 using namespace std;
 
-#include "recTrack.h"
-#include "recTrackReader.h"
-using namespace clas12;
-
-#include "objMap.h"
-#include "objVector.h"
-#include "tuple.h"
+#include "Core/algorithm.h"
+#include "Core/objMap.h"
+#include "Core/objVector.h"
+#include "Core/tuple.h"
 using namespace core;
 
+#include "Root/particle.h"
+#include "Core/manager.h"
+#include "Root/rootOutObjMgr.h"
+#include "Root/particleMaker.h"
+using namespace root;
+
+
+
+#include "Clas12/hipoReader.h"
+#include "Clas12/protoParticleReader.h"
+#include "Clas12/recTrack.h"
+#include "Clas12/recTrackReader.h"
+using namespace clas12;
+
+
+#include "Tools/kineTool.h"
+#include "Tools/combineParticles.h"
 
 class test : public core::algorithm {
 
@@ -40,23 +44,12 @@ void test::processEvent(){
 
   core::objMap<int> *tracks = (core::objMap<int> *)getObject("recTracks");
   if( ! tracks ) return;
-  //core::objVector *protoparticles = (core::objVector *)getObject("protoParticles");
-  //if( ! protoparticles ) return;
-  //cout << " ++++ new event " << protoparticles->size() << endl;
-  //for( int i=0;i<protoparticles->size();i++){
-    //clas12::protoParticle *a = (clas12::protoParticle*) (*protoparticles)[i].get();
-    //cout << " patricle: " 
-      //<< a->id <<" "
-      //<< a->pid <<" "
-      //<< a->charge <<" "
-      //<< a->beta << endl;
-  //}
 
-  core::objVector *e = (core::objVector*) getObject("electrons");
-  if( ! e ) return;
-  if( e->size() == 0 ) return;
+  //core::objVector *e = (core::objVector*) getObject("electrons");
+  //if( ! e ) return;
+  //if( e->size() == 0 ) return;
 
-  recTrack* tr = (recTrack*)(*tracks)[1].get();
+  //recTrack* tr = (recTrack*)(*tracks)[1].get();
 
   //cout << tr->NDF << " " << tr->getP() << endl;
   
@@ -67,40 +60,62 @@ void test::processEvent(){
     return; 
   }
 
+
+  tools::kineTool Ktool;
+
   core::tuple *tpl = this->ntuple("pi0");
 
-  core::hist *h = this->histo("hpi0",500,0,0.5);
+  core::hist *h = this->histo("hpi0",500,0, 1);
 
   for( int i=0; i < photons->size(); i++ ){
     particle *p1 = (root::particle*) (*photons)[i].get();
+    //if ( p1->P() < 2.5 ) continue;
     for( int j=i+1; j < photons->size(); j++){
       particle *p2 = (root::particle*) (*photons)[j].get();
-      auto l = *p1 + *p2;
+      //if ( p2->P() < 1.5 ) continue;
+      root::particle l = *p1 + *p2;
       //cout << l.M() << endl;
       h->fill(l.M());
-      float M = l.M(); 
-      float P = l.Mag();
-      float theta = l.Theta();
-      float phi = l.Phi();
-      tpl->column( "M", M );
-      tpl->column( "P", P );
-      tpl->column( "Theta", theta );
-      tpl->column( "Phi", phi );
+      tpl->column( "M", l.M() );
+      tpl->column( "P", l.P() );
+      tpl->column( "Theta", l.Theta() );
+      tpl->column( "Phi", l.Phi() );
       
+      Ktool.execute( tpl, p1, "pi0_" );     
+
       tpl->fill();
     }
   }
+ 
   
+  core::objVector *pi0s = (core::objVector*) getObject("pi0s");
+  if( ! pi0s ){ 
+    cout << "no pi0s!!\n"; 
+    return; 
+  }
+  core::tuple *tplpi0 = this->ntuple("tuplePi0");
+  for( int i=0; i<pi0s->size(); i++ ){
+    particle *pi = (root::particle*) (*pi0s)[i].get();
+    tplpi0->column( "M", pi->M(), "pi0_" );
+    tplpi0->column( "Theta", pi->Theta(), "pi0_" );
+    tplpi0->column( "Phi", pi->Phi(), "pi0_" );
+    
+    Ktool.execute( tplpi0, pi, "pi0_");
+    Ktool.execute( tplpi0, pi->getDaughter(0), "gamma1_");
+    Ktool.execute( tplpi0, pi->getDaughter(1), "gamma2_");
+
+    tplpi0->fill();
+  } 
 }
 
 #include "TFile.h"
 
 int main( int argn, const char* argv[]) {
 
-  TFile *of = TFile::Open("prova.root","recreate");
 
   core::manager *M = core::manager::instance();
-  M->setOutObjMgr( new rootOutObjMgr() );
+  rootOutObjMgr p("prova.root");
+  M->setOutObjMgr( &p );
   clas12::hipoReader reader( argv[argn-1] );
   reader.open();
   M->addDataReader( &reader );
@@ -108,18 +123,21 @@ int main( int argn, const char* argv[]) {
   clas12::protoParticleReader pr;
   clas12::recTrackReader tr;
   root::particleMaker pm;
+  tools::combineParticles pi0m( "pi0s","  photons +   photons ");
+
   test ta;
 
   M->addAlgorithm( &pr );
   M->addAlgorithm( &tr );
   M->addAlgorithm( &pm );
+  M->addAlgorithm( &pi0m );
   M->addAlgorithm( &ta );
 
 cout << "aaaa \n";
   M->run();
+cout << "bbbb \n";
 
-  of->Write();
-  of->Close();
+  p.close();
   return 0;
 
 }

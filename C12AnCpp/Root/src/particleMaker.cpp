@@ -1,15 +1,12 @@
-#include "particleMaker.h"
+#include "Root/particleMaker.h"
 
 // core includes 
-#include "objVector.h"
-#include "object.h"
-
-// clas12 includes
-#include "protoParticle.h"
-//using clas12::protoParticle;
+#include "Core/objVector.h"
+#include "Core/object.h"
+#include "Core/protoParticle.h"
 
 // root includes
-#include "particle.h"
+#include "Root/particle.h"
 
 // ROOT include
 #include "TDatabasePDG.h"
@@ -18,6 +15,7 @@
 #include <memory>
 #include <unordered_map>
 #include <iostream>
+#include <cmath>
 using std::vector;
 
 
@@ -36,48 +34,40 @@ void particleMaker::init(){
   _pname[0]    = "unidentified"; 
 }
 
-
+//
+// transform protoParitcles in particles, sorting them by species
 void particleMaker::processEvent(){
 
-  core::objVector *v = (core::objVector *)getObject("protoParticles");
-  if( ! v ) return;
+  // get protoparticles from temporary container
+  core::objVector *vpp = (core::objVector *)getObject("protoParticles");
+  if( ! vpp ) return;
 
+  // map of particle vectors
   std::unordered_map<int, std::shared_ptr<core::objVector>> particles;  
 
-  for( unsigned int i=0; i<v->size();i++){
-    clas12::protoParticle *p = dynamic_cast<clas12::protoParticle*>( (*v)[i].get() );
-    //std::cout << " p "
-         //<< p->id << " "
-         //<< p->pid << " "
-         //<< p->charge << " "
-         //<< p->px << " "
-         //<< p->py << " "
-         //<< p->pz << " "
-         //<< p->status << " \n";
+  // loop over protoparticles
+  for( unsigned int i=0; i<vpp->size();i++){
+    core::protoParticle *p = dynamic_cast<core::protoParticle*>( (*vpp)[i].get() );
 
     // skip NAN value particles
     if( p->px != p->px ) continue;
 
-    if( particles.find(p->pid) == particles.end() ){
-      //printf("debug 0 ");
-      //particles[p->pid] = new core::objVector();
-      particles[p->pid] = std::make_shared<core::objVector>();
-      //printf("debug 1 ");
-
+    // create paticles and sort them by type
+    if( particles.find(abs(p->pid)) == particles.end() ){
+      particles[abs(p->pid)] = std::make_shared<core::objVector>();
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
-      particles[p->pid]->push_back( std::move(part) );
+      part->setProtoParticle( p );
+      particles[abs(p->pid)]->push_back( std::move(part) );
     }
     else {
-      //std::unique_ptr<particle> part = std::make_unique<particle>(particle::getParticle( p->pid, p->px, p->py, p->pz ));
       std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
-      particles[p->pid]->push_back( std::move(part) );
+      part->setProtoParticle( p );
+      particles[abs(p->pid)]->push_back( std::move(part) );
     }
   }
 
   for( auto const &p : particles ){
-    //std::unique_ptr<core::objVector> v = std::move( (p.second) );
     bookObject( _pname[p.first], p.second  );
-    //bookObject( _pname[p.first], std::move( p.second ) );
   }
 }
 

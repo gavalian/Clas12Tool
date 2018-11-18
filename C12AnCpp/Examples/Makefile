@@ -1,11 +1,14 @@
-INCCORE := $(CORE)/inc
-LIBCORE := $(CORE)
+#INCCORE := $(C12CORE)/inc
+LIBCORE := $(C12CORE)
 
-INCClas := $(CLAS)/inc
-LIBClas := $(CLAS)
+#INCClas := $(C12CLAS12)/inc
+LIBClas := $(C12CLAS12)
 
-INCRoot := $(TOOL)/inc
-LIBRoot := $(TOOL)
+#INCRoot := $(C12RTOOL)/inc
+LIBRoot := $(C12RTOOL)
+
+#INCTools := $(C12TOOLS)/inc
+LIBTools := $(C12TOOLS)
 
 INCHIPO := $(HIPO)
 LIBHIPO := $(CLAS12TOOL)/lib
@@ -20,15 +23,16 @@ CFLAGS  := -Wall -O2 -fPIC -std=c++14
 
 CFLAGS := $(ROOT) $(CFLAGS)
 
-INCLUDES := -I$(INCCORE) -I$(INCClas) -I$(INCRoot) -I$(INCHIPO)
+INCLUDES := -I$(CLAS12CPPBASE)/includes -I$(INCHIPO)
 LIBS :=	-L$(LIBClas) \
 				-L$(LIBRoot) \
 			  -L$(LIBCORE) \
+        -L$(LIBTools) \
 				-L$(LIBHIPO) \
-				-lClas12 -lRootTools -lC12Core  -lhipo
+				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
   
 
 all: $(patsubst %.cpp, %.out, $(wildcard *.cpp))
 
 %.out: %.cpp Makefile
-	g++ $< -o $@ $(CFLAGS) -I. $(INCLUDES) $(LIBS) $(ROOT)
+	g++ $(DEBUG) $< -o $@  -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 

@@ -1,10 +1,37 @@
-#include "rootOutObjMgr.h"
+#include "Root/rootOutObjMgr.h"
 
 using namespace root;
 
-#include "rTuple.h"
-#include "rHist.h"
+#include "Root/rTuple.h"
+#include "Root/rHist.h"
 #include <memory>
+
+rootOutObjMgr::rootOutObjMgr( string foutname ) : _fout(0x0){
+  _fname = foutname; 
+  open();
+}
+
+rootOutObjMgr::~rootOutObjMgr(){
+  close();
+}
+
+void rootOutObjMgr::open() {
+  if( ! _fout ){
+    _fout = TFile::Open( _fname.c_str(), "recreate");
+  }
+}
+
+void rootOutObjMgr::close() {
+  if( ! _fout ){
+    return;
+  }
+  if( _fout->IsOpen() ){
+    _fout->Write();
+    _tuples.clear();
+    _hists.clear();
+    _fout->Close();
+  }
+}
 
 core::tuple* rootOutObjMgr::mkTuple( std::string name ){
  

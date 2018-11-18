@@ -1,13 +1,13 @@
 
-INCDIR := inc
+#INCDIR := inc
 SRCDIR := src
 OBJDIR := build
 
-INCCORE := $(CORE)/inc
-LIBCORE := $(CORE)
+#INCCORE := $(C12CORE)/inc
+LIBCORE := $(C12CORE)
 
-INCClas := $(CLAS)/inc
-LIBClas := $(CLAS)
+#INCClas := $(C12CLAS12)/inc
+LIBClas := $(C12CLAS12)
 
 
 ROOT := $(shell root-config --cflags) $(shell root-config --libs)
@@ -21,15 +21,15 @@ BUILD := $(shell mkdir -p build)
 
 CFLAGS := $(ROOT) $(CFLAGS)
 
-INCLUDES := -I$(INCCORE) -I$(INCClas)
+INCLUDES := -I$(CLAS12CPPBASE)/includes
 LIBS := -L$(LIBCORE) -L$(LIBClas)
 
 .PHONY: all clean
 all: $(BUILD) $(OBJECTS)
-	$(CXX) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libRootTools.so -shared $(CFLAGS)  $(OBJECTS)	
+	$(CXX) $(DEBUG) -I$(INCDIR)  $(INCLUDES) $(LIBS) -o libRootTools.so -shared $(CFLAGS)  $(OBJECTS)	
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(INCDIR)  $(INCLUDES) $(LIBS) -c $< -o $@
+	$(CXX) $(DEBUG) $(CFLAGS) $(INCLUDES) $(LIBS) -c $< -o $@
 
 clean:
 	rm build/*; rm libRootTools.so; rm -rf build

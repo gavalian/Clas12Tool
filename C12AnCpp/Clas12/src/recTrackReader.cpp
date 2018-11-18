@@ -1,10 +1,10 @@
-#include "recTrackReader.h"
-#include "objMap.h"
+#include "Clas12/recTrackReader.h"
+#include "Core/objMap.h"
 
 #include <memory>
 
 #include "reader.h"
-#include "hipoReader.h"
+#include "Clas12/hipoReader.h"
 
 using namespace clas12;
 

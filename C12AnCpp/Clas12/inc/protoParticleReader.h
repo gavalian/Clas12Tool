@@ -1,6 +1,26 @@
-#include "algorithm.h"
+/*   ___________  ___        _____        
+//  / ___<  /_  |/ _ | ___  / ___/__  ___ 
+// / /__ / / __// __ |/ _ \/ /__/ _ \/ _ \
+// \___//_/____/_/ |_/_//_/\___/ .__/ .__/
+//                           /_/  /_/    
+// Yet another analysis framework for CLAS12 data, but in C++
+//
+// Author: fbossu (@ jlab.org)
+// Date:   2018/11/16
+//
+// License: GPLv3 attached
+*/
+
+#pragma once
+
+// _______ Hipo includes __________
 #include "node.h"
-#include "protoParticle.h"
+
+// _______ Core includes __________
+#include "Core/algorithm.h"
+
+// _______ Clas12 includes __________
+#include "Clas12/protoParticle.h"
 
 namespace clas12 {
 
@@ -27,5 +47,5 @@ namespace clas12 {
 
   };
 
-};
+}
 
