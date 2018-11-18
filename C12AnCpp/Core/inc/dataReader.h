@@ -18,9 +18,15 @@ namespace core {
 //////////////////////////////////////////////////////////////////////
   class dataReader {
     public:
+      dataReader() : _status(false) {}
+      virtual ~dataReader() {}
       virtual void open() = 0;
       virtual void close() = 0;
       virtual void* next() = 0;
+      bool getStatus() const { return _status; }
+      void setStatus( bool b ) { _status = b; }
+    private:
+      bool _status;
   };
 
 }

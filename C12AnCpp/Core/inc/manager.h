@@ -47,6 +47,7 @@ namespace core {
     private:
       manager(); // private constructor for singleton implementation
       static manager *_manager;
+      static void showMessage();
 
       dataReader *_reader;
       dataWriter *_writer;

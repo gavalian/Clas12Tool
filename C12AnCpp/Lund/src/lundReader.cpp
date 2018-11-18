@@ -3,9 +3,15 @@ using namespace lund;
 
 #include <memory>
 #include <sstream>
+#include <iostream>
 
 lundReader::lundReader( std::string name ){
   _file.open( name );
+  if( ! _file ){
+    setStatus( false );
+    std::cerr << " *** [ERROR] lundReader: bad file name\n";
+  }
+  setStatus(true);
   _ev = std::make_unique<lundEv>();
 }
 

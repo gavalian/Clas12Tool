@@ -5,8 +5,16 @@ using namespace clas12;
 #include <fstream>
 #include <iostream>
 
-hipoReader::hipoReader( std::string name ){
+#include <assert.h>
 
+hipoReader::hipoReader( std::string name ) {
+  _ifile = 0;
+  _reader = NULL;
+
+  if( name.size() == 0){
+    std::cerr << " *** [ERROR] hipoReader: no file given\n";
+    return;
+  }
   // check if a single hipo file or a list of files
   if( name.find(".hipo") != std::string::npos ){
     _filelist.push_back( name );
@@ -14,6 +22,11 @@ hipoReader::hipoReader( std::string name ){
   else{
     // read all the lines in the text file and add them
     std::ifstream inf( name );
+    assert(inf);
+    if( inf ){
+      std::cerr << " *** [ERROR] hipoReader: bad file name\n";
+      return;
+    }
     std::string f;
     while( inf >> f ){
       if( f.find(".hipo") == std::string::npos ){
@@ -28,9 +41,13 @@ hipoReader::hipoReader( std::string name ){
   }
   _reader = new hipo::reader();
   _ifile = 0;
+  setStatus( true );
 }
 
 void hipoReader::open(){
+  if( _filelist.size() < 1  ) {
+     return;
+  }
   _filename = _filelist[_ifile].c_str();
   std::cout << " *** hipoReader: Opening file: " << _filename << std::endl;
   _reader->open(_filename);
@@ -41,6 +58,10 @@ void hipoReader::close(){
 }
 
 void* hipoReader::next() {
+  if( ! _reader ){
+   std::cerr << " no reader \n";
+   return NULL;
+  }
   if( _reader->next() == false ){
 
     // check if there are other files to read

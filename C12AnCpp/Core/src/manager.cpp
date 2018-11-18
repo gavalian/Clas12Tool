@@ -23,7 +23,10 @@ void manager::addAlgorithm( algorithm *a ){
 
 
 void manager::run() {
-  cout << " ======================  RUN " << endl; 
+  cout << " ======================  RUN  ===================== " << endl; 
+
+  // check data stream status
+  if( _reader->getStatus() == false ) return;
 
   // initialization of all the algorithms
   for( auto alg : (*_alg) ){  alg->init() ;}
@@ -41,6 +44,7 @@ void manager::run() {
   // at the end of the loop on events call terminate
   for( auto alg : (*_alg) ) alg->terminate() ;
 
+  cout << " ======================  DONE  ==================== " << endl; 
 }
 
 
@@ -51,5 +55,17 @@ manager* manager::instance(){
   if( _manager == 0 ){
     _manager = new manager();
   }
+  showMessage();
   return _manager;
 }
+
+void manager::showMessage() {
+  std::cout << "\n"
+    << "  ___________  ___        _____                            \n"
+    << " / ___<  /_  |/ _ | ___  / ___/__  ___                     \n"
+    << "/ /__ / / __// __ |/ _ \\/ /__/ _ \\/ _ \\                    \n"
+    << "\\___//_/____/_/ |_/_//_/\\___/ .__/ .__/                    \n"
+    << "                          /_/  /_/                         \n"
+    << "Yet another analysis framework for CLAS12 data, but in C++ \n\n";
+}
+
