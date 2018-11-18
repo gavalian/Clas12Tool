@@ -151,6 +151,13 @@ namespace hipo {
           currentRecordEvent = 0;
         }
   };
+
+  class notification {
+  public:
+    notification(){};
+    virtual ~notification(){};
+    virtual void notify(){};
+  };
  /**
   * reader sequence class is used for sequancial readin of the file. When each
   * record is read, the next record pointer is kept in this class to be read
@@ -201,6 +208,8 @@ namespace hipo {
         * read in sequence. When the next() is called on The
         * reader class;
         */
+        std::vector<hipo::notification *>  readerNotifications;
+
         hipo::record                    inRecordStream;
         hipo::event                     inEventStream;
         hipo::reader_index              inReaderIndex;
@@ -208,7 +217,7 @@ namespace hipo {
         reader_sequence                 sequence;
 
         long    inputStreamSize;
-        
+
         long    recordsProcessed;
         long    eventsProcessed;
 
@@ -239,8 +248,13 @@ namespace hipo {
         void  showInfo();
         void  printWarning();
         bool  next();
+
+        void  addListener(hipo::notification *__n){
+          readerNotifications.push_back(__n);
+        }
         hipo::event    *getEvent(){return &inEventStream;}
         template<class T> hipo::node<T> *getBranch(int group, int item);
+        hipo::generic_node              *getGenericBranch(int group, int item);
         template<class T> hipo::node<T> *getBranch(const char* group, const char* item);
         std::vector<generic_node*>      *getAllBranches(){return inEventStream.getAllBranches();}
     };
@@ -251,6 +265,12 @@ namespace hipo {
   template<class T> hipo::node<T> *reader::getBranch(int group, int item){
       return inEventStream.getBranch<T>(group,item);
   }
+
+/*
+  hipo::generic_node    *reader::getGenericBranch(int group, int item){
+       return inEventStream.getEventGenericBranch(group, item);
+  }*/
+
   template<class T> hipo::node<T> *reader::getBranch(const char* group, const char* item){
       if(schemaDictionary.hasSchema(group)==true){
         hipo::schema schema = schemaDictionary.getSchema(group);

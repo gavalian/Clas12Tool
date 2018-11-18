@@ -10,6 +10,9 @@ namespace hipo {
 
     event::event(){
         reset();
+        #if __cplusplus > 199711L
+            printf("\n*****>>>>> compiled with c++11 support.\n");
+        #endif
         //printf("creating event class.....\n");
         //hipo::node<int> *type = new hipo::node<int>();
         //nodes.push_back(type);
@@ -19,6 +22,14 @@ namespace hipo {
 
     }
 
+    hipo::generic_node *event::getEventGenericBranch(int group, int item){
+      int size = nodes.size();
+      int key  =  ((0x00000000|group)<<16)  | ( (0x00000000|item)<<8);
+      registeredNodes[key] = size;
+      hipo::generic_node *type = new hipo::generic_node(group,item);
+      nodes.push_back(type);
+      return type;
+    }
 
    hipo::node<int>    *event::getIntNode(int group, int item){
      int size = nodes.size();
@@ -274,6 +285,13 @@ namespace hipo {
         resetNodes();
         //printf("scanning event\n");
         //int position = 8;
+
+        /*unsigned nbuckets = registeredNodes.bucket_count();
+        printf(" buckets = %d\n",nbuckets);
+
+        for(int i = 0; i < nbuckets; i++){
+          printf(" bucket # %d size = %d\n",i,registeredNodes.bucket_size(i));
+        }*/
         int position  = 16;
         int eventSize = *(reinterpret_cast<uint32_t*>(&dataBuffer[8]));
 
@@ -289,6 +307,8 @@ namespace hipo {
             int info =  ( (0x00000000|type)<<24) | (position);
             //eventNodes.insert(std::make_pair(key,info));
             //printf("map count = %d \n" ,registeredNodes.size());
+
+
             if(registeredNodes.count(key)>0){
                int order = registeredNodes[key];
                //nodes[order]->setType(type);
@@ -301,8 +321,10 @@ namespace hipo {
                   case 8: elements = length/8; break;
                   default: break;
                }
+               nodes[order]->type(type);
                nodes[order]->length(elements);
                nodes[order]->setAddress(&dataBuffer[position+8]);
+               //nodes[order]->address(&dataBuffer[position+8]);
                //printf(" found the key %d %d order = %d\n" , gid,iid, order);
             }
             //printf(" adding node : %4d %4d %X\n",gid,iid,position);

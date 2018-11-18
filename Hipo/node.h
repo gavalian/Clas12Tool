@@ -29,15 +29,21 @@ class generic_node {
     int __item_id;
     int __type;
     int __length;
+    char *__address;
     std::string __node_name;
+
 
   public:
 
     generic_node();
+    generic_node(int group, int item){
+      __group_id = group;
+      __item_id  = item;
+    }
     virtual ~generic_node();
 
-    virtual void setAddress(char *address){}
-
+    virtual void   setAddress(char *address){__address = address;}
+    virtual char  *getAddress(){ return __address; }
     int  type();
     int  length();
     int  group();
@@ -150,4 +156,5 @@ namespace hipo {
       memcpy( (char *) &vec[0], getAddress(), getBytesLength());
     }
 }
+
 #endif /* NODE_H */

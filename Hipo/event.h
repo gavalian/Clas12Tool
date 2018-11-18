@@ -11,8 +11,9 @@
  * Created on April 12, 2017, 10:14 AM
  */
 
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef HIPO_EVENT_H
+#define HIPO_EVENT_H
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -21,6 +22,14 @@
 #include <stdlib.h>
 #include <map>
 #include "node.h"
+
+// if the library is compiled with C++11
+// support we will use unordered map which
+// is faster than standard map
+#if __cplusplus > 199711L
+#include <unordered_map>
+#endif
+
 
 namespace hipo {
 
@@ -32,10 +41,16 @@ namespace hipo {
         std::vector<char> dataBuffer;
         std::map<int,int> eventNodes;
 
+// if the library is compiled with C++11
+// define registeredNodes as unordered_map
+//#if __cplusplus > 199711L
+//        std::unordered_map<int,int> registeredNodes;
+//#else
         std::map<int,int> registeredNodes;
+//#endif
+
         std::vector<hipo::generic_node*> nodes;
         //std::vector<std::auto_ptr<hipo::generic_node>> regiteredNodesPtr;
-
         //void scanEvent();
         void resetNodes();
     public:
@@ -61,7 +76,7 @@ namespace hipo {
         int   getNodeSize(int address);
         char *getNodePtr(int address);
 
-        std::vector<long>   getLong( int group, int item);
+        std::vector<long>   getLong(   int group, int item);
         std::vector<int>    getInt(    int group, int item);
         std::vector<float>  getFloat(  int group, int item);
         std::string         getString( int group, int item);
@@ -69,6 +84,7 @@ namespace hipo {
         hipo::node<int>    *getIntNode(int group, int item);
 
         template<class T> hipo::node<T> *getBranch(int group, int item);
+        hipo::generic_node              *getEventGenericBranch(int group, int item);
 
         std::vector<hipo::generic_node*> *getAllBranches(){ return &nodes;}
         //template<class T>   node<T> getNode();
@@ -87,6 +103,7 @@ namespace hipo {
 }
 
 namespace hipo {
+
    template<class T> hipo::node<T> *event::getBranch(int group, int item){
      int size = nodes.size();
      int key  =  ((0x00000000|group)<<16)  | ( (0x00000000|item)<<8);
@@ -96,4 +113,5 @@ namespace hipo {
      return type;
    }
 }
+
 #endif /* EVENT_H */

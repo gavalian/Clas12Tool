@@ -30,8 +30,12 @@ class schema {
   private:
 
     std::map<std::string, std::pair<int,int> > schemaEntries;
+    std::vector<std::string>                   entryNames;
+
     int groupid;
     std::string schemaName;
+
+    /* internally used methods */
     std::string getTypeString(int type);
     std::string getRootTypeString(int type);
     std::string getTypeStringSimple(int type);
@@ -46,6 +50,7 @@ class schema {
     schema(const schema &s) {
       schemaName    = s.schemaName;
       schemaEntries = s.schemaEntries;
+      entryNames    = s.entryNames;
       groupid       = s.groupid;
     }
 
@@ -55,9 +60,13 @@ class schema {
     std::string getName() { return schemaName;}
 
     void  setGroup( int grp){ groupid = grp;}
-    bool  hasEntry(const char* entry){ return schemaEntries.count(entry);}
+    bool  hasEntry( const char* entry){ return schemaEntries.count(entry);}
     void  addEntry( const char* name, int id, int type)
-      { schemaEntries[name] = std::make_pair(id, type);}
+      {
+        schemaEntries[name] = std::make_pair(id, type);
+        //printf(" adding entry %s\n",name);
+        entryNames.push_back(name);
+      }
 
 
     int   getGroup( ){ return groupid;};
@@ -66,9 +75,9 @@ class schema {
     int   getTypeByString(const char *typestring);
     void  ls();
 
-    std::vector<std::string> getEntryList();
-    std::vector<std::string> branchesCode();
-    std::vector<std::string> branchesAccessCode();
+    std::vector<std::string>  getEntryList();
+    std::vector<std::string>  branchesCode();
+    std::vector<std::string>  branchesAccessCode();
 
     std::vector<std::string>  getRootBranchesCode();
     std::vector<std::string>  getRootFillCode();
@@ -77,6 +86,7 @@ class schema {
          schemaName = D.schemaName;
          groupid    = D.groupid;
          schemaEntries = D.schemaEntries;
+         entryNames    = D.entryNames;
       }
 };
 
