@@ -37,19 +37,18 @@ namespace clas12 {
     int vx_order;
     int vy_order;
     int vz_order;
-
+    int ch_order;
+    int st_order;
+    
+    short _entry=0;
+    
   public:
 
-    particle(){};
+    particle() = default;
 
-    particle(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){
-       pid_order = getEntryOrder("pid");
-       px_order  = getEntryOrder("px");
-       py_order  = getEntryOrder("py");
-       pz_order  = getEntryOrder("pz");
-    }
+  particle(const char *bankName, hipo::reader &r) : hipo::bank(bankName,r){};
 
-    ~particle();
+    ~particle() = default;
 
 
     void   init(const char *bankName, hipo::reader &r);
@@ -57,6 +56,21 @@ namespace clas12 {
     float  getPx(int index)  { return getFloat(px_order,index);}
     float  getPy(int index)  { return getFloat(py_order,index);}
     float  getPz(int index)  { return getFloat(pz_order,index);}
+    float  getVx(int index)  { return getFloat(vx_order,index);}
+    float  getVy(int index)  { return getFloat(vy_order,index);}
+    float  getVz(int index)  { return getFloat(vz_order,index);}
+    int    getCharge(int index)  { return getFloat(ch_order,index);}
+    int    getStatus(int index)  { return getFloat(st_order,index);}
+
+    int    getPid() { return getInt(pid_order,_entry);}
+    float  getPx()  { return getFloat(px_order,_entry);}
+    float  getPy()  { return getFloat(py_order,_entry);}
+    float  getPz()  { return getFloat(pz_order,_entry);}
+    float  getVx()  { return getFloat(vx_order,_entry);}
+    float  getVy()  { return getFloat(vy_order,_entry);}
+    float  getVz()  { return getFloat(vz_order,_entry);}
+    int    getCharge()  { return getFloat(ch_order,_entry);}
+    int    getStatus()  { return getFloat(st_order,_entry);}
 
     void  getVector3(int index, vector3 &vect){
       vect.setXYZ(getFloat(px_order,index),getFloat(py_order,index),
@@ -67,12 +81,14 @@ namespace clas12 {
       vect.setXYZM(getFloat(px_order,index),getFloat(py_order,index),
             getFloat(pz_order,index),mass);
     }
+    void setEntry(short i){ _entry=i;}
+    
     /**
     * This is virtual method from hipo::bank it will be called
     * every time a bank is read in the reader. Can be used to sort
     * particles and or map particles by pid or type (i.e. charge)
     */
-    void notify(){
+    void notify() override {
       //printf("particle class is read again\n");
     }
   };

@@ -9,7 +9,7 @@ LZ4INCLUDES := -I../Lz4/lib/ -I../Hipo
 
 libhipo: checkdirs $(OBJECTS)
 	ar cr ../lib/libclas12banks.a $(OBJECTS)
-#	$(CXX) -shared -fPIC  -o ../lib/libclas12banks.so $(OBJECTS) -llz4
+#	$(CXX) -shared -fPIC  -o ../lib/libclas12banks.so $(OBJECTS) -L../Lz4/lib/ -llz4
 
 
 show:

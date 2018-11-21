@@ -17,7 +17,7 @@
 #include <iostream>
 #include <chrono>
 #include "reader.h"
-#include "clas12event.h"
+#include "mesonex_event.h"
 
 
 int main(int argc, char** argv) {
@@ -39,32 +39,38 @@ int main(int argc, char** argv) {
    hipo::reader  reader;
    reader.open(inputFile);
 
-   clas12::clas12event  event(reader);
+   clas12::mesonex_event  event(reader);
 
-   clas12::vector3      electron;
+   //clas12::vector3      electron;
 
+   int counter=0;
    while(reader.next()==true){
-      int np = event.particles().getSize();
-
-      double starttime = event.header().getStartTime();
-
-      for(int i = 0; i < np; i++){
-        int     pid = event.particles().getPid(i);
-        if(pid==11){
-
-           event.particles().getVector3(i,electron);
-
-           double beta = event.getBeta(clas12::FTOF1A,i);
-           double time = event.getTime(clas12::FTOF1A,i);
-           double ecEnergy   = event.getEnergy(clas12::EC,i);
-           double pcalEnergy = event.getEnergy(clas12::PCAL,i);
-           double sf         = ecEnergy/electron.mag();
-           // printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f sf = %8.3f beta = %8.3f\n",
-           //        pid,time-starttime,ecEnergy,pcalEnergy,sf, beta);
-        }
-      }
+     event.reset();
+     int np = event.particles().getSize();
+    
+     double starttime = event.header().getStartTime();
+     int pcount=0;
+     while(event.next_particle()){
+       //std::cout<<" particle "<<pcount++<<" "<<event.tof().getSize()<<std::endl ;
+       int  pid = event.particles().getPid();
+       float time=event.getTime()-starttime;
+       float ECal=event.getCalTotEnergy();
+       float PCalE=event.calorimeter().getEnergy(); //precal by default
+       event.getPCAL();
+       float PCalTime=event.calorimeter().getTime();
+       event.getHTCC();
+       int nHTCC=event.cherenkov().getNphe();
+       event.getLTCC();
+       int nLTCC=event.cherenkov().getNphe();
+       float trchi2=event.getTrackChi2();
+       // if(event.isFT()) std::cout<< "    FT HIT "<<std::endl;
+       //printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f pcaltime=%8.3f htcc = %d ltcc=%d track = %8.3f\n", pid,time,ECal,PCalE,PCalTime,nHTCC,nLTCC,trchi2);
+     }
+   
+      counter++;
+      if(counter==1E7) break;
    }
-  auto finish = std::chrono::high_resolution_clock::now();
+   auto finish = std::chrono::high_resolution_clock::now();
    std::chrono::duration<double> elapsed = finish - start;
    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 }
