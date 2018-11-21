@@ -64,6 +64,7 @@ namespace clas12 {
     int getPindex() { return getInt(_pindex_order,_index);}
 
     //given a detector (layer if exists)  and pindex find the position in this bank
+    int getIndex() {return _index;}
     int getIndex(int pindex, int detector, int layer=0) {
       int key = (detector<<16)|(layer<<8)|pindex;
       if(_rmap.count(key)>0) {

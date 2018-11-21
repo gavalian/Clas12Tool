@@ -83,7 +83,11 @@ namespace clas12 {
     const int getNParticles(){return _particles.getSize();}
 
     bool isFT(){return _pftcal!=-1;}
-
+    bool isFTOF(){return _isFTOF;};
+    bool isCTOF(){return _isFTOF;};
+    bool isCND(){return _isFTOF;};
+    bool isECAL(){return (getCalTotEnergy()!=0);};
+    
   private:
 
  
@@ -99,7 +103,10 @@ namespace clas12 {
      short _pftcal=0;
      short _pfthodo=0;
      short _pentry=0;
-
+     bool _isFTOF=false;
+     bool _isCTOF=false;
+     bool _isCND=false;
+  
   };
   inline  double mesonex_event::getCalTotEnergy(){
     if(_pftcal>-1) return _ft.getEnergy();
@@ -129,10 +136,12 @@ namespace clas12 {
     return _calorimeter.getTime();
   }
   inline  int mesonex_event::getSector(){
-    if(_ptof>=0)
+    if(_track.getIndex()>-1) //use track first
+      return _track.getSector();
+    if(_ptof>=0)             //then FTOF
       return _tof.getSector();
-    if(_pftcal>=0)
-      return 0;    
+    if(_pftcal>=0)           //then FT
+      return 0;
     //if no tof hit use EC time
     return _calorimeter.getSector();
   }
