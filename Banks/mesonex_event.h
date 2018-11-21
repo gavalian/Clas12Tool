@@ -80,6 +80,14 @@ namespace clas12 {
     clas12::forwardtagger   &ft(){return _ft;}
     clas12::tracker   &track(){return _track;}
 
+    clas12::particle  *particles_ptr(){return &_particles;}
+    clas12::header    *header_ptr(){ return &_header;}
+    clas12::calorimeter  *calorimeter_ptr(){ return  &_calorimeter;}
+    clas12::scintillator  *tof_ptr(){return  &_tof;}
+    clas12::cherenkov   *cherenkov_ptr(){return &_cherenkov;}
+    clas12::forwardtagger   *ft_ptr(){return &_ft;}
+    clas12::tracker   *track_ptr(){return &_track;}
+
     const int getNParticles(){return _particles.getSize();}
 
     bool isFT(){return _pftcal!=-1;}
