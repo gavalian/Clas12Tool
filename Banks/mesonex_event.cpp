@@ -62,22 +62,29 @@ namespace clas12 {
   //if CTOF save preference CTOF then CND
   void mesonex_event::checkTof(){
     _ptof=-1;//particle tof index
-
-    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,1))>-1)
+    _isFTOF=false;
+    _isCTOF=false;
+    _isCND=false;
+    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,1))>-1){
+      _isFTOF=true;
       return;
-      
-    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,0))>-1)
+    }
+    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,0))>-1){
+       _isFTOF=true;    
       return;
-      
-    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,2))>-1)
+    }
+    if((_ptof=_tof.getIndex(_pentry,clas12::FTOF,2))>-1){
+      _isFTOF=true;
       return;
-      
-    if((_ptof=_tof.getIndex(_pentry,clas12::CTOF,0))>-1)
+    }
+    if((_ptof=_tof.getIndex(_pentry,clas12::CTOF,0))>-1){
+      _isCTOF=true;
       return;
-      
-    if((_ptof=_tof.getIndex(_pentry,clas12::CND,0))>-1)
+    }
+    if((_ptof=_tof.getIndex(_pentry,clas12::CND,0))>-1){
+      _isCND=true;
       return;
-
+    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -95,7 +102,7 @@ namespace clas12 {
   //////////////////////////////////////////////////////////////////
   ///Use PCAL for time, path, sector,...
   void mesonex_event::checkCalorimeter(){
-    getPCAL(); 
+    getPCAL();
  }
 }//namespace clas12
  

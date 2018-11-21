@@ -59,8 +59,8 @@ namespace clas12 {
     float  getVx(int index)  { return getFloat(vx_order,index);}
     float  getVy(int index)  { return getFloat(vy_order,index);}
     float  getVz(int index)  { return getFloat(vz_order,index);}
-    int    getCharge(int index)  { return getFloat(ch_order,index);}
-    int    getStatus(int index)  { return getFloat(st_order,index);}
+    int    getCharge(int index)  { return getInt(ch_order,index);}
+    int    getStatus(int index)  { return getInt(st_order,index);}
 
     int    getPid() { return getInt(pid_order,_entry);}
     float  getPx()  { return getFloat(px_order,_entry);}
@@ -69,8 +69,8 @@ namespace clas12 {
     float  getVx()  { return getFloat(vx_order,_entry);}
     float  getVy()  { return getFloat(vy_order,_entry);}
     float  getVz()  { return getFloat(vz_order,_entry);}
-    int    getCharge()  { return getFloat(ch_order,_entry);}
-    int    getStatus()  { return getFloat(st_order,_entry);}
+    int    getCharge()  { return getInt(ch_order,_entry);}
+    int    getStatus()  { return getInt(st_order,_entry);}
 
     void  getVector3(int index, vector3 &vect){
       vect.setXYZ(getFloat(px_order,index),getFloat(py_order,index),
