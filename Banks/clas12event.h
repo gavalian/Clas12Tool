@@ -25,21 +25,12 @@
 #include "detector.h"
 #include "vectors.h"
 #include "header.h"
+#include "clas12defs.h"
 
 
 namespace clas12 {
 
-  static const double FTOF = 12;
-  static const double HTCC = 15;
-  static const double EC   = 7;
-
-
-  static const double FTOF1A = 121;
-  static const double FTOF1B = 122;
-  static const double PCAL   = 71;
-  static const double ECIN   = 72;
-  static const double ECOUT  = 73;
-
+ 
   class clas12event {
 
   private:
