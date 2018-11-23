@@ -25,7 +25,7 @@ void particleMaker::init(){
   TDatabasePDG::Instance()->AddParticle("deuteron","deuteron",1.875613,true,0,+1,"nuclei",45);
 
   _pname[11]   = "electrons";
-  _pname[221]  = "pions";
+  _pname[211]  = "pions";
   _pname[2212] = "protons";
   _pname[2112] = "neutrons";
   _pname[22]   = "photons";

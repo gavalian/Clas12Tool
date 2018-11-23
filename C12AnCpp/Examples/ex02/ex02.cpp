@@ -6,12 +6,15 @@
 #include "Root/particleMaker.h"
 
 #include "Clas12/protoParticleReader.h"
+#include "Clas12/recEventReader.h"
 #include "Clas12/hipoReader.h"
 
-#include "ex01_alg.h"
+#include "Tools/combineParticles.h"
+
+#include "ex02_alg.h"
 
 int main( int argn, const char* argv[]) {
-  if( argn < 2 ) return -1;
+  if( argn < 2 ) return 0;
 
   // instatiate the manager
   // ----------------------
@@ -37,6 +40,10 @@ int main( int argn, const char* argv[]) {
   // Here we specify the set of algorithms needed for our analysis
   // -------------------------------------------------------------
 
+  // algorithm that reads the event bank
+  clas12::recEventReader er;
+  M->addAlgorithm( &er );
+
   // algorithm that reads the particle bank
   clas12::protoParticleReader pr;
   M->addAlgorithm( &pr );
@@ -45,10 +52,14 @@ int main( int argn, const char* argv[]) {
   root::particleMaker pm;
   M->addAlgorithm( &pm );
 
+  // combine particle: makes the pi pi candidates
+  tools::combineParticles cp( "pipi", "pions + pions");
+  M->addAlgorithm( &cp );
+
   // -----------------------------
   // USER SPECIFIC ALGORITHM
   // -----------------------------
-  ex01_alg ta;
+  ex02_alg ta;
   M->addAlgorithm( &ta );
 
 
