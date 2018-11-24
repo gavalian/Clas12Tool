@@ -30,7 +30,7 @@ namespace clas12 {
        float   getPhi();   
        float   getTheta(); 
   };
-};
+}
 
 #endif 
 
