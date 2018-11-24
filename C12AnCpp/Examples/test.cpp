@@ -52,7 +52,7 @@ void test::processEvent(){
   if( e->size() == 0 ) return;
 
   double Q2,xB,W2;
-  std::tie(Q2,xB,W2) = tools::utils::getDISvariables( (root::particle*) (*e)[0].get(), 10.56, 0.938 );
+  std::tie(Q2,xB,W2) = tools::utils::getDISvariables( (root::particle*) (*e)[0].get(), 10.56, 2212 );
 
   core::tuple *tdis = this->ntuple("dis");
   tdis->column("Q2", Q2);

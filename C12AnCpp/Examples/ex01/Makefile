@@ -29,7 +29,7 @@ LIBS :=	-L$(LIBClas) \
 			  -L$(LIBCORE) \
         -L$(LIBTools) \
 				-L$(LIBHIPO) \
-				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
+				-lClas12 -lRootTools -lTools -lC12Core  -lhipo -llz4
   
 
 all:

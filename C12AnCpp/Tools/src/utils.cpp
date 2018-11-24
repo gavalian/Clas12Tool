@@ -2,10 +2,10 @@
 
 using namespace tools;
 
-std::tuple<double,double,double> utils::getDISvariables( root::particle *el, float Ein, float Tm ) {
+std::tuple<double,double,double> utils::getDISvariables( root::particle *el, float Ein, int Tpid ) {
 
   root::particle *projectile = root::particle::getParticle( 11,0,0,Ein);
-  root::particle *target     = root::particle::getParticle( 2212,0,0,0);
+  root::particle *target     = root::particle::getParticle( Tpid,0,0,0);
 
   root::particle q = *projectile - *el;
 
