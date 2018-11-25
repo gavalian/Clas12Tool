@@ -13,6 +13,14 @@ particle::particle( const particle &p ){
   setProtoParticle( p.getProtoParticle() );
 }
 
+particle::particle( int pid, float px, float py, float pz){
+  _pid = pid;
+  float m  = TDatabasePDG::Instance()->GetParticle(pid)->Mass();
+  float p0 = TMath::Sqrt(px*px + py*py + pz*pz + m*m);
+  SetXYZT( px,py,pz,p0);
+  _ppart = 0x0;
+}
+
 particle* particle::getParticle( int pid, float px, float py, float pz){
 
   float m  = TDatabasePDG::Instance()->GetParticle(pid)->Mass();

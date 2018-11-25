@@ -55,12 +55,14 @@ void particleMaker::processEvent(){
     // create paticles and sort them by type
     if( particles.find(abs(p->pid)) == particles.end() ){
       particles[abs(p->pid)] = std::make_shared<core::objVector>();
-      std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      //std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      std::unique_ptr<particle> part = std::make_unique<particle>(p->pid, p->px, p->py, p->pz );
       part->setProtoParticle( p );
       particles[abs(p->pid)]->push_back( std::move(part) );
     }
     else {
-      std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      //std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      std::unique_ptr<particle> part = std::make_unique<particle>(p->pid, p->px, p->py, p->pz );
       part->setProtoParticle( p );
       particles[abs(p->pid)]->push_back( std::move(part) );
     }

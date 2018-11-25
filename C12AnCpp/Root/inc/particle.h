@@ -27,6 +27,7 @@ namespace root {
   class particle : public core::object,  public TLorentzVector {
     public: 
       particle( int id, float x, float y, float z, float t) : TLorentzVector(x,y,z,t) { _pid = id; }
+      particle( int id, float x, float y, float z);
       particle( int id, TLorentzVector v ) : TLorentzVector(v) { _pid = id; }
       particle( const particle & );
       static particle* getParticle( int, float, float, float);
