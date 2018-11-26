@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <iostream>
-#include <chrono>
 #include <TFile.h>
 #include <TTree.h>
 #include <TApplication.h>
@@ -12,9 +11,9 @@
 
 
 void MesonexEvent(){
-  // Record start time
-  auto start = std::chrono::high_resolution_clock::now();
- 
+
+  gBenchmark->Start("clas12root");
+  
    TString inputFile;
    TString outputFile;
 
@@ -40,7 +39,6 @@ void MesonexEvent(){
    int counter=0;
    while(reader.next()==true){
      event.reset();
-     
      int np = event.particles().getSize();
     
      double starttime = event.header().getStartTime();
@@ -57,13 +55,12 @@ void MesonexEvent(){
        event.getLTCC();
        int nLTCC=event.cherenkov().getNphe();
        float trchi2=event.getTrackChi2();
-       }
+      }
    
       counter++;
-      if(counter==1E6) break;
+      if(counter==1E7) break;
    }
-   auto finish = std::chrono::high_resolution_clock::now();
-   std::chrono::duration<double> elapsed = finish - start;
-   std::cout << "Elapsed time: " << elapsed.count()<< " events = "<<counter<< " s\n";
+  gBenchmark->Stop("clas12root");
+  gBenchmark->Print("clas12root");
 
 }

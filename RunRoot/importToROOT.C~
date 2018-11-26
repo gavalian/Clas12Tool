@@ -1,10 +1,10 @@
 {
-  if(TString(gSystem->Getenv("CLAS12TOOL"))==TString()){
+  if(TString(gSystem->Getenv("CLAS12TOOL"))!=TString()){
     cout<<"You must define the base directory CLAS12TOOL"<<endl;
     exit(0);							    
   }
   
-  if(gSystem->Load(TString(gSystem->Getenv("CLAS12TOOL"))+"/Lz4/lib/liblz4.so")==0){
+  if(!gSystem->Load(TString(gSystem->Getenv("CLAS12TOOL"))+"/Lz4/lib/liblz4.so")){
     //Found liblz4 in LD_LIBRARY_PATH 
     gROOT->ProcessLine("#define __LZ4__"); 
     gSystem->AddIncludePath("-D__LZ4__");
