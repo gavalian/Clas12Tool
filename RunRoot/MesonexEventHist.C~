@@ -40,7 +40,6 @@ void MesonexEvent(){
    int counter=0;
    while(reader.next()==true){
      event.reset();
-     
      int np = event.particles().getSize();
     
      double starttime = event.header().getStartTime();
@@ -57,13 +56,13 @@ void MesonexEvent(){
        event.getLTCC();
        int nLTCC=event.cherenkov().getNphe();
        float trchi2=event.getTrackChi2();
-       }
+      }
    
       counter++;
-      if(counter==1E6) break;
+      if(counter==1E7) break;
    }
    auto finish = std::chrono::high_resolution_clock::now();
    std::chrono::duration<double> elapsed = finish - start;
-   std::cout << "Elapsed time: " << elapsed.count()<< " events = "<<counter<< " s\n";
+   std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 
 }
