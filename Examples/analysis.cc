@@ -46,18 +46,30 @@ int main(int argc, char** argv) {
    clas12::vector4 beam(   0.0, 0.0, 10.5, 10.5   );
    clas12::vector4 target( 0.0, 0.0,  0.0,  0.938 );
    clas12::vector4 electron;
+   clas12::vector4 w2;
+   clas12::vector4 q2;
 
+   hipo::benchmark b;
+   
    while(reader.next()==true){
+     b.resume();
 
      int size = particles.getSize();
+
      for(int i = 0; i < size; i++){
        int pid = particles.getPid(i);
        if(pid==11){
          particles.getVector4(i,electron,0.0005);
-         clas12::vector4 w2 = beam + target - electron;
-         printf("w2 = %12.5f\n",w2.m());
+         w2 = beam + target - electron;
+         q2 = beam - electron;
+         //printf("w2 = %12.5f, q2 = %12.5f\n",w2.m(),-q2.m());
        }
      }
+     b.pause();
    }
+   reader.showBenchmark();
+   printf(" time spend on analysis = %8.5f (ms) events = %8d\n",
+   b.getTime()*1e-9,
+      b.getCounter());
 }
 //### END OF GENERATED CODE

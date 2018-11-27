@@ -172,4 +172,26 @@ namespace hipo {
       std__string.append("runFileLoop   = env.Program(target=\"runFileLoop\",source=[\"runFileLoop.cc\"])\n");
       return std__string;
   }
+
+
+
+  void  benchmark::resume(){
+    first = clock.now();
+    counter++;
+  }
+
+  void  benchmark::pause(){
+
+    second = clock.now();
+    std::chrono::nanoseconds diff_ms =
+        std::chrono::duration_cast< std::chrono::nanoseconds >( second-first );
+        //printf(" count = %lld\n",diff_ms.count());
+     running_time += diff_ms.count();
+  }
+
+  long  benchmark::getTime(){
+    return running_time;
+  }
+
+  int   benchmark::getCounter(){ return counter;}
 }

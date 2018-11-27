@@ -138,6 +138,21 @@ hipo::generic_node    *reader::getGenericBranch(int group, int item){
     //printf("signature = %X\n",(unsigned int) *signature);
     //std::cout << "signature = " << std::ios::hex << (*signature) << '\n';
 }
+
+void  reader::showBenchmark(){
+    double  read_time = readBenchmark.getTime()*1e-9;
+    double unzip_time = unzipBenchmark.getTime()*1e-9;
+    /*printf("\n\n benchmark : read = %8.2f sec, unzip = %8.2f sec\n\n",
+            read_time,unzip_time);*/
+    double  record_read_time = inRecordStream.getReadBenchmark().getTime()*1e-9;
+    double record_unzip_time = inRecordStream.getUnzipBenchmark().getTime()*1e-9;
+    double record_index_time = inRecordStream.getIndexBenchmark().getTime()*1e-9;
+    printf("\n\n    record : read (%8d) = %8.2f sec, unzip (%8d) = %8.2f sec\n\n",
+            inRecordStream.getReadBenchmark().getCounter(),
+            record_read_time,
+            inRecordStream.getUnzipBenchmark().getCounter(),
+            record_unzip_time /*, record_index_time*/);
+}
 /**
  * Verify if the file has a proper format, magic word is checked
  * to and endianness is determined. Byte swap is performed if neccessary.
@@ -197,8 +212,9 @@ bool reader::next(){
       }
       long positionOffset = sequence.getNextPosition();
       //inRecordStream.readRecord(inputStream,positionOffset,0);
-
+      //readBenchmark.resume();
       bool status = inRecordStream.readRecord(inputStream,positionOffset,0,inputStreamSize);
+      //readBenchmark.pause();
       recordsProcessed++;
       if(status==false){
         printf("**** reached the end of file : records = %ld , events = %ld\n",recordsProcessed,eventsProcessed);
@@ -218,7 +234,9 @@ bool reader::next(){
    }
    int current_event = sequence.getCurrentEvent();
    //printf("1\n");
+   unzipBenchmark.resume();
    inRecordStream.readHipoEvent(inEventStream,current_event);
+   unzipBenchmark.pause();
    eventsProcessed++;
    //printf("2\n");
    sequence.setCurrentEvent(current_event+1);

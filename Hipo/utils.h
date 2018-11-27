@@ -19,6 +19,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include<chrono>
 
 namespace hipo {
 
@@ -47,6 +48,24 @@ namespace hipo {
     static std::string getSConstruct();
   };
 
+  class benchmark {
+     private:
+
+       std::chrono::high_resolution_clock clock;
+       std::chrono::time_point<std::chrono::steady_clock> first, second;
+
+       long running_time;
+       int  counter;
+
+     public:
+        benchmark(){ running_time = 0;counter = 0;}
+       ~benchmark(){}
+
+       void    resume();
+       void    pause();
+       long    getTime();
+       int     getCounter();
+  };
 }
 
 #endif /* UTILS_H */

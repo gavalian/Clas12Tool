@@ -216,6 +216,9 @@ namespace hipo {
         int                             inReaderCurrentRecord;
         reader_sequence                 sequence;
 
+        hipo::benchmark                 readBenchmark;
+        hipo::benchmark                 unzipBenchmark;
+
         long    inputStreamSize;
 
         long    recordsProcessed;
@@ -246,12 +249,15 @@ namespace hipo {
         int   getRecordCount();
         bool  isOpen();
         void  showInfo();
+        void  showBenchmark();
         void  printWarning();
         bool  next();
 
         void  addListener(hipo::notification *__n){
           readerNotifications.push_back(__n);
         }
+
+
         hipo::event    *getEvent(){return &inEventStream;}
         template<class T> hipo::node<T> *getBranch(int group, int item);
         hipo::generic_node              *getGenericBranch(int group, int item);

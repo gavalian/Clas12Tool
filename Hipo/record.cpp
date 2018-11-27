@@ -90,9 +90,11 @@ namespace hipo {
           printf(" resizing internal buffer from %lu to %d\n", recordBuffer.size(), recordHeader.recordDataLength);
           recordBuffer.resize(decompressedLength+1024);
         }
+        //readBenchmark.pause();
         //for(int i = 0; i < recordBuffer.size(); i++) recordBuffer[i] = 0;
         //printf("****************** BEFORE padding = %d\n", compressedDataLengthPadding);
         //showBuffer(&recordBuffer[0], 10, 200);
+        //unzipBenchmark.resume();
         if(recordHeader.compressionType==0){
           printf("compression type = 0 data length = %d\n",decompressedLength);
           memcpy((&recordBuffer[0]),(&recordCompressedBuffer[0]),decompressedLength);
@@ -101,6 +103,7 @@ namespace hipo {
 				      dataBufferLengthBytes-compressedDataLengthPadding,
 					         decompressedLength);
         }
+        //unzipBenchmark.pause();
         //printf("******************\n");
         //showBuffer(&recordBuffer[0], 10, 200);
         //char *uncompressedBuffer  = getUncompressed(compressedBuffer,dataBufferLengthBytes,recordHeader.recordDataLength);
@@ -111,6 +114,7 @@ namespace hipo {
          * converting index array from lengths of each buffer in the
          * record to relative positions in the record stream.
          */
+
         int eventPosition = 0;
         for(int i = 0; i < recordHeader.numberOfEvents; i++){
             int *ptr = reinterpret_cast<int*>(&recordBuffer[i*4]);
@@ -124,6 +128,7 @@ namespace hipo {
 
     bool  record::readRecord(std::ifstream &stream, long position, int dataOffset, long inputSize){
 
+      readBenchmark.resume();
       if((position+80)>=inputSize) return false;
 
       recordHeaderBuffer.resize(80);
@@ -198,6 +203,8 @@ namespace hipo {
       //for(int i = 0; i < recordBuffer.size(); i++) recordBuffer[i] = 0;
       //printf("****************** BEFORE padding = %d\n", compressedDataLengthPadding);
       //showBuffer(&recordBuffer[0], 10, 200);
+      readBenchmark.pause();
+      unzipBenchmark.resume();
       if(recordHeader.compressionType==0){
         printf("compression type = 0 data length = %d\n",decompressedLength);
         memcpy((&recordBuffer[0]),(&recordCompressedBuffer[0]),decompressedLength);
@@ -206,6 +213,7 @@ namespace hipo {
             dataBufferLengthBytes-compressedDataLengthPadding,
                  decompressedLength);
       }
+      unzipBenchmark.pause();
       //printf("******************\n");
       //showBuffer(&recordBuffer[0], 10, 200);
       //char *uncompressedBuffer  = getUncompressed(compressedBuffer,dataBufferLengthBytes,recordHeader.recordDataLength);
@@ -216,6 +224,7 @@ namespace hipo {
        * converting index array from lengths of each buffer in the
        * record to relative positions in the record stream.
        */
+      indexBenchmark.resume();
       int eventPosition = 0;
       for(int i = 0; i < recordHeader.numberOfEvents; i++){
           int *ptr = reinterpret_cast<int*>(&recordBuffer[i*4]);
@@ -224,7 +233,7 @@ namespace hipo {
           eventPosition += size;
           *ptr = eventPosition;
       }
-
+      indexBenchmark.pause();
       return true;
     }
 

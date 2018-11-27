@@ -23,6 +23,7 @@
 #include <fstream>
 
 #include "event.h"
+#include "utils.h"
 
 namespace hipo {
 
@@ -49,6 +50,8 @@ namespace hipo {
         int          data_endianness;
         int          data_offset;
 
+
+
       public:
         data(){ data_ptr = NULL; data_size = 0;}
         ~data(){ }
@@ -64,6 +67,7 @@ namespace hipo {
         int         getDataSize(){ return data_size;}
         int         getDataEndianness(){ return data_endianness;}
         int         getDataOffset(){ return data_offset;}
+
     };
 
     class record {
@@ -76,6 +80,10 @@ namespace hipo {
 
         std::vector<char>  recordBuffer;
         std::vector<char>  recordCompressedBuffer;
+
+        hipo::benchmark                 readBenchmark;
+        hipo::benchmark                 unzipBenchmark;
+        hipo::benchmark                 indexBenchmark;
 
         char *getUncompressed(const char *data, int dataLength, int dataLengthUncompressed);
         int   getUncompressed(const char *data, char *dest, int dataLength, int dataLengthUncompressed);
@@ -94,6 +102,10 @@ namespace hipo {
         void  readEvent( std::vector<char> &vec, int index);
         void  readHipoEvent(hipo::event &event, int index);
         void  getData(   hipo::data &data, int index);
+
+        hipo::benchmark  &getReadBenchmark(){ return readBenchmark;}
+        hipo::benchmark  &getUnzipBenchmark(){ return unzipBenchmark;}
+        hipo::benchmark  &getIndexBenchmark(){ return indexBenchmark;}
     };
 }
 #endif /* HIPORECORD_H */

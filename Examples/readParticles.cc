@@ -46,10 +46,8 @@ int main(int argc, char** argv) {
 
    while(reader.next()==true){
 
-
      int size = particles.getSize();
 
-     
    }
 
 }

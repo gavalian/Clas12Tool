@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
    clas12::vector3      electron;
 
    while(reader.next()==true){
+
       int np = event.particles().getSize();
 
       double starttime = event.header().getStartTime();
