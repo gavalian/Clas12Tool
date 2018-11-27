@@ -50,7 +50,6 @@ namespace clas12 {
 */
     std::vector<std::string> banks;
 
-
     clas12::header     clas12header;
     clas12::particle   clas12particle;
     clas12::detector   clas12calorimeter;
@@ -69,7 +68,7 @@ namespace clas12 {
       init(r);
     }
 
-    ~clas12event(){}
+    ~clas12event(){ }
 
     void    init(hipo::reader &r);
 
@@ -79,6 +78,7 @@ namespace clas12 {
     double  getPath(   int detector, int pindex);
     double  getBeta(   int detector, int pindex);
     void    getHitPosition(int detector, int pindex, vector3 &vec);
+    void    getHitPositionLocal(int detector, int pindex, vector3 &vec);
 
     clas12::particle  &particles(){return clas12particle;}
     clas12::header    &header(){ return clas12header;}

@@ -9,7 +9,35 @@
 
 namespace clas12 {
 
+  void       vector3::translate(double x, double y, double z){
+    cX += x; cY += y; cZ += z;
+  }
 
+  void       vector3::rotateX(double angle)
+  {
+    double s = sin(angle);
+    double c = cos(angle);
+    double yy = cY;
+    cY = c*yy - s*cZ;
+    cZ = s*yy + c*cZ;
+  }
+  void       vector3::rotateY(double angle)
+{
+  double s = sin(angle);
+  double c = cos(angle);
+  double zz = cZ;
+  cZ = c*zz - s*cX;
+  cX = s*zz + c*cX;
+}
+//------------------------------------------------------
+void       vector3::rotateZ(double angle)
+{
+  double s = sin(angle);
+  double c = cos(angle);
+  double xx = cX;
+  cX = c*xx - s*cY;
+  cY = s*xx + c*cY;
+}
 
   vector3  operator+(const vector3 &a, const vector3 &b)
   { return vector3(a.x() + b.x(),

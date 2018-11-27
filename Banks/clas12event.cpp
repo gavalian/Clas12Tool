@@ -115,4 +115,25 @@ namespace clas12 {
           break;
       }
     }
+
+    void clas12event::getHitPositionLocal(int detector, int pindex, vector3 &vec){
+      detectorHit hit;
+      switch(detector){
+        case 121:
+          clas12tof.getDetectorHit(clas12::FTOF, 1, pindex, hit);
+          vec.setXYZ(hit.x,hit.y,hit.z); 
+          break;
+          case 122:
+            clas12tof.getDetectorHit(clas12::FTOF, 2, pindex, hit);
+            vec.setXYZ(hit.x,hit.y,hit.z);
+            break;
+          case 7:
+            clas12calorimeter.getDetectorHit(clas12::EC, 1, pindex, hit);
+            vec.setXYZ(hit.x,hit.y,hit.z);
+            break;
+        default:
+          printf("unknown detector %d\n",detector);
+          break;
+      }
+    }
 }

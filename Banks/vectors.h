@@ -50,6 +50,11 @@ namespace clas12 {
     double y() const { return cY;}
     double z() const { return cZ;}
 
+    void       rotateX(double angle);
+    void       rotateY(double angle);
+    void       rotateZ(double angle);
+    void       translate(double x, double y, double z);
+
     double mag() { return sqrt(mag2());}
     double mag2(){ return (cX*cX + cY*cY + cZ*cZ);}
     const  vector3 &operator=(const vector3 &vec);
