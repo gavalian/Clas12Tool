@@ -1,4 +1,21 @@
 setenv CLAS12TOOL XXX/Clas12Tool
+#Make lz4 .so
+cd $CLAS12TOOL/Lz4/lib/
+make
+cd $CLAS12TOOL/RunRoot
+############################New
+
+alias clas12root root -l $CLAS12TOOL/RunRoot/importToROOT2.C
+
+e.g.  run with
+
+clas12root HallBEvent.C+  --in=a/hipo/file.hipo
+
+
+
+
+############################OLD
+
 alias clas12root root -l $CLAS12TOOL/RunRoot/importToROOT.C
 
 e.g.  run with

@@ -33,7 +33,7 @@ For example, g++-5 or newer
 
 ## Set up the environment
 
-+ Edit the path to Clas12Tool in `setEnv.sh`
++ Edit the path to Clas12Tool in `setEnv.sh` (or `setEnv.csh` for the tcsh users)
 
 ```bash
 export CLAS12TOOL=/YOUR/PATH/GOES/HERE/Clas12Tool
@@ -49,6 +49,12 @@ It is strongly suggested that you automatically source the environment. The foll
 
 ```bash
 echo "source `pwd`/setEnv.sh" >> $HOME/.bashrc
+```
+
+or for `tcsh` user
+
+```tcsh
+echo echo "source `pwd`/setEnv.csh" >> $HOME/.cshrc
 ```
 
 + Compile. If you want debug information, export the variable `DEBUG="-g"`

@@ -23,7 +23,7 @@ hipoReader::hipoReader( std::string name ) {
     // read all the lines in the text file and add them
     std::ifstream inf( name );
     assert(inf);
-    if( inf ){
+    if( ! inf ){
       std::cerr << " *** [ERROR] hipoReader: bad file name\n";
       return;
     }
@@ -49,7 +49,7 @@ void hipoReader::open(){
      return;
   }
   _filename = _filelist[_ifile].c_str();
-  std::cout << " *** hipoReader: Opening file: " << _filename << std::endl;
+  std::cout << " *** [INFO] hipoReader: Opening file: " << _filename << std::endl;
   _reader->open(_filename);
 }
 

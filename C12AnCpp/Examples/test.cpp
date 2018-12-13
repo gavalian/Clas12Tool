@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <tuple>
 using namespace std;
 
 #include "Core/algorithm.h"
@@ -25,6 +26,7 @@ using namespace clas12;
 
 #include "Tools/kineTool.h"
 #include "Tools/combineParticles.h"
+#include "Tools/utils.h"
 
 class test : public core::algorithm {
 
@@ -45,18 +47,21 @@ void test::processEvent(){
   core::objMap<int> *tracks = (core::objMap<int> *)getObject("recTracks");
   if( ! tracks ) return;
 
-  //core::objVector *e = (core::objVector*) getObject("electrons");
-  //if( ! e ) return;
-  //if( e->size() == 0 ) return;
+  core::objVector *e = (core::objVector*) getObject("electrons");
+  if( ! e ) return;
+  if( e->size() == 0 ) return;
 
-  //recTrack* tr = (recTrack*)(*tracks)[1].get();
+  double Q2,xB,W2;
+  std::tie(Q2,xB,W2) = tools::utils::getDISvariables( (root::particle*) (*e)[0].get(), 10.56, 2212 );
 
-  //cout << tr->NDF << " " << tr->getP() << endl;
-  
+  core::tuple *tdis = this->ntuple("dis");
+  tdis->column("Q2", Q2);
+  tdis->column("xB", xB);
+  tdis->column("W2", W2);
+  tdis->fill();
 
   core::objVector *photons = (core::objVector*) getObject("photons");
   if( ! photons ){ 
-    //cout << "no photons!!\n"; 
     return; 
   }
 

@@ -169,6 +169,8 @@ namespace clas12 {
  
    }; //class calorimeter
 
+   using cal_ptr=shared_ptr<clas12::calorimeter>;
+ 
 }//namespace clas12
 
 #endif /* UTILS_H */

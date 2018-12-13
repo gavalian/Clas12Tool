@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <map>
+#include <algorithm>
 #include <string>
 #include "clas12defs.h"
 #include "bank.h"
@@ -37,8 +38,8 @@ namespace clas12 {
 
     particle_detector()=default;
 
-    particle_detector(const char *bankName, hipo::reader &r) :
-      hipo::bank(bankName,r){};
+    particle_detector(const char *bankName, hipo::reader &r){};
+    //  hipo::bank(bankName,r){init(bankName,r);};
 
     virtual ~particle_detector()=default;
 
@@ -65,14 +66,17 @@ namespace clas12 {
 
     //given a detector (layer if exists)  and pindex find the position in this bank
     int getIndex() {return _index;}
-    int getIndex(int pindex, int detector, int layer=0) {
-      int key = (detector<<16)|(layer<<8)|pindex;
-      if(_rmap.count(key)>0) {
-	_index = _rmap[key];
-	return _index;
-      }
-      return _index=-1;
-    }
+    int getIndex(int pindex, int detector, int layer=0);
+   
+   /* int getIndex(int pindex, int detector, int layer=0) { */
+   /*    //This function seems to be a bottle neck! */
+   /*    int key = (detector<<16)|(layer<<8)|pindex; */
+   /*    if(_rmap.count(key)>0) { */
+   /*  	_index = _rmap[key]; */
+   /*  	return _index; */
+   /*    } */
+   /*    return _index=-1; */
+   /*  } */
     void setIndex(int ind){_index=ind;}
     
     ////////////////////////////////////////////////////////////////
@@ -92,7 +96,8 @@ namespace clas12 {
     int  _pindex_order=-1;
     int _index=-1;
     
-    std::map<int,int> _rmap;
+    // std::unordered_map<int,int> _rmap;
+    std::vector<int> _rvec;
     std::vector<std::string > _sitems;
     
   };

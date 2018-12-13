@@ -5,8 +5,8 @@
  */
 
 /*
- * File:   detector.h
- * Author: gavalian
+ * File:   scintillator.h
+ * Author: dglazier
  *
  * Created on April 27, 2017, 10:01 AM
  */
@@ -112,6 +112,8 @@ namespace clas12 {
 
  
    }; //class scintillator
+
+   using scint_ptr=shared_ptr<clas12::scintillator>;
 
 }//namespace clas12
 

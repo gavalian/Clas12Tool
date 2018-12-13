@@ -162,7 +162,7 @@ namespace clas12 {
       double ftz=_ft.getZ();
       return sqrt(ftx*ftx+fty*fty+ftz*ftz)/100;
     }
-    return _ft.getPath();    
+    ///   return _ft.getPath();    
     //if no tof hit use EC time
     return _calorimeter.getPath();
   }

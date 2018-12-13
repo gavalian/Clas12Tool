@@ -25,7 +25,7 @@ void particleMaker::init(){
   TDatabasePDG::Instance()->AddParticle("deuteron","deuteron",1.875613,true,0,+1,"nuclei",45);
 
   _pname[11]   = "electrons";
-  _pname[221]  = "pions";
+  _pname[211]  = "pions";
   _pname[2212] = "protons";
   _pname[2112] = "neutrons";
   _pname[22]   = "photons";
@@ -55,12 +55,14 @@ void particleMaker::processEvent(){
     // create paticles and sort them by type
     if( particles.find(abs(p->pid)) == particles.end() ){
       particles[abs(p->pid)] = std::make_shared<core::objVector>();
-      std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      //std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      std::unique_ptr<particle> part = std::make_unique<particle>(p->pid, p->px, p->py, p->pz );
       part->setProtoParticle( p );
       particles[abs(p->pid)]->push_back( std::move(part) );
     }
     else {
-      std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      //std::unique_ptr<particle> part = std::make_unique<particle>(*(particle::getParticle( p->pid, p->px, p->py, p->pz )));
+      std::unique_ptr<particle> part = std::make_unique<particle>(p->pid, p->px, p->py, p->pz );
       part->setProtoParticle( p );
       particles[abs(p->pid)]->push_back( std::move(part) );
     }

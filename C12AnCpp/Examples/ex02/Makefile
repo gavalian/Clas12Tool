@@ -29,10 +29,9 @@ LIBS :=	-L$(LIBClas) \
 			  -L$(LIBCORE) \
         -L$(LIBTools) \
 				-L$(LIBHIPO) \
-				-lClas12 -lRootTools -lTools -lC12Core  -lhipo -llz4
+				-lClas12 -lRootTools -lTools -lC12Core  -lhipo
   
 
-all: $(patsubst %.cpp, %.out, $(wildcard *.cpp))
+all:
+	g++ $(DEBUG) -o ex02.exe ex02.cpp ex02_alg.cpp -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 
 
-%.out: %.cpp Makefile
-	g++ $(DEBUG) $< -o $@  -I. $(INCLUDES) $(LIBS) $(ROOT) $(CFLAGS) 

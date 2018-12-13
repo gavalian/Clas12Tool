@@ -38,17 +38,18 @@ namespace clas12 {
   }
   ////////////////////////////////////////////////////////////////////////
   ///function to map the detector entry to particle index
-  void   particle_detector::scanIndex(){
-    _rmap.clear();
-    const int size = getSize();
-    for(int i = 0; i < size; i++){
-      int detector = getDetector(i);
-      int layer= getLayer(i);
-      int pindex   = getPindex(i);
-      int key = (detector<<16)|(layer<<8)|pindex;
-       _rmap[key] = i;
-    }
-  }
+  // void   particle_detector::scanIndex(){
+  //   _rmap.clear();
+    
+  //   const int size = getSize();
+  //   for(int i = 0; i < size; i++){
+  //     int detector = getDetector(i);
+  //     int layer= getLayer(i);
+  //     int pindex   = getPindex(i);
+  //     int key = (detector<<16)|(layer<<8)|pindex;
+  //      _rmap[key] = i;
+  //   }
+  // }
   ////////////////////////////////////////////////////////////////////////
   ///function to find the current entries associated
   ///with pindex = iparticle
@@ -76,4 +77,31 @@ namespace clas12 {
       std::cout<<getDetector(i)<<" "<<getPindex(i)<<"\n";
     std::cout<<"\n";
   }
+
+
+ int particle_detector::getIndex(int pindex, int detector, int layer){
+ 
+    std::vector<int>::iterator it;
+     int key = (detector<<16)|(layer<<8)|pindex;
+     if((it=std::find(_rvec.begin(),_rvec.end(),key))!=_rvec.end()){
+      _index = std::distance(_rvec.begin(), it);
+      return _index;
+    }
+    return _index=-1;
+  }
+   void  particle_detector::scanIndex(){
+  
+   _rvec.clear();
+    const int size = getSize();
+    _rvec.reserve(size);
+    for(int i = 0; i < size; i++){
+      int detector = getDetector(i);
+      int layer= getLayer(i);
+      int pindex   = getPindex(i);
+      int key = (detector<<16)|(layer<<8)|pindex;
+      _rvec.emplace_back(key);
+    }
+   }
+
 }
+  
