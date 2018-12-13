@@ -1,6 +1,0 @@
-setenv CLAS12TOOL XXX/Clas12Tool
-alias clas12root root -l $CLAS12TOOL/RunRoot/importToROOT.C
-
-e.g.  run with
-
-clas12root MesonexEvent.C+  --in=a/hipo/file.hipo

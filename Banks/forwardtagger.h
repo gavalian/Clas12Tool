@@ -19,7 +19,8 @@
 
 namespace clas12 {
 
-   class forwardtagger : public particle_detector {
+  
+  class forwardtagger : public particle_detector {
 
  
   public:
@@ -65,7 +66,7 @@ namespace clas12 {
       if(_index>-1)return getFloat(_z_order,_index);
       return 0;
     }
-  double getDx(){ 
+    double getDx(){ 
       if(_index>-1)return getFloat(_dx_order,_index);
       return 0;
     }
@@ -77,7 +78,7 @@ namespace clas12 {
       if(_index>-1)return getFloat(_radius_order,_index);
       return 0;
     }
-    int getSize(){ 
+    int getSizeFT(){ //watch-out banks::getSize() !
       if(_index>-1)return getInt(_size_order,_index);
       return 0;
     }
@@ -108,6 +109,9 @@ namespace clas12 {
 
  
    }; //class forwardtagger
+
+  
+ using ft_ptr=shared_ptr<clas12::forwardtagger>;
 
 }//namespace clas12
 

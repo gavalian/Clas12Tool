@@ -41,7 +41,7 @@ void MesonexEventHist(){
    TH2F*  hPth=new TH2F("ThetaP","#theta v p",100,0,12,100,0,180);
    
    TLorentzVector p4;
-   clas12::particle pars= event.particles();
+   clas12::particle *pars= event.particles_ptr();
    
    int counter=0;
    while(reader.next()==true){
@@ -50,13 +50,13 @@ void MesonexEventHist(){
      double starttime = event.header().getStartTime();
  
      while(event.next_particle()){
-       int  pid = event.particles().getPid();
-       p4.SetXYZM(pars.getPx(),pars.getPy(),pars.getPz(),0);
+       int  pid = pars->getPid();
+       p4.SetXYZM(pars->getPx(),pars->getPy(),pars->getPz(),0);
        hPth->Fill(p4.P(),p4.Theta()*TMath::RadToDeg());
        
        float time=event.getTime();
        event.getPCAL();
-       float PCalTime=event.calorimeter().getTime();
+       float PCalTime=event.calorimeter_ptr()->getTime();
        float tdiff=time-PCalTime;
        if(tdiff!=0)htdiff->Fill(tdiff);
      }

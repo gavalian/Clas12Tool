@@ -109,6 +109,8 @@ namespace clas12 {
  
    }; //class tracker
 
+   using trck_ptr=shared_ptr<clas12::tracker>;
+
 }//namespace clas12
 
 #endif /* UTILS_H */

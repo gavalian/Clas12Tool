@@ -82,7 +82,7 @@ namespace clas12 {
             getFloat(pz_order,index),mass);
     }
     void setEntry(short i){ _entry=i;}
-    
+    short getEntry() const {return _entry;}
     /**
     * This is virtual method from hipo::bank it will be called
     * every time a bank is read in the reader. Can be used to sort
@@ -92,6 +92,8 @@ namespace clas12 {
       //printf("particle class is read again\n");
     }
   };
+  
+  using par_ptr=shared_ptr<clas12::particle>;
 
 }
 

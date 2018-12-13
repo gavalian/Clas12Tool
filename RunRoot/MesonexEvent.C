@@ -34,6 +34,9 @@ void MesonexEvent(){
    reader.open(inputFile.Data());
 
    clas12::mesonex_event  event(reader);
+   clas12::calorimeter* cal=event.calorimeter_ptr();
+   clas12::cherenkov* cher=event.cherenkov_ptr();
+   clas12::particle* part=event.particles_ptr();
 
    //clas12::vector3      electron;
 
@@ -41,26 +44,28 @@ void MesonexEvent(){
    while(reader.next()==true){
      event.reset();
      
-     int np = event.particles().getSize();
+      int np = part->getSize();
     
      double starttime = event.header().getStartTime();
      int pcount=0;
      while(event.next_particle()){
-       int  pid = event.particles().getPid();
+       //std::cout<<" particle "<<pcount++<<" "<<event.tof().getSize()<<std::endl ;
+       int  pid = part->getPid();
        float time=event.getTime()-starttime;
        float ECal=event.getCalTotEnergy();
-       float PCalE=event.calorimeter().getEnergy(); //precal by default
+       float PCalE=cal->getEnergy(); //precal by default
        event.getPCAL();
-       float PCalTime=event.calorimeter().getTime();
+       float PCalTime=cal->getTime();
        event.getHTCC();
-       int nHTCC=event.cherenkov().getNphe();
+       int nHTCC=cher->getNphe();
        event.getLTCC();
-       int nLTCC=event.cherenkov().getNphe();
+       int nLTCC=cher->getNphe();
        float trchi2=event.getTrackChi2();
-       }
-   
+       // if(event.isFT()) std::cout<< "    FT HIT "<<std::endl;
+       //printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f pcaltime=%8.3f htcc = %d ltcc=%d track = %8.3f\n", pid,time,ECal,PCalE,PCalTime,nHTCC,nLTCC,trchi2);
+     }
       counter++;
-      if(counter==1E6) break;
+     if(counter==1E6) break;
    }
    auto finish = std::chrono::high_resolution_clock::now();
    std::chrono::duration<double> elapsed = finish - start;

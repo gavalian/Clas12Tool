@@ -1,10 +1,10 @@
 {
-  if(TString(gSystem->Getenv("CLAS12TOOL"))!=TString()){
+  if(TString(gSystem->Getenv("CLAS12TOOL"))==TString()){
     cout<<"You must define the base directory CLAS12TOOL"<<endl;
     exit(0);							    
   }
   
-  if(!gSystem->Load(TString(gSystem->Getenv("CLAS12TOOL"))+"/Lz4/lib/liblz4.so")){
+  if(gSystem->Load(TString(gSystem->Getenv("CLAS12TOOL"))+"/Lz4/lib/liblz4.so")==0){
     //Found liblz4 in LD_LIBRARY_PATH 
     gROOT->ProcessLine("#define __LZ4__"); 
     gSystem->AddIncludePath("-D__LZ4__");
@@ -38,8 +38,12 @@
   gROOT->LoadMacro("$CLAS12TOOL/Banks/forwardtagger.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/cherenkov.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/calorimeter.cpp+");
-  // gROOT->LoadMacro("$CLAS12TOOL/Banks/clas12event.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/mesonex_event.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/covmatrix.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_ft.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_fdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_cdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/hallB_event.cpp+");
  
 
 }
