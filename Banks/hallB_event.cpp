@@ -11,14 +11,14 @@ namespace clas12 {
   hallB_event::hallB_event(hipo::reader &r){
     _reader=&r; //keep a pointer to the reader
     //initialise banks pointers
-    _bparts = make_shared<particle>();
-    _bcovmat= make_shared<covmatrix>();
-    _bhead  = make_shared<header>();
-    _bcal   = make_shared<calorimeter>();
-    _bscint = make_shared<scintillator>();
-    _btrck  = make_shared<tracker>();
-    _bcher  = make_shared<cherenkov>();
-    _bft    = make_shared<forwardtagger>();
+    _bparts = std::make_shared<particle>();
+    _bcovmat= std::make_shared<covmatrix>();
+    _bhead  = std::make_shared<header>();
+    _bcal   = std::make_shared<calorimeter>();
+    _bscint = std::make_shared<scintillator>();
+    _btrck  = std::make_shared<tracker>();
+    _bcher  = std::make_shared<cherenkov>();
+    _bft    = std::make_shared<forwardtagger>();
 
     //initialise banks
     _bparts->init("REC::Particle",r);

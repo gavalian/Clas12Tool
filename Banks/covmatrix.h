@@ -20,8 +20,8 @@
 
 namespace clas12 {
   
-  using CovMatrix =vector<vector<float > >; 
-  using IndMatrix =vector<vector<int > >; 
+  using CovMatrix =std::vector<std::vector<float > >; 
+  using IndMatrix =std::vector<std::vector<int > >; 
 
   class covmatrix : public hipo::bank {
 
@@ -55,15 +55,15 @@ namespace clas12 {
     
     private :
     
-      CovMatrix _matrix={5,vector<float>(5,0)};
-      IndMatrix _morder={5,vector<int>(5,-1)};
-      int  _pindex_order=-1;
-      int _index=-1;
-      //std::map<int,int> _rmap;
-      std::vector<int> _rvec;
+    CovMatrix _matrix={5,std::vector<float>(5,0)};
+    IndMatrix _morder={5,std::vector<int>(5,-1)};
+    int  _pindex_order=-1;
+    int _index=-1;
+    //std::map<int,int> _rmap;
+    std::vector<int> _rvec;
   };
 
-  using covmat_ptr=shared_ptr<clas12::covmatrix>;
+  using covmat_ptr=std::shared_ptr<clas12::covmatrix>;
 }
 
 #endif /* UTILS_H */

@@ -93,7 +93,7 @@ namespace clas12 {
     }
   };
   
-  using par_ptr=shared_ptr<clas12::particle>;
+  using par_ptr=std::shared_ptr<clas12::particle>;
 
 }
 

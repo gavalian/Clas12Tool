@@ -120,7 +120,7 @@ namespace clas12 {
     
   };
   
-  using region_fdet_ptr=shared_ptr<clas12::region_fdet>;
+  using region_fdet_ptr=std::shared_ptr<clas12::region_fdet>;
 
 }
 

@@ -113,7 +113,7 @@ namespace clas12 {
  
    }; //class scintillator
 
-   using scint_ptr=shared_ptr<clas12::scintillator>;
+   using scint_ptr=std::shared_ptr<clas12::scintillator>;
 
 }//namespace clas12
 

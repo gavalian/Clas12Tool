@@ -97,7 +97,7 @@ namespace clas12 {
   
   };
   //pointer "typedef"
-  using region_part_ptr=shared_ptr<clas12::region_particle>;
+  using region_part_ptr=std::shared_ptr<clas12::region_particle>;
 
  
 }

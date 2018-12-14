@@ -75,7 +75,7 @@ namespace clas12 {
     
   };
 
-  using head_ptr=shared_ptr<clas12::header>;
+  using head_ptr=std::shared_ptr<clas12::header>;
 
 }
 

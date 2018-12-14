@@ -63,7 +63,7 @@ namespace clas12 {
     short _pcal=-1;
     short _phod=-1;
   };
- using region_ft_ptr=shared_ptr<clas12::region_ft>;
+  using region_ft_ptr=std::shared_ptr<clas12::region_ft>;
 
 }
 

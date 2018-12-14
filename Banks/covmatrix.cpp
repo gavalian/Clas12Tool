@@ -5,6 +5,7 @@
  */
 
 #include "covmatrix.h"
+#include <iostream>
 #include <algorithm>
 
 namespace clas12 {
@@ -12,7 +13,7 @@ namespace clas12 {
  
   void covmatrix::init(const char *bankName, hipo::reader &r){
     initBranches(bankName,r);
-    cout<<"  covmatrix::init "<<bankName<<endl;
+    std::cout<<"  covmatrix::init "<<bankName<<std::endl;
     _morder[0][0] = getEntryOrder("C11");
     _morder[0][1] = getEntryOrder("C12");
     _morder[0][2] = getEntryOrder("C13");

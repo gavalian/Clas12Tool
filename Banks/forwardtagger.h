@@ -111,7 +111,7 @@ namespace clas12 {
    }; //class forwardtagger
 
   
- using ft_ptr=shared_ptr<clas12::forwardtagger>;
+  using ft_ptr=std::shared_ptr<clas12::forwardtagger>;
 
 }//namespace clas12
 

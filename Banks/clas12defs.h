@@ -4,38 +4,38 @@
 
 namespace clas12{
   //regions
-  static const ushort FT = 1000;
-  static const ushort FD = 2000;
-  static const ushort CD = 3000;
+  static const short FT = 1000;
+  static const short FD = 2000;
+  static const short CD = 3000;
 
   
   //detectors
-  static const ushort FTOF = 12;
-  static const ushort CTOF = 4;
-  static const ushort CND  = 3;
-  static const ushort CVT   = 5;
-  static const ushort DC   = 6;
-  static const ushort EC   = 7;
-  static const ushort FTCAL   = 10;
-  static const ushort FTHODO   = 11;
-  static const ushort HTCC   = 15;
-  static const ushort LTCC   = 16;
+  static const short FTOF = 12;
+  static const short CTOF = 4;
+  static const short CND  = 3;
+  static const short CVT   = 5;
+  static const short DC   = 6;
+  static const short EC   = 7;
+  static const short FTCAL   = 10;
+  static const short FTHODO   = 11;
+  static const short HTCC   = 15;
+  static const short LTCC   = 16;
 
 
   //layers
-  static const ushort FTOF1A = 0;
-  static const ushort FTOF1B = 1;
-  static const ushort FTOF2 = 2;
+  static const short FTOF1A = 0;
+  static const short FTOF1B = 1;
+  static const short FTOF2 = 2;
   //CDET scint layers same as detectors
-  //static const ushort CND  = 3;
-  //static const ushort CTOF = 4;
-  static const ushort CND1  = 1;
-  static const ushort CND2  = 2;
-  static const ushort CND3  = 3;
+  //static const short CND  = 3;
+  //static const short CTOF = 4;
+  static const short CND1  = 1;
+  static const short CND2  = 2;
+  static const short CND3  = 3;
  
-  static const ushort PCAL   = 1;
-  static const ushort ECIN   = 4;
-  static const ushort ECOUT  = 7;
+  static const short PCAL   = 1;
+  static const short ECIN   = 4;
+  static const short ECOUT  = 7;
 
   // using indices =vector<short>;
  
