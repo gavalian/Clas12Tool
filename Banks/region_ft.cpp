@@ -33,7 +33,7 @@ namespace clas12 {
       double ftx=_ft->getX();
       double fty=_ft->getY();
       double ftz=_ft->getZ();
-      return sqrt(ftx*ftx+fty*fty+ftz*ftz)/100;
+      return sqrt(ftx*ftx+fty*fty+ftz*ftz);
     }
     return 0;
   }

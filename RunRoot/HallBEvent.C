@@ -147,7 +147,7 @@ void HallBEvent(){
      }
      
      counter++;
-     // if(counter==1E6) break;
+     //if(counter==1E6) break;
      
    }
    gBenchmark->Stop("timer");

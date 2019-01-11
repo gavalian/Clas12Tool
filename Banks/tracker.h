@@ -85,7 +85,11 @@ namespace clas12 {
      if(_index>-1)return getFloat(_chi2nomm_order,_index);
      return 0;
    }
- 
+   double getChi2N(){
+     auto N=getChi2nomm();
+     if(N)return getChi2()/N;
+     return 0;
+   }
     void  init(const char *bankName, hipo::reader &r,std::string items="") override;
     
      

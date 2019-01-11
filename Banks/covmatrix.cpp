@@ -69,8 +69,10 @@ namespace clas12 {
   void covmatrix::print(){
     matrix();
     std::cout<<"Cov Matrix "<<std::endl;
-    std::cout<<_matrix[0][0]<< " "<<_matrix[0][1]<<" "<<_matrix[0][2]<<std::endl;
-    std::cout<<_matrix[1][0]<< " "<<_matrix[1][1]<<" "<<_matrix[1][2]<<std::endl;
-    std::cout<<_matrix[2][0]<< " "<<_matrix[2][1]<<" "<<_matrix[2][2]<<std::endl;
+    std::cout<<_matrix[0][0]<< " "<<_matrix[0][1]<<" "<<_matrix[0][2]<< " "<<_matrix[0][3]<<" "<<_matrix[0][4]<<std::endl;
+    std::cout<<_matrix[1][0]<< " "<<_matrix[1][1]<<" "<<_matrix[1][2]<< " "<<_matrix[1][3]<<" "<<_matrix[1][4]<<std::endl;
+    std::cout<<_matrix[2][0]<< " "<<_matrix[2][1]<<" "<<_matrix[2][2]<< " "<<_matrix[2][3]<<" "<<_matrix[2][4]<<std::endl;
+    std::cout<<_matrix[3][0]<< " "<<_matrix[3][1]<<" "<<_matrix[3][2]<< " "<<_matrix[3][3]<<" "<<_matrix[3][4]<<std::endl;
+    std::cout<<_matrix[4][0]<< " "<<_matrix[4][1]<<" "<<_matrix[4][2]<< " "<<_matrix[4][3]<<" "<<_matrix[4][4]<<std::endl;
   }
 }

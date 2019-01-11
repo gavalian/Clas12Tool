@@ -1,4 +1,6 @@
 {
+
+  gSystem->SetAclicMode(TSystem::kOpt);
   if(TString(gSystem->Getenv("CLAS12TOOL"))==TString()){
     cout<<"You must define the base directory CLAS12TOOL"<<endl;
     exit(0);							    
@@ -31,6 +33,7 @@
   gROOT->LoadMacro("$CLAS12TOOL/Banks/vectors.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/header.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/mcparticle.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/detector.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/particle_detector.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/scintillator.cpp+");

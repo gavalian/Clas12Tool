@@ -49,7 +49,7 @@ namespace clas12 {
     const cher_ptr che(ushort lay) const final;
     
      
-    
+
     double getTime() final{
       if(_ptof){
 	_scint->setIndex(_ptof);

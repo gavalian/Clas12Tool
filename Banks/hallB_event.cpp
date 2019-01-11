@@ -12,6 +12,7 @@ namespace clas12 {
     _reader=&r; //keep a pointer to the reader
     //initialise banks pointers
     _bparts = std::make_shared<particle>();
+    _bmcparts = std::make_shared<mcparticle>();
     _bcovmat= std::make_shared<covmatrix>();
     _bhead  = std::make_shared<header>();
     _bcal   = std::make_shared<calorimeter>();
@@ -22,6 +23,7 @@ namespace clas12 {
 
     //initialise banks
     _bparts->init("REC::Particle",r);
+    _bmcparts->init("MC::Lund",r);
     _bcovmat->init("REC::CovMat",r);
     _bhead->init("REC::Event",r);
     _bcal->init("REC::Calorimeter",r);

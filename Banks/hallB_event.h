@@ -16,6 +16,7 @@
 #include "clas12defs.h"
 #include "reader.h"
 #include "particle.h"
+#include "mcparticle.h"
 #include "calorimeter.h"
 #include "scintillator.h"
 #include "tracker.h"
@@ -39,8 +40,9 @@ namespace clas12 {
   public:
 
 
+    hallB_event()=default;
     hallB_event(hipo::reader &r);
-    //~hallB_event()=default;
+    ~hallB_event()=default;
 
     bool next(){
       if(!_reader->next())
@@ -67,12 +69,13 @@ namespace clas12 {
 
 
      virtual const head_ptr head() const{return _bhead;};
+     virtual const mcpar_ptr mcparts() const{return _bmcparts;};
 
     
     std::vector<region_part_ptr>& getDetParticles(){return _detParticles;}
     std::vector<region_part_ptr> getByID(int id);
 
-
+    int getNParticles() const {return _detParticles.size();}
     
   private:
 
@@ -82,6 +85,7 @@ namespace clas12 {
     //DST banks
     head_ptr  _bhead;
     par_ptr _bparts;
+    mcpar_ptr _bmcparts;
     covmat_ptr _bcovmat;
     cal_ptr  _bcal;
     scint_ptr _bscint;
