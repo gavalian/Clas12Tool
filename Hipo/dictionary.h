@@ -33,6 +33,8 @@ class schema {
     std::vector<std::string>                   entryNames;
 
     int groupid;
+    int itemid;
+    int rowLength;
     std::string schemaName;
 
     /* internally used methods */
@@ -44,7 +46,7 @@ class schema {
 
   public:
 
-    schema(){ groupid = 0;}
+    schema(){ groupid = 0; itemid = 0; rowLength = 0;}
     schema(const char *name){ schemaName = name;}
 
     schema(const schema &s) {
@@ -56,10 +58,12 @@ class schema {
 
     virtual ~schema(){}
 
-    void  setName(const char* name) { schemaName = name;}
-    std::string getName() { return schemaName;}
+    void          setName(const char* name) { schemaName = name;}
+    std::string   getName() { return schemaName;}
 
     void  setGroup( int grp){ groupid = grp;}
+    void  setItem(int item) {itemid = item;}
+
     bool  hasEntry( const char* entry){ return schemaEntries.count(entry);}
     void  addEntry( const char* name, int id, int type)
       {
@@ -70,6 +74,7 @@ class schema {
 
 
     int   getGroup( ){ return groupid;};
+    int   getItem()  { return itemid;}
     int   getItem(  const char* entry);
     int   getType(  const char* entry);
     int   getTypeByString(const char *typestring);

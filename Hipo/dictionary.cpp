@@ -50,17 +50,17 @@ namespace hipo {
 
   int   schema::getTypeByString(const char *typestring){
     std::string type = typestring;
-    if(type.compare("BYTE")==0){
+    if(type.compare("B")==0){
       return 1;
-    } else if(type.compare("SHORT")==0){
+    } else if(type.compare("S")==0){
       return 2;
-    } else if(type.compare("INT")==0){
+    } else if(type.compare("I")==0){
       return 3;
-    } else if(type.compare("FLOAT")==0){
+    } else if(type.compare("F")==0){
       return 4;
-    } else if(type.compare("DOUBLE")==0){
+    } else if(type.compare("D")==0){
       return 5;
-    } else if(type.compare("LONG")==0){
+    } else if(type.compare("L")==0){
       return 8;
     }
     return 0;
@@ -326,12 +326,30 @@ bool   dictionary::hasEntry(const char* name, const char* entry)
   void dictionary::parse(std::string dictString){
     std::vector<std::string> tokens;
     std::string schemahead = hipo::utils::substring(dictString,"{","}",0);
-     hipo::utils::tokenize(schemahead, tokens, ",");
-     hipo::schema  schema(tokens[1].c_str());
+     hipo::utils::tokenize(schemahead, tokens, "/");
+
+     hipo::schema  schema(tokens[0].c_str());
      //int group = std::stoi(tokens[0]);
-     int group = std::atoi(tokens[0].c_str());
+     int group = std::atoi(tokens[1].c_str());
+     int  item = std::atoi(tokens[2].c_str());
+    printf(" SCHEMA %15s group=%d, item=%d\n",schema.getName().c_str(), group,item);
      schema.setGroup(group);
      //printf("schema found %s  %d\n", tokens[1].c_str(),group);
+
+     std::string entries = hipo::utils::substring(dictString,"{","}",1);
+     printf("entries = %s\n",entries.c_str());
+     tokens.clear();
+     hipo::utils::tokenize(entries, tokens, ",");
+
+     std::vector<std::string> entry;
+      for(int i = 0; i < tokens.size(); i++){
+        entry.clear();
+        hipo::utils::tokenize(tokens[i],entry,"/");
+        int type = schema.getTypeByString(entry[1].c_str());
+        printf("%d : adding entry %s %d\n",i,entry[0].c_str(),type);
+        schema.addEntry(entry[0].c_str(),item,type);
+      }
+      /*
      bool status = true;
      int counter = 0;
      int order   = 0;
@@ -352,11 +370,11 @@ bool   dictionary::hasEntry(const char* name, const char* entry)
            printf("** error ** entry %s int schema %s has undefined type.\n",
                      schema.getName().c_str(),tokens[1].c_str()
                   );
-         }
+         }*/
          /*printf("\t found item %s %s %s\n",tokens[0].c_str(),tokens[1].c_str(),
                 tokens[2].c_str());*/
-       }
-     }
+    /*   }
+  }*/
      mapDict[schema.getName()] = schema;
   }
 

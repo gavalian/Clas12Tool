@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <map>
-#include "node.h"
 
 // if the library is compiled with C++11
 // support we will use unordered map which
@@ -59,22 +58,22 @@ namespace hipo {
       void         show();
 
       int          getIntAt   ( int index) {
-        return *reinterpret_cast<int32_t*>(structureAddress[index+8]);
+        return *reinterpret_cast<int32_t*>(&structureAddress[index+8]);
       }
       int16_t      getShortAt ( int index){
-        return *reinterpret_cast<int16_t*>(structureAddress[index+8]);
+        return *reinterpret_cast<int16_t*>(&structureAddress[index+8]);
       }
       int8_t       getByteAt  ( int index){
-        return *reinterpret_cast<int8_t*>(structureAddress[index+8]);
+        return *reinterpret_cast<int8_t*>(&structureAddress[index+8]);
       }
       float        getFloatAt ( int index){
-        return *reinterpret_cast<float*>(structureAddress[index+8]);
+        return *reinterpret_cast<float*>(&structureAddress[index+8]);
       }
       double       getDoubleAt( int index){
-        return *reinterpret_cast<double*>(structureAddress[index+8]);
+        return *reinterpret_cast<double*>(&structureAddress[index+8]);
       }
       long         getLongAt  ( int index){
-        return *reinterpret_cast<int64_t*>(structureAddress[index+8]);
+        return *reinterpret_cast<int64_t*>(&structureAddress[index+8]);
       }
 
       friend class event;
@@ -85,62 +84,21 @@ namespace hipo {
     private:
 
         std::vector<char> dataBuffer;
-        std::map<int,int> eventNodes;
 
-// if the library is compiled with C++11
-// define registeredNodes as unordered_map
-//#if __cplusplus > 199711L
-//        std::unordered_map<int,int> registeredNodes;
-//#else
-        std::map<int,int> registeredNodes;
-//#endif
-
-        std::vector<hipo::generic_node*> nodes;
-        //std::vector<std::auto_ptr<hipo::generic_node>> regiteredNodesPtr;
-        //void scanEvent();
-        void resetNodes();
     public:
 
         event();
-        ~event();
+        event(int size);
+        virtual ~event();
 
-        void showInfo();
+        void show();
         void init(std::vector<char> &buffer);
         void init(const char *buffer, int size);
-
-        void getStructure(hipo::structure &str, int group, int item);
-
-        int  getEventNode(int group, int item);
+        void                getStructure(hipo::structure &str, int group, int item);
         std::pair<int,int>  getStructurePosition(int group, int item);
-        void appendNode(int group, int item, std::vector<int> &vec);
-        void appendNode(int group, int item, std::vector<int16_t> &vec);
-        void appendNode(int group, int item, std::vector<int8_t> &vec);
-        void appendNode(int group, int item, std::vector<float> &vec);
-        void appendNode(int group, int item, std::string &vec);
-
-        int   getNodeAddress(int group, int item);
-        int   getNodeType(int address);
-        int   getNodeLength(int address);
-        int   getNodeSize(int address);
-        char *getNodePtr(int address);
-
-        std::vector<long>   getLong(   int group, int item);
-        std::vector<int>    getInt(    int group, int item);
-        std::vector<float>  getFloat(  int group, int item);
-        std::string         getString( int group, int item);
-        std::string         getString( int position);
-
-        hipo::node<int>    *getIntNode(int group, int item);
-
-        template<class T> hipo::node<T> *getBranch(int group, int item);
-        hipo::generic_node              *getEventGenericBranch(int group, int item);
-
-        std::vector<hipo::generic_node*> *getAllBranches(){ return &nodes;}
-        //template<class T>   node<T> getNode();
-        void scanEvent();
-        void scanEventMap();
-        std::vector<char> getEventBuffer();
-        void reset();
+        std::vector<char>  &getEventBuffer();
+        int                 getSize();
+        void                reset();
     };
     /*
     template<class T>   node<T> event::getNode(){
@@ -151,7 +109,7 @@ namespace hipo {
     } */
 
 }
-
+/*
 namespace hipo {
 
    template<class T> hipo::node<T> *event::getBranch(int group, int item){
@@ -162,6 +120,6 @@ namespace hipo {
      nodes.push_back(type);
      return type;
    }
-}
+}*/
 
 #endif /* EVENT_H */

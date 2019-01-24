@@ -3,8 +3,9 @@ ROOTLDFLAGS := $(shell root-config --ldflags)
 ROOTLIBS    := $(shell root-config --libs) -lEG
 ROOTGLIBS   := $(shell root-config --glibs)
 
-HIPOCFLAGS  := -I../Hipo -I../Banks
-HIPOLIBS    := -L../lib -lhipo -lclas12banks
+HIPOCFLAGS  := -I../Hipo4
+#HIPOLIBS    := -L../lib -lhipo4 -lclas12banks
+HIPOLIBS    := -L../lib -lhipo4
 
 LZ4LIBS     := -L../Lz4/lib -llz4
 LZ4INCLUDES := -I../Lz4/lib
@@ -15,19 +16,19 @@ LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
 
-all: readBanks readParticles analysis clas12event_example
+all: readRecords
 
-readBanks: readBanks.o
-	$(CXX) -o readBanks $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+readRecords: readRecords.o
+	$(CXX) -o readRecords $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
-readParticles: readParticles.o
-	$(CXX) -o readParticles $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+#readParticles: readParticles.o
+#	$(CXX) -o readParticles $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
-analysis: analysis.o
-	$(CXX) -o analysis $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+#analysis: analysis.o
+#	$(CXX) -o analysis $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
-clas12event_example: clas12event_example.o
-	$(CXX) -o clas12event_example $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+#clas12event_example: clas12event_example.o
+#	$(CXX) -o clas12event_example $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
 clean:
 	@echo 'Removing all build files'

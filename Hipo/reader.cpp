@@ -172,11 +172,17 @@ void    reader::readDictionary(){
   hipo::event   schema;
   readHeaderRecord(dictionary);
   int nentries = dictionary.getEventCount();
+  printf(" dictionary event count = %d\n",nentries);
   for(int d = 0; d < nentries; d++){
     dictionary.readHipoEvent(schema,d);
-    std::string schemaString = schema.getString(31111,1);
-    fileDictionary.push_back(schemaString);
-    schemaDictionary.parse(schemaString);
+    int index = schema.getEventNode(120,2);
+    printf("position %d = %d\n",d,index);
+    std::string entry = schema.getString(index);
+    printf(" entry = : %s\n",entry.c_str());
+    /*std::string schemaString = schema.getString(31111,1);
+    fileDictionary.push_back(schemaString);*/
+    schemaDictionary.parse(entry);
+
   }
 }
 

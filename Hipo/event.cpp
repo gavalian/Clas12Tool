@@ -8,6 +8,55 @@
 
 namespace hipo {
 
+//==============================================================
+// Definition of class structure, this will class will be extended
+// to represent different objects that will be appended to the event
+//==============================================================
+
+  bool structure::allocate(int size){
+    if(structureBuffer.size()<size){
+      structureBuffer.resize(size+32);
+    }
+    return true;
+  }
+  /**
+  * returns the size of the structure
+  */
+  int structure::getSize(){
+    int size = *reinterpret_cast<uint32_t *>(structureAddress+4);
+    return size;
+  }
+  // return the type of the structure
+  int structure::getType(){
+    int type = (int) (*reinterpret_cast<uint8_t *>(structureAddress+3));
+    return type;
+  }
+  // returns the group number of the object
+  int structure::getGroup(){
+    int group = (int) (*reinterpret_cast<uint16_t *>(structureAddress));
+    return group;
+  }
+  // returns the item number of the structure
+  int structure::getItem(){
+    int item = (int) (*reinterpret_cast<uint8_t *>(structureAddress+2));
+    return item;
+  }
+  void structure::init(const char *buffer, int size){
+    allocate(size);
+    memcpy(&structureBuffer[0],buffer,size);
+    structureAddress = &structureBuffer[0];
+  }
+
+  void structure::show(){
+    printf("structure : [%5d,%5d] type = %4d, length = %6d\n",
+       getGroup(),getItem(),getType(),getSize());
+  }
+  const char *structure::getAddress(){
+    return structureAddress;
+  }
+  //====================================================================
+  // END of structure class
+  //====================================================================
     event::event(){
         reset();
         #if __cplusplus > 199711L
@@ -20,6 +69,15 @@ namespace hipo {
 
     event::~event(){
 
+    }
+
+    void event::getStructure(hipo::structure &str, int group, int item){
+       std::pair<int,int> index = getStructurePosition(group,item);
+       if(index.first>0){
+         str.init(&dataBuffer[index.first], index.second + 8);
+       } else {
+         printf("*** error *** : structure (%5d,%5d) does not exist", group,item);
+       }
     }
 
     hipo::generic_node *event::getEventGenericBranch(int group, int item){
@@ -47,12 +105,27 @@ namespace hipo {
         scanEvent();
     }
 
+    std::pair<int,int>  event::getStructurePosition(int group, int item){
+      int position = 16;
+      int eventSize = *(reinterpret_cast<uint32_t*>(&dataBuffer[4]));
+      while(position+8<eventSize){
+          uint16_t   gid = *(reinterpret_cast<uint16_t*>(&dataBuffer[position]));
+          uint8_t    iid = *(reinterpret_cast<uint8_t*>(&dataBuffer[position+2]));
+          uint8_t   type = *(reinterpret_cast<uint8_t*>(&dataBuffer[position+3]));
+          int     length = *(reinterpret_cast<int*>(&dataBuffer[position+4]));
+          //printf("group = %4d , item = %4d\n",(unsigned int) gid, (unsigned int) iid);
+          if(gid==group&&iid==item) return std::make_pair(position,length);
+          position += (length + 8);
+      }
+      return std::make_pair(-1,0);
+    }
+
     void event::init(const char *buffer, int size){
         if(dataBuffer.size()<=size){
          dataBuffer.resize(size);
        }
        std::memcpy(&dataBuffer[0],buffer,size);
-       *(reinterpret_cast<uint32_t*>(&dataBuffer[8])) = size;
+       *(reinterpret_cast<uint32_t*>(&dataBuffer[4])) = size;
        scanEvent();
     }
 
@@ -151,7 +224,7 @@ namespace hipo {
 
     int event::getEventNode(int group, int item){
         int position = 16;
-        int eventSize = *(reinterpret_cast<uint32_t*>(&dataBuffer[8]));
+        int eventSize = *(reinterpret_cast<uint32_t*>(&dataBuffer[4]));
         while(position+8<eventSize){
             uint16_t   gid = *(reinterpret_cast<uint16_t*>(&dataBuffer[position]));
             uint8_t    iid = *(reinterpret_cast<uint8_t*>(&dataBuffer[position+2]));
@@ -218,6 +291,23 @@ namespace hipo {
 
         }
         return vector;;
+    }
+
+    std::string         event::getString( int position){
+      std::string result;
+      if(position>=0){
+          uint16_t   gid = *(reinterpret_cast<uint16_t*>(&dataBuffer[position]));
+          uint8_t    iid = *(reinterpret_cast<uint8_t*>(&dataBuffer[position+2]));
+          uint8_t   type = *(reinterpret_cast<uint8_t*>(&dataBuffer[position+3]));
+          int     length = *(reinterpret_cast<int*>(&dataBuffer[position+4]));
+          if(type==6){
+            char *string_ch = (char *) malloc(length+1);
+            std::memcpy(string_ch, &dataBuffer[position+8],length);
+            string_ch[length] = '\0';
+            result = string_ch;
+          }
+      }
+      return result;
     }
 
     std::string  event::getString(int group, int item){
