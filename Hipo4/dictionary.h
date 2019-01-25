@@ -55,14 +55,36 @@ class schema {
     schema(const char *name, int __group,int __item){
       schemaName = name; groupid = __group; itemid = __item;
     }
+    schema(const schema &s) {
+      schemaName    = s.schemaName;
+      schemaEntries = s.schemaEntries;
+      schemaEntriesMap = s.schemaEntriesMap;
+      groupid       = s.groupid;
+      itemid        = s.itemid;
+    }
 
     virtual ~schema(){}
 
     void  parse(std::string schString);
+    int   getGroup(){ return groupid;}
+    int   getItem(){ return itemid;}
+    int   getSizeForRows(int rows);
     int   getOffset(int item, int order, int rows);
+    int   getOffset(const char *name, int order, int rows);
+    int   getEntryType(int item){ return schemaEntries[item].typeId;}
+    int   getEntries(){ return schemaEntries.size();}
     void  show();
+
+
+    void operator = (const schema &D ) {
+         schemaName = D.schemaName;
+         groupid    = D.groupid;
+         itemid     = D.itemid;
+         schemaEntries = D.schemaEntries;
+         schemaEntriesMap = D.schemaEntriesMap;
+    }
 };
-  
+
 }
 
 #endif /* NODE_H */

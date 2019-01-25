@@ -36,10 +36,16 @@ int main(int argc, char** argv) {
    hipo::event      event;
    int counter = 0;
 
+   hipo::bank  dataPART;
+   hipo::bank  dataCALO;
+
    while(reader.hasNext()==true){
       reader.next(event);
-      event.getStructure(particles,300,31);
-      event.getStructure(detectors,300,32);
+      //event.getStructure(dataBank,30,1);
+      //dataBank.show();
+      event.getStructure(dataPART,300,31);
+      event.getStructure(dataCALO,300,32);
+      //dataBank.show();
       counter++;
    }
    printf("processed events = %d\n",counter);

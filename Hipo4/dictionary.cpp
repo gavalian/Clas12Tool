@@ -26,6 +26,7 @@ namespace hipo {
       e.offset   = offset;
       offset += e.typeSize;
       schemaEntries.push_back(e);
+      schemaEntriesMap[e.name] = i;
     }
   }
 
@@ -58,6 +59,7 @@ namespace hipo {
     }
     return 0;
   }
+
   void  schema::show(){
     printf("schema : %14s , group = %6d, item = %3d\n",
        schemaName.c_str(),groupid,itemid);
@@ -72,5 +74,15 @@ namespace hipo {
   int   schema::getOffset(int item, int order, int rows){
       int offset = rows*schemaEntries[item].offset + order*schemaEntries[item].typeSize;
       return offset;
+  }
+  int   schema::getOffset(const char *name, int order, int rows){
+      int item = schemaEntriesMap[name];
+      return getOffset(item,order,rows);
+  }
+
+  int   schema::getSizeForRows(int rows){
+    int nentries = schemaEntries.size();
+    int offset   = getOffset(nentries-1,rows-1,rows) + schemaEntries[nentries-1].typeSize;
+    return offset;
   }
 }

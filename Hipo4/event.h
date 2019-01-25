@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <map>
+#include "bank.h"
 
 // if the library is compiled with C++11
 // support we will use unordered map which
@@ -34,52 +35,6 @@ namespace hipo {
 
   //typedef std::auto_ptr<hipo::generic_node> node_pointer;
 
-  class structure {
-
-    private:
-
-      std::vector<char> structureBuffer;
-      char *structureAddress;
-      void setAddress(const char *address);
-
-    public:
-
-      structure(){ structureAddress = NULL;}
-      structure(int size){ allocate(size);}
-
-      virtual     ~structure(){}
-      bool         allocate(int size);
-      int          getSize();
-      int          getType();
-      int          getGroup();
-      int          getItem();
-      void         init(const char *buffer, int size);
-      const char  *getAddress();
-      void         show();
-
-      int          getIntAt   ( int index) {
-        return *reinterpret_cast<int32_t*>(&structureAddress[index+8]);
-      }
-      int16_t      getShortAt ( int index){
-        return *reinterpret_cast<int16_t*>(&structureAddress[index+8]);
-      }
-      int8_t       getByteAt  ( int index){
-        return *reinterpret_cast<int8_t*>(&structureAddress[index+8]);
-      }
-      float        getFloatAt ( int index){
-        return *reinterpret_cast<float*>(&structureAddress[index+8]);
-      }
-      double       getDoubleAt( int index){
-        return *reinterpret_cast<double*>(&structureAddress[index+8]);
-      }
-      long         getLongAt  ( int index){
-        return *reinterpret_cast<int64_t*>(&structureAddress[index+8]);
-      }
-
-      std::string  getStringAt(int index);
-
-      friend class event;
-  };
 
   class event {
 

@@ -16,17 +16,24 @@
 #include <cstdlib>
 #include <iostream>
 #include "dictionary.h"
+#include "bank.h"
 
 int main(int argc, char** argv) {
 
     hipo::schema  sch("rec::event",30,1);
     sch.parse("pid/S,px/F,py/F,px/F,vx/F,vy/F,vz/F");
     sch.show();
-    int item = 1;
+    int item = 6;
     for(int i = 0 ;i < 6; i++){
       printf(" order = %4d, item = %4d, offset = %5d\n",
         i,item,sch.getOffset(item,i,6));
 
     }
+
+    int size = sch.getSizeForRows(6);
+    printf(" bank size = %d\n",size);
+
+    hipo::bank dataBank(sch,12);
+    dataBank.show();
 }
 //### END OF GENERATED CODE
