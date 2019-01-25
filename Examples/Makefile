@@ -16,13 +16,13 @@ LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
 
-all: readRecords
+all: readEvents schema
 
-readRecords: readRecords.o
-	$(CXX) -o readRecords $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+readEvents: readEvents.o
+	$(CXX) -o readEvents $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
-#readParticles: readParticles.o
-#	$(CXX) -o readParticles $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+schema: schema.o
+	$(CXX) -o schema $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
 #analysis: analysis.o
 #	$(CXX) -o analysis $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
@@ -32,7 +32,7 @@ readRecords: readRecords.o
 
 clean:
 	@echo 'Removing all build files'
-	@rm -rf *.o readParticles readBanks analysis clas12event_example *~
+	@rm -rf *.o readEvents schema *~
 
 %.o: %.cc
 	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)

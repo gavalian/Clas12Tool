@@ -105,6 +105,51 @@ namespace hipo {
     long firstRecordPosition;
   } fileHeader_t;
 
+  /**
+* READER index class is used to construct entire events
+* sequence from all records, and provides ability to canAdvance
+* through events where record number is automatically calculated
+* and triggers reading of the next record when events in the current
+* record are exhausted.
+*/
+class readerIndex {
+
+   private:
+     std::vector<int>  recordEvents;
+     std::vector<long> recordPosition;
+
+     int              currentRecord;
+     int              currentEvent;
+     int              currentRecordEvent;
+
+   public:
+      readerIndex(){
+
+      };
+      ~readerIndex(){};
+
+      bool canAdvance();
+      bool advance();
+
+      int  getEventNumber() { return currentEvent;}
+      int  getRecordNumber() { return currentRecord;}
+      int  getRecordEventNumber() { return currentRecordEvent;}
+      int  getMaxEvents();
+      void addSize(int size);
+      void addPosition(long position){ recordPosition.push_back(position);}
+      long getPosition(int index) { return recordPosition[index];}
+      void rewind(){
+        currentRecord = -1;
+        currentEvent  = -1;
+        currentRecordEvent = -1;
+      }
+      void reset(){
+        currentRecord = 0;
+        currentEvent  = 0;
+        currentRecordEvent = 0;
+      }
+};
+
   class reader {
 
     private:
@@ -114,7 +159,8 @@ namespace hipo {
         std::ifstream     inputStream;
         long              inputStreamSize;
 
-        hipo::record      inputRecord;
+        hipo::record       inputRecord;
+        hipo::readerIndex  readerEventIndex;
 
         void  readHeader();
         void  readIndex();
@@ -124,6 +170,8 @@ namespace hipo {
         ~reader();
 
         void  open(const char *filename);
+        bool  hasNext();
+        bool  next(hipo::event &dataevent);
         void  printWarning();
       };
 }

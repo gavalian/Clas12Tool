@@ -51,6 +51,17 @@ namespace hipo {
     printf("structure : [%5d,%5d] type = %4d, length = %6d\n",
        getGroup(),getItem(),getType(),getSize());
   }
+  
+  std::string  structure::getStringAt(int index){
+      int length = getSize();
+      char *string_ch = (char *) malloc(length+1);
+      std::memcpy(string_ch, &structureBuffer[8],length);
+      string_ch[length] = '\0';
+      std::string result = string_ch;
+      free(string_ch);
+      return result;
+  }
+
   const char *structure::getAddress(){
     return structureAddress;
   }
@@ -84,10 +95,9 @@ namespace hipo {
        if(index.first>0){
          str.init(&dataBuffer[index.first], index.second + 8);
        } else {
-         printf("*** error *** : structure (%5d,%5d) does not exist", group,item);
+         //printf("*** error *** : structure (%5d,%5d) does not exist\n", group,item);
        }
     }
-
 
     void event::init(std::vector<char> &buffer){
         dataBuffer.resize(buffer.size());
@@ -127,7 +137,6 @@ namespace hipo {
         *(reinterpret_cast<uint32_t*>(&dataBuffer[ 8])) = 0;
         *(reinterpret_cast<uint32_t*>(&dataBuffer[12])) = 0;
     }
-
     std::vector<char> &event::getEventBuffer(){ return dataBuffer;}
     /*
     template<class T>   node<T> event::getNode(){
@@ -135,7 +144,6 @@ namespace hipo {
         en.setLength(4);
         en.setAddress(NULL);
     } */
-
     void event::show(){
         printf(" EVENT  SIZE = %d\n",getSize());
         int position = 16;

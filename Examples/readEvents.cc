@@ -30,8 +30,19 @@ int main(int argc, char** argv) {
    hipo::reader  reader;
    reader.open(inputFile);
 
-   hipo::structure  str;
+   hipo::structure  particles;
+   hipo::structure  detectors;
 
+   hipo::event      event;
+   int counter = 0;
+
+   while(reader.hasNext()==true){
+      reader.next(event);
+      event.getStructure(particles,300,31);
+      event.getStructure(detectors,300,32);
+      counter++;
+   }
+   printf("processed events = %d\n",counter);
 /*
    int counter = 0;
    while(reader.next()==true){

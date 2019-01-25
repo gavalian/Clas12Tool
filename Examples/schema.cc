@@ -15,32 +15,18 @@
 //***********************************************************************
 #include <cstdlib>
 #include <iostream>
-#include "reader.h"
-
-
+#include "dictionary.h"
 
 int main(int argc, char** argv) {
 
-   std::cout << " reading file example program (HIPO) "  << __cplusplus << std::endl;
+    hipo::schema  sch("rec::event",30,1);
+    sch.parse("pid/S,px/F,py/F,px/F,vx/F,vy/F,vz/F");
+    sch.show();
+    int item = 1;
+    for(int i = 0 ;i < 6; i++){
+      printf(" order = %4d, item = %4d, offset = %5d\n",
+        i,item,sch.getOffset(item,i,6));
 
-   char inputFile[256];
-
-   if(argc>1) {
-      sprintf(inputFile,"%s",argv[1]);
-      //sprintf(outputFile,"%s",argv[2]);
-   } else {
-      std::cout << " *** please provide a file name..." << std::endl;
-     exit(0);
-   }
-
-   hipo::reader  reader;
-   reader.open(inputFile);
-
-   /*hipo::bank  recBank("REC::Particle",reader);
-
-   while(reader.next()==true){
-       recBank.show();
-   }*/
-
+    }
 }
 //### END OF GENERATED CODE

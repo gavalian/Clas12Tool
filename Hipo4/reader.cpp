@@ -127,9 +127,30 @@ void  reader::readIndex(){
        int  entries  = base.getIntAt ( rows*12 + i*4);
        long uid1     = base.getLongAt( rows*16 + i*8);
        long uid2     = base.getLongAt( rows*24 + i*8);
-       printf("record # %4d POSITION = %12lu , LENGTH = %12d , ENTRIES = %6d , UID = %12lu %12lu\n",
-          i,position,length,entries, uid1,uid2);
+       //printf("record # %4d POSITION = %12lu , LENGTH = %12d , ENTRIES = %6d , UID = %12lu %12lu\n",
+          //i,position,length,entries, uid1,uid2);
+       readerEventIndex.addSize(entries);
+       readerEventIndex.addPosition(position);
     }
+    readerEventIndex.rewind();
+}
+
+bool  reader::hasNext(){ return readerEventIndex.canAdvance();}
+
+bool  reader::next(hipo::event &dataevent){
+    int recordNumber = readerEventIndex.getRecordNumber();
+    readerEventIndex.advance();
+    int recordToBeRead = readerEventIndex.getRecordNumber();
+    if(recordToBeRead!=recordNumber){
+      long position = readerEventIndex.getPosition(recordToBeRead);
+      inputRecord.readRecord(inputStream,position,0);
+      /*printf(" record changed from %d to %d at event %d total event # %d\n",
+        recordNumber, recordToBeRead,readerEventIndex.getEventNumber(),
+        readerEventIndex.getMaxEvents());*/
+    }
+    int eventNumberInRecord = readerEventIndex.getRecordEventNumber();
+    inputRecord.readHipoEvent(dataevent,eventNumberInRecord);
+    return true;
 }
 
 void reader::printWarning(){
@@ -142,4 +163,46 @@ void reader::printWarning(){
       std::cout << "******************************************************" << std::endl;
     #endif
   }
+}
+
+
+namespace hipo {
+
+  void readerIndex::addSize(int size){
+    if(recordEvents.size()==0){
+      recordEvents.push_back(0);
+      recordEvents.push_back(size);
+    } else {
+      int cz = recordEvents[recordEvents.size()-1] + size;
+      recordEvents.push_back(cz);
+    }
+  }
+
+  bool readerIndex::canAdvance(){
+    return (currentEvent<getMaxEvents()-1);
+  }
+
+  bool readerIndex::advance(){
+    if(recordEvents.size()==0) return false;
+    if(currentEvent+1<recordEvents[currentRecord+1]){
+      currentEvent++;
+      currentRecordEvent++;
+      return true;
+    }
+
+    if(recordEvents.size() < currentRecord + 2 + 1){
+      printf("advance(): Warning, reached the limit of events.\n");
+      return false;
+    }
+    currentEvent++;
+    currentRecord++;
+    currentRecordEvent = 0;
+    return true;
+  }
+
+  int readerIndex::getMaxEvents(){
+    if(recordEvents.size()==0) return 0;
+    return recordEvents[recordEvents.size()-1];
+  }
+
 }

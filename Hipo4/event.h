@@ -76,6 +76,8 @@ namespace hipo {
         return *reinterpret_cast<int64_t*>(&structureAddress[index+8]);
       }
 
+      std::string  getStringAt(int index);
+
       friend class event;
   };
 
