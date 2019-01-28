@@ -84,9 +84,68 @@ bank::~bank(){
 
 }
 
+void bank::notify(){
+  int size = bankSchema.getRowLength();
+  bankRows = getSize()/size;
+  printf("---> bank notify called structure size = %8d (size = %5d)  rows = %d\n",
+      getSize(),size, bankRows);
+}
 
-/*void bank::show(){
-}*/
+int    bank::getInt(int item, int index){
+  if(bankSchema.getEntryType(item)==3){
+    int offset = bankSchema.getOffset(item, index, bankRows);
+    return getIntAt(offset);
+  }
+  return 0;
+}
+int    bank::getShort(int item, int index){
+  return 0;
+}
+int    bank::getByte(int item, int index){
+  return 0;
+}
+float  bank::getFloat(int item, int index){
+  if(bankSchema.getEntryType(item)==4){
+    int offset = bankSchema.getOffset(item, index, bankRows);
+    return getFloatAt(offset);
+  }
+  return 0.0;
+}
+int    bank::getInt(const char *name, int index){
+  int item = bankSchema.getEntryOrder(name);
+  if(bankSchema.getEntryType(item)==3){
+    int offset = bankSchema.getOffset(item, index, bankRows);
+    return getIntAt(offset);
+  }
+  return 0;
+}
+int    bank::getShort(const char *name, int index){
+  return 0;
+}
+int    bank::getByte(const char *name, int index){
+  return 0;
+}
+float  bank::getFloat(const char *name, int index){
+  int item = bankSchema.getEntryOrder(name);
+  if(bankSchema.getEntryType(item)==4){
+    int offset = bankSchema.getOffset(item, index, bankRows);
+    return getFloatAt(offset);
+  }
+  return 0.0;
+}
+void bank::show(){
+  for(int i = 0; i < bankSchema.getEntries(); i++){
+    printf("%14d : ", i);
+    for(int k = 0; k < bankRows; k++){
+      if(bankSchema.getEntryType(i) < 4){
+          printf("%8d ",getInt(i,k));
+        } else if(bankSchema.getEntryType(i)==4) {
+          printf("%8.5f ",getFloat(i,k));
+        }
+    }
+    printf("\n");
+  }
+}
 
 
 }

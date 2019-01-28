@@ -66,9 +66,12 @@ class schema {
     virtual ~schema(){}
 
     void  parse(std::string schString);
+    std::string   getName(){ return schemaName;}
     int   getGroup(){ return groupid;}
     int   getItem(){ return itemid;}
     int   getSizeForRows(int rows);
+    int   getRowLength();
+    int   getEntryOrder(const char *name);
     int   getOffset(int item, int order, int rows);
     int   getOffset(const char *name, int order, int rows);
     int   getEntryType(int item){ return schemaEntries[item].typeId;}
@@ -84,6 +87,21 @@ class schema {
          schemaEntriesMap = D.schemaEntriesMap;
     }
 };
+
+  class dictionary {
+  private:
+    std::map<std::string,schema> factory;
+  public:
+    dictionary(){};
+    virtual ~dictionary(){};
+
+    std::vector<std::string> getSchemaList();
+    void    addSchema(schema sc){ factory[sc.getName()] = sc;}
+    bool    hasSchema(const char *name) { return (factory.count(name)!=0);}
+    schema &getSchema(const char *name){ return factory[name];}
+    bool    parse(const char *schemaString);
+    void    show();
+  };
 
 }
 

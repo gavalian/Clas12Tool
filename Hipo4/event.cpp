@@ -31,12 +31,17 @@ namespace hipo {
 
     }
 
+    void   event::getStructure(hipo::bank &b){
+        getStructure(b,b.getSchema().getGroup(),b.getSchema().getItem());
+    }
+
     void event::getStructure(hipo::structure &str, int group, int item){
        std::pair<int,int> index = getStructurePosition(group,item);
        if(index.first>0){
          str.init(&dataBuffer[index.first], index.second + 8);
+         str.notify();
        } else {
-         str.initStructureBySize(group,item,1,0);
+         str.initStructureBySize(group,item,1,0);         
          //printf("*** error *** : structure (%5d,%5d) does not exist\n", group,item);
        }
     }

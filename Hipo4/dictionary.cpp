@@ -80,9 +80,52 @@ namespace hipo {
       return getOffset(item,order,rows);
   }
 
+  int   schema::getEntryOrder(const char *name){
+    return schemaEntriesMap[name];
+  }
   int   schema::getSizeForRows(int rows){
     int nentries = schemaEntries.size();
     int offset   = getOffset(nentries-1,rows-1,rows) + schemaEntries[nentries-1].typeSize;
     return offset;
+  }
+
+  int   schema::getRowLength(){
+    int nentries = schemaEntries.size();
+    int size     = schemaEntries[nentries-1].offset + schemaEntries[nentries-1].typeSize;
+    return size;
+  }
+
+  //=============================================
+  // Implementation of dictionary class
+  //=============================================
+  std::vector<std::string> dictionary::getSchemaList(){
+    std::map<std::string, schema>::iterator it;
+    std::vector<std::string> vec;
+    for ( it = factory.begin(); it != factory.end(); it++ ){
+        vec.push_back(it->first);
+    }
+    return vec;
+  }
+
+  bool    dictionary::parse(const char *schemaString){
+    std::vector<std::string> tokens;
+    std::string schemahead = hipo::utils::substring(schemaString,"{","}",0);
+    hipo::utils::tokenize(schemahead, tokens, "/");
+    int group = std::atoi(tokens[1].c_str());
+    int  item = std::atoi(tokens[2].c_str());
+    hipo::schema  schema (tokens[0].c_str(),group,item);
+    std::string schemabody = hipo::utils::substring(schemaString,"{","}",1);
+    schema.parse(schemabody.c_str());
+    addSchema(schema);
+    return true;
+  }
+
+  void    dictionary::show(){
+    std::vector<std::string> list = getSchemaList();
+    for(int i = 0; i < list.size(); i++){
+      schema sc = getSchema(list[i].c_str());
+      printf("%24s : %5d %5d %5d\n", sc.getName().c_str(),
+        sc.getGroup(), sc.getItem(),sc.getEntries());
+    }
   }
 }

@@ -27,7 +27,6 @@ int main(int argc, char** argv) {
     for(int i = 0 ;i < 6; i++){
       printf(" order = %4d, item = %4d, offset = %5d\n",
         i,item,sch.getOffset(item,i,6));
-
     }
 
     int size = sch.getSizeForRows(6);

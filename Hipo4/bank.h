@@ -23,7 +23,7 @@
 #include "dictionary.h"
 
 namespace hipo {
-  
+
   class structure {
 
     private:
@@ -47,7 +47,7 @@ namespace hipo {
       int          getItem();
       void         init(const char *buffer, int size);
       const char  *getAddress();
-      void         show();
+      virtual void  show();
 
       int          getIntAt   ( int index) {
         return *reinterpret_cast<int32_t*>(&structureAddress[index+8]);
@@ -70,6 +70,8 @@ namespace hipo {
 
       std::string  getStringAt(int index);
 
+
+      virtual void notify(){}
       friend class event;
   };
 
@@ -83,6 +85,7 @@ namespace hipo {
       int           bankRows;
 
     protected:
+        void setBankRows(int rows){ bankRows = rows;}
 
     public:
 
@@ -108,8 +111,20 @@ namespace hipo {
 
         hipo::schema  &getSchema() { return bankSchema;}
 
+        int    getInt(int item, int index);
+        int    getShort(int item, int index);
+        int    getByte(int item, int index);
+        float  getFloat(int item, int index);
 
+        int    getInt(const char *name, int index);
+        int    getShort(const char *name, int index);
+        int    getByte(const char *name, int index);
+        float  getFloat(const char *name, int index);
+
+        void   show();
         //virtual  void notify(){ };
+
+        virtual void notify();
   };
 
 }

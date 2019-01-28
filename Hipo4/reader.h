@@ -169,9 +169,12 @@ class readerIndex {
         reader();
         ~reader();
 
+        void  readDictionary(hipo::dictionary &dict);
         void  open(const char *filename);
         bool  hasNext();
+        bool  next();
         bool  next(hipo::event &dataevent);
+        void  read(hipo::event &dataevent);
         void  printWarning();
       };
 }

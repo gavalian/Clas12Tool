@@ -153,6 +153,43 @@ bool  reader::next(hipo::event &dataevent){
     return true;
 }
 
+void  reader::read(hipo::event &dataevent){
+  int eventNumberInRecord = readerEventIndex.getRecordEventNumber();
+  inputRecord.readHipoEvent(dataevent,eventNumberInRecord);
+}
+
+void  reader::readDictionary(hipo::dictionary &dict){
+  long position = header.headerLength*4;
+  hipo::record  dictRecord;
+  dictRecord.readRecord(inputStream,position,0);
+  int nevents = dictRecord.getEventCount();
+  printf(" reading record at position %8lu, number of entries = %5d\n",
+      position,dictRecord.getEventCount());
+  hipo::structure schemaStructure;
+  hipo::event  event;
+  for(int i = 0; i < nevents; i++){
+    dictRecord.readHipoEvent(event,i);
+    event.getStructure(schemaStructure,120,2);
+    printf("schema : %s\n",schemaStructure.getStringAt(0).c_str());
+    dict.parse(schemaStructure.getStringAt(0).c_str());
+  }
+}
+
+bool  reader::next(){
+    if(readerEventIndex.canAdvance()==false) return false;
+    int recordNumber = readerEventIndex.getRecordNumber();
+    readerEventIndex.advance();
+    int recordToBeRead = readerEventIndex.getRecordNumber();
+    if(recordToBeRead!=recordNumber){
+      long position = readerEventIndex.getPosition(recordToBeRead);
+      inputRecord.readRecord(inputStream,position,0);
+      /*printf(" record changed from %d to %d at event %d total event # %d\n",
+        recordNumber, recordToBeRead,readerEventIndex.getEventNumber(),
+        readerEventIndex.getMaxEvents());*/
+    }
+    return true;
+}
+
 void reader::printWarning(){
     #ifndef __LZ4__
       std::cout << "******************************************************" << std::endl;

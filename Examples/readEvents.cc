@@ -30,6 +30,11 @@ int main(int argc, char** argv) {
    hipo::reader  reader;
    reader.open(inputFile);
 
+   hipo::dictionary  factory;
+
+   reader.readDictionary(factory);
+
+   factory.show();
    hipo::structure  particles;
    hipo::structure  detectors;
 
@@ -39,13 +44,18 @@ int main(int argc, char** argv) {
    hipo::bank  dataPART;
    hipo::bank  dataCALO;
 
-   while(reader.hasNext()==true){
-      reader.next(event);
+   hipo::bank PART(factory.getSchema("REC::Particle"));
+
+
+   while(reader.next()==true){
+      reader.read(event);
+      //reader.next();
       //event.getStructure(dataBank,30,1);
       //dataBank.show();
-      event.getStructure(dataPART,300,31);
-      event.getStructure(dataCALO,300,32);
-      //dataBank.show();
+      event.getStructure(PART);
+      //PART.show();
+      //event.getStructure(dataCALO,300,32);
+      //dataPART.show();
       counter++;
    }
    printf("processed events = %d\n",counter);
