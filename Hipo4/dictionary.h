@@ -75,6 +75,7 @@ class schema {
     int   getOffset(int item, int order, int rows);
     int   getOffset(const char *name, int order, int rows);
     int   getEntryType(int item){ return schemaEntries[item].typeId;}
+    std::string getEntryName(int item) { return schemaEntries[item].name;}
     int   getEntries(){ return schemaEntries.size();}
     void  show();
 

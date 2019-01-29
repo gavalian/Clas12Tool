@@ -53,7 +53,17 @@ int main(int argc, char** argv) {
       //event.getStructure(dataBank,30,1);
       //dataBank.show();
       event.getStructure(PART);
-      //PART.show();
+      PART.show();
+      int nrows = PART.getRows();
+
+      for(int i = 0; i < nrows; i++){
+        int   pid = PART.getInt("pid",i);
+        float  px = PART.getFloat("px",i);
+        float  py = PART.getFloat("py",i);
+        float  pz = PART.getFloat("pz",i);
+
+        printf("%6d %8.4f %8.4f %8.4f\n",pid,px,py,pz);
+      }
       //event.getStructure(dataCALO,300,32);
       //dataPART.show();
       counter++;

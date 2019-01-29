@@ -111,15 +111,21 @@ namespace hipo {
 
         hipo::schema  &getSchema() { return bankSchema;}
 
+        int    getRows(){ return bankRows;}
+
         int    getInt(int item, int index);
         int    getShort(int item, int index);
         int    getByte(int item, int index);
         float  getFloat(int item, int index);
+        double getDouble(int item, int index);
+        long   getLong(int item, int index);
 
         int    getInt(const char *name, int index);
         int    getShort(const char *name, int index);
         int    getByte(const char *name, int index);
         float  getFloat(const char *name, int index);
+        double getDouble(const char *name, int index);
+        long   getLong(const char *name, int index);
 
         void   show();
         //virtual  void notify(){ };
