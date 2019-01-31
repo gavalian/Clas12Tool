@@ -41,9 +41,16 @@ namespace hipo {
          str.init(&dataBuffer[index.first], index.second + 8);
          str.notify();
        } else {
-         str.initStructureBySize(group,item,1,0);         
+         str.initStructureBySize(group,item,1,0);
          //printf("*** error *** : structure (%5d,%5d) does not exist\n", group,item);
        }
+    }
+
+    void    event::addStructure(hipo::structure &str){
+        int str_size = str.getStructureBufferSize();
+        int evt_size = getSize();
+        memcpy(&dataBuffer[evt_size], &str.getStructureBuffer()[0],str_size);
+        *(reinterpret_cast<uint32_t*>(&dataBuffer[4])) = (evt_size + str_size);
     }
 
     void event::init(std::vector<char> &buffer){

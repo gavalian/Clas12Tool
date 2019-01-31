@@ -16,13 +16,16 @@ LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
 
-all: readEvents schema
+all: readEvents schema builder
 
 readEvents: readEvents.o
 	$(CXX) -o readEvents $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
 schema: schema.o
 	$(CXX) -o schema $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+
+builder: builder.o
+	$(CXX) -o builder $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
 #analysis: analysis.o
 #	$(CXX) -o analysis $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)

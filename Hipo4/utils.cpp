@@ -64,6 +64,21 @@ namespace hipo {
           return str.substr(firstPos+1, length);
   }
 
+  void utils::writeInt(char *buffer, int position, int     value){
+    int *ptr = reinterpret_cast<int*>(&buffer[position]);
+    *ptr = value;
+  }
+
+  void utils::writeLong( char *buffer, int position, long    value){
+    int64_t *ptr = reinterpret_cast<int64_t*>(&buffer[position]);
+    *ptr = value;
+  }
+
+  void utils::writeByte( char *buffer, int position, uint8_t value ){
+    int8_t *ptr = reinterpret_cast<int8_t*>(&buffer[position]);
+    *ptr = value;
+  }
+
   void utils::printLogo(){
     std::cout << "************************************************" << std::endl;
     std::cout << "*         >=<      :  ---------------------    *" << std::endl;

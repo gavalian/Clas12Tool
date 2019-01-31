@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "reader.h"
-
+#include "recordbuilder.h"
 
 
 int main(int argc, char** argv) {
@@ -45,7 +45,10 @@ int main(int argc, char** argv) {
    hipo::bank  dataCALO;
 
    hipo::bank PART(factory.getSchema("REC::Particle"));
+   hipo::bank CALO(factory.getSchema("REC::Calorimeter"));
 
+   hipo::event outEvent;
+   hipo::recordbuilder builder;
 
    while(reader.next()==true){
       reader.read(event);
@@ -53,21 +56,18 @@ int main(int argc, char** argv) {
       //event.getStructure(dataBank,30,1);
       //dataBank.show();
       event.getStructure(PART);
+      event.getStructure(CALO);
       //PART.show();
-      int nrows = PART.getRows();
+      //CALO.show();
+      outEvent.addStructure(PART);
+      outEvent.addStructure(CALO);
+      //outEvent.show();
 
-      for(int i = 0; i < nrows; i++){
-        int   pid = PART.getInt("pid",i);
-        float  px = PART.getFloat("px",i);
-        float  py = PART.getFloat("py",i);
-        float  pz = PART.getFloat("pz",i);
-
-        /*int   pid = PART.getInt(1,i);
-        float  px = PART.getFloat(2,i);
-        float  py = PART.getFloat(3,i);
-        float  pz = PART.getFloat(4,i);*/
-        printf("%6d %8.4f %8.4f %8.4f\n",pid,px,py,pz);
+      if(builder.addEvent(outEvent)==false){
+        builder.build();
+        builder.reset();
       }
+      outEvent.reset();
       //event.getStructure(dataCALO,300,32);
       //dataPART.show();
       counter++;

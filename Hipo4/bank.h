@@ -34,6 +34,8 @@ namespace hipo {
 
     protected:
       void initStructureBySize(int __group, int __item, int __type, int __size);
+      std::vector<char>  &getStructureBuffer(){ return structureBuffer;}
+      int                 getStructureBufferSize(){ return 8+getSize();}
     public:
 
       structure(){ structureAddress = NULL;}

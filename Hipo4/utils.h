@@ -46,6 +46,10 @@ namespace hipo {
     static std::string getFileHeader();
     static std::string getFileTrailer(const char *code);
     static std::string getSConstruct();
+
+    static void writeInt(  char *buffer, int position, int     value);
+    static void writeLong( char *buffer, int position, long    value);
+    static void writeByte( char *buffer, int position, uint8_t value );
   };
 
   class benchmark {

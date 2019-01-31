@@ -50,8 +50,6 @@ namespace hipo {
         int          data_endianness;
         int          data_offset;
 
-
-
       public:
         data(){ data_ptr = NULL; data_size = 0;}
         ~data(){ }

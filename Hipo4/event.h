@@ -53,6 +53,8 @@ namespace hipo {
         void init(const char *buffer, int size);
         void                getStructure(hipo::structure &str, int group, int item);
         void                getStructure(hipo::bank &b);
+        void                addStructure(hipo::structure &str);
+
         std::pair<int,int>  getStructurePosition(int group, int item);
         std::vector<char>  &getEventBuffer();
         int                 getSize();
