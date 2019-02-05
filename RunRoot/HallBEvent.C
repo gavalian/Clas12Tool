@@ -43,13 +43,6 @@ void HallBEvent(){
    
    cout<<"Analysing hipo file "<<inputFile<<endl;
 
-   //get the hipo data
-   hipo::reader  reader;
-   reader.open(inputFile.Data());
-
-   //create the hallb event
-   hallB_event event(reader);
-
    //some particles
    auto db=TDatabasePDG::Instance();
    auto beam=P4_(0,0,10.6,10.6);
@@ -69,86 +62,97 @@ void HallBEvent(){
    int counter=0;
    
    //  while(reader.next()==true){// (map 4.5s for 1M events)
-                             
-   while(event.next()==true){ //(5.6s) vector + all loop (7.6s)
-                              //  7M =75.05 seconds Cpu Time =  48.65s
-                              //(7.2s) map  + all loop (9.4s)
-                              //(6.9s) uomap+ all loop (8.7s)
-                              //7M =  85.74 seconds Cpu Time =  59.70s
-                              //i.e. using maps is 2.5x slower!
+   TChain chain("hipo");
+   chain.Add(inputFile.Data());
+   auto files=chain.GetListOfFiles();
+  //get the hipo data
+
+   for(Int_t i=0;i<files->GetEntries();i++){
+     hipo::reader  reader;
+   reader.open(files->At(i)->GetTitle());
+
+     //create the hallb event
+     hallB_event event(reader);
+
+     while(event.next()==true){ //(5.6s) vector + all loop (7.6s)
+       //  7M =75.05 seconds Cpu Time =  48.65s
+       //(7.2s) map  + all loop (9.4s)
+       //(6.9s) uomap+ all loop (8.7s)
+       //7M =  85.74 seconds Cpu Time =  59.70s
+       //i.e. using maps is 2.5x slower!
 
 
+       event.head()->getStartTime();
      
-     event.head()->getStartTime();
-     
-     //Loop over all particles to see how to access detector info.
-     for(auto& p : event.getDetParticles()){
-       //  get predefined selected information
-       p->getTime();
-       p->getDetEnergy();
-       p->getDeltaEnergy();
-       // get any detector information (if exists for this particle)
-       // there should be a get function for any entry in the bank
-       switch(p->region()) {// (+1s per 1M)
-       case FD :
-     	 p->cal(PCAL)->getEnergy();
-     	 p->cal(ECIN)->getEnergy();
-     	 p->cal(ECOUT)->getEnergy();
-     	 p->sci(FTOF1A)->getEnergy();
-     	 p->sci(FTOF1B)->getEnergy();
-     	 p->sci(FTOF2)->getEnergy();
-     	 p->trk(DC)->getSector();
-     	 p->che(HTCC)->getNphe();
-     	 p->che(LTCC)->getNphe();
-     	 break;
-       case FT :
-     	 p->ft(FTCAL)->getEnergy();
-     	 p->ft(FTHODO)->getEnergy();
-     	 break;
-       case CD:
-     	 p->sci(CTOF)->getEnergy();
-     	 p->sci(CND)->getEnergy();
-     	 break;
+       //Loop over all particles to see how to access detector info.
+       for(auto& p : event.getDetParticles()){
+	 //  get predefined selected information
+	 p->getTime();
+	 p->getDetEnergy();
+	 p->getDeltaEnergy();
+	 // get any detector information (if exists for this particle)
+	 // there should be a get function for any entry in the bank
+	 switch(p->region()) {// (+1s per 1M)
+	 case FD :
+	   p->cal(PCAL)->getEnergy();
+	   p->cal(ECIN)->getEnergy();
+	   p->cal(ECOUT)->getEnergy();
+	   p->sci(FTOF1A)->getEnergy();
+	   p->sci(FTOF1B)->getEnergy();
+	   p->sci(FTOF2)->getEnergy();
+	   p->trk(DC)->getSector();
+	   p->che(HTCC)->getNphe();
+	   p->che(LTCC)->getNphe();
+	   break;
+	 case FT :
+	   p->ft(FTCAL)->getEnergy();
+	   p->ft(FTHODO)->getEnergy();
+	   break;
+	 case CD:
+	   p->sci(CTOF)->getEnergy();
+	   p->sci(CND)->getEnergy();
+	   break;
+	 }
+	 //   covariance matrix (comment in to see!)
+	 // p->covmat()->print();
+	 p->cmat();
        }
-       //   covariance matrix (comment in to see!)
-       // p->covmat()->print();
-       p->cmat();
-     }
-     // get particles by type (+1s overhead per 1M (include fill hist))
-     auto electrons=event.getByID(11);
-     auto gammas=event.getByID(22);
-     auto protons=event.getByID(2212);
-     auto pips=event.getByID(211);
-     auto pims=event.getByID(-211);
+       // get particles by type (+1s overhead per 1M (include fill hist))
+       auto electrons=event.getByID(11);
+       auto gammas=event.getByID(22);
+       auto protons=event.getByID(2212);
+       auto pips=event.getByID(211);
+       auto pims=event.getByID(-211);
 
-     if(electrons.size()==1 && gammas.size()==2 && protons.size()==1 &&
-     	pips.size()==1 &&pims.size() == 1){
+       if(electrons.size()==1 && gammas.size()==2 && protons.size()==1 &&
+	  pips.size()==1 &&pims.size() == 1){
        
-       // set the particle momentum
-       // if we wanted to integrate more ROOT we could
-       // return direct TLorentzVector
-       // i.e. auto el = electrons[0]->p4(); etc.
-       el->SetXYZM(electrons[0]->par()->getPx(),electrons[0]->par()->getPy(),
-     		   electrons[0]->par()->getPz(),el->M());
-       pr->SetXYZM(protons[0]->par()->getPx(),protons[0]->par()->getPy(),
-     		   protons[0]->par()->getPz(),pr->M());
-       g1->SetXYZM(gammas[0]->par()->getPx(),gammas[0]->par()->getPy(),
-     		   gammas[0]->par()->getPz(),0);
-       g2->SetXYZM(gammas[1]->par()->getPx(),gammas[1]->par()->getPy(),
-     		   gammas[1]->par()->getPz(),0);
-       pip->SetXYZM(pips[0]->par()->getPx(),pips[0]->par()->getPy(),
-     		    pips[0]->par()->getPz(),pip->M());
-       pim->SetXYZM(pims[0]->par()->getPx(),pims[0]->par()->getPy(),
-     		    pims[0]->par()->getPz(),pim->M());
+	 // set the particle momentum
+	 // if we wanted to integrate more ROOT we could
+	 // return direct TLorentzVector
+	 // i.e. auto el = electrons[0]->p4(); etc.
+	 el->SetXYZM(electrons[0]->par()->getPx(),electrons[0]->par()->getPy(),
+		     electrons[0]->par()->getPz(),el->M());
+	 pr->SetXYZM(protons[0]->par()->getPx(),protons[0]->par()->getPy(),
+		     protons[0]->par()->getPz(),pr->M());
+	 g1->SetXYZM(gammas[0]->par()->getPx(),gammas[0]->par()->getPy(),
+		     gammas[0]->par()->getPz(),0);
+	 g2->SetXYZM(gammas[1]->par()->getPx(),gammas[1]->par()->getPy(),
+		     gammas[1]->par()->getPz(),0);
+	 pip->SetXYZM(pips[0]->par()->getPx(),pips[0]->par()->getPy(),
+		      pips[0]->par()->getPz(),pip->M());
+	 pim->SetXYZM(pims[0]->par()->getPx(),pims[0]->par()->getPy(),
+		      pims[0]->par()->getPz(),pim->M());
 
-       TLorentzVector miss=beam+target-*el-*pr-*g1-*g2-*pip-*pim;
-       hmiss->Fill(miss.M2());
+	 TLorentzVector miss=beam+target-*el-*pr-*g1-*g2-*pip-*pim;
+	 hmiss->Fill(miss.M2());
        
+       }
+     
+       counter++;
+       //if(counter==1E6) break;
+     
      }
-     
-     counter++;
-     //if(counter==1E6) break;
-     
    }
    gBenchmark->Stop("timer");
    gBenchmark->Print("timer");

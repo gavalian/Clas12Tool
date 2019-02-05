@@ -1,0 +1,67 @@
+Switching to new files?
+Repeated events at end of file
+record #  478 POSITION =   1756000744 , LENGTH =      3637176 , ENTRIES =    102 , UID =            0            0
+record #  479 POSITION =   1759637920 , LENGTH =      3687752 , ENTRIES =    100 , UID =            0            0
+record #  480 POSITION =   1763325672 , LENGTH =      2479600 , ENTRIES =    205 , UID =            0            0
+Looks like last record has extra 100 events
+
+Just read event
+timer     : Real Time =   1.55 seconds Cpu Time =   1.56 seconds
+
+Just REC::Particle
+timer     : Real Time =   1.60 seconds Cpu Time =   1.59 seconds
+
+Just +  REC::MC
+timer     : Real Time =   1.60 seconds Cpu Time =   1.59 seconds
+
++REC::CovMAt
+
+timer     : Real Time =   1.68 seconds Cpu Time =   1.67 seconds
+
++REC::EVNT
+timer     : Real Time =   1.68 seconds Cpu Time =   1.68 seconds
+
++REC::CAL
+timer     : Real Time =   2.22 seconds Cpu Time =   2.22 seconds
+
++REC::SCINT
+timer     : Real Time =   2.49 seconds Cpu Time =   2.49 seconds
+
++REC::TRACK
+timer     : Real Time =   2.59 seconds Cpu Time =   2.58 seconds
+
++REC::CHER
+timer     : Real Time =   2.63 seconds Cpu Time =   2.63 seconds
+
++REC::FT
+timer     : Real Time =   2.62 seconds Cpu Time =   2.62 seconds
+
+
+NO HALLBEVENT sort()
+
+timer     : Real Time =   2.33 seconds Cpu Time =   2.33 seconds
+
+HALLBEVENT analysis
+timer     : Real Time =   2.67 seconds Cpu Time =   2.68 seconds
+
+For 10 files:
+timer     : Real Time =  57.23 seconds Cpu Time =  32.23 seconds
+WHY IS TIMING SIGNIFICANTLY WORSE?
+
+Naive MT
+1worker
+timer     : Real Time = 270.88 seconds Cpu Time = 270.88 seconds
+4worker
+timer     : Real Time = 110.93 seconds Cpu Time = 441.44 seconds
+10worker
+timer     : Real Time = 111.10 seconds Cpu Time = 1060.30 seconds
+
+but 170Gb of data (100*1.7G)
+Apply pause in loop
+
+1worker
+timer     : Real Time = 543.25 seconds Cpu Time = 301.31 seconds
+4worker
+timer     : Real Time = 154.53 seconds Cpu Time = 373.57 seconds
+10worker
+timer     : Real Time = 112.61 seconds Cpu Time = 871.04 seconds
