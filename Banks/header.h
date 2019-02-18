@@ -14,13 +14,6 @@
 #ifndef EVENT_HEADER_H
 #define EVENT_HEADER_H
 
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <string>
-#include <vector>
-#include <stdint.h>
-#include <stdlib.h>
 #include "bank.h"
 #include "vectors.h"
 

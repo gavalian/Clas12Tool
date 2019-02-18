@@ -22,6 +22,7 @@
 #include "tracker.h"
 #include "cherenkov.h"
 #include "header.h"
+#include "vtp.h"
 #include "covmatrix.h"
 #include "forwardtagger.h"
 #include "region_particle.h"
@@ -69,6 +70,7 @@ namespace clas12 {
 
 
      virtual const head_ptr head() const{return _bhead;};
+     virtual const vtp_ptr vtp() const{return _bvtp;};
      virtual const mcpar_ptr mcparts() const{return _bmcparts;};
 
     
@@ -84,6 +86,7 @@ namespace clas12 {
     
     //DST banks
     head_ptr  _bhead;
+    vtp_ptr  _bvtp;
     par_ptr _bparts;
     mcpar_ptr _bmcparts;
     covmat_ptr _bcovmat;

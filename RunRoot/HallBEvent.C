@@ -83,7 +83,9 @@ void HallBEvent(){
 
 
        event.head()->getStartTime();
-     
+       // long vtp = event.vtp()->makeVTPTriggers();
+       //cout<<((vtp & (1<<29))!= 0 )<<" "<<((vtp & (1<<13))!= 0) <<" "<<((vtp & (1<<14))!= 0) <<" "<<((vtp & (1<<15)) !=0)<<" "<<((vtp & (1<<16)) !=0 )<<" "<<((vtp & (1<<17)) !=0) <<" "<<endl;
+       
        //Loop over all particles to see how to access detector info.
        for(auto& p : event.getDetParticles()){
 	 //  get predefined selected information

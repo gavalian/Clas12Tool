@@ -5,6 +5,7 @@
  */
 
 #include "hallB_event.h"
+//#include "vtp.h"
 
 namespace clas12 {
 
@@ -20,12 +21,14 @@ namespace clas12 {
     _btrck  = std::make_shared<tracker>();
     _bcher  = std::make_shared<cherenkov>();
     _bft    = std::make_shared<forwardtagger>();
+    _bvtp   = std::make_shared<clas12::vtp>();
 
     //initialise banks
     _bparts->init("REC::Particle",r);
     _bmcparts->init("MC::Lund",r);
     _bcovmat->init("REC::CovMat",r);
     _bhead->init("REC::Event",r);
+    _bvtp->init("RAW::vtp",r);
     _bcal->init("REC::Calorimeter",r);
     _bscint->init("REC::Scintillator",r);
     _bcher->init("REC::Cherenkov",r);
