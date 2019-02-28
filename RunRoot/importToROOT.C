@@ -1,4 +1,6 @@
 {
+
+  gSystem->SetAclicMode(TSystem::kOpt);
   if(TString(gSystem->Getenv("CLAS12TOOL"))==TString()){
     cout<<"You must define the base directory CLAS12TOOL"<<endl;
     exit(0);							    
@@ -31,15 +33,22 @@
   gROOT->LoadMacro("$CLAS12TOOL/Banks/vectors.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/header.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/mcparticle.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/detector.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/scaler.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/vtp.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/particle_detector.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/scintillator.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/tracker.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/forwardtagger.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/cherenkov.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/calorimeter.cpp+");
-  // gROOT->LoadMacro("$CLAS12TOOL/Banks/clas12event.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/mesonex_event.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/covmatrix.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_ft.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_fdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_cdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/hallB_event.cpp+");
  
 
 }
