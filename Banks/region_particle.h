@@ -20,6 +20,8 @@
 #include "calorimeter.h"
 #include "scintillator.h"
 #include "tracker.h"
+#include "traj.h"
+#include "header.h"
 #include "cherenkov.h"
 #include "forwardtagger.h"
 
@@ -31,19 +33,20 @@ namespace clas12 {
 
   public:
 
-
+    region_particle(){};
+    
     region_particle(par_ptr pars,covmat_ptr cm);
-   //For region_ft
+    //For region_ft
     region_particle(par_ptr pars,covmat_ptr cm, ft_ptr ftp);
     //For region_cdet
     region_particle(par_ptr pars,covmat_ptr cm,
-		    scint_ptr scp, trck_ptr trp);
-     //For region_fdet
+		    scint_ptr scp, trck_ptr trp, traj_ptr trj);
+    //For region_fdet
     region_particle(par_ptr pars,covmat_ptr cm, cal_ptr calp,
-		    scint_ptr scp, trck_ptr trp, cher_ptr chp);
+		    scint_ptr scp, trck_ptr trp, traj_ptr trj, cher_ptr chp);
     //For all regions
     region_particle(par_ptr pars,covmat_ptr cm, cal_ptr calp,
-		    scint_ptr scp, trck_ptr trp, cher_ptr chp, ft_ptr ftp);
+		    scint_ptr scp, trck_ptr trp, traj_ptr trj, cher_ptr chp, ft_ptr ftp,head_ptr head);
 
     virtual ~region_particle()=default;
 
@@ -65,19 +68,26 @@ namespace clas12 {
     virtual double getDeltaEnergy()=0;
     virtual short getSector() =0;
 
+    const head_ptr head() const{return _head;};
     const par_ptr par() const{_parts->setEntry(_pentry);return _parts;};
     const covmat_ptr covmat() const{_covmat->setIndex(_pcmat);return _covmat;};
     virtual const cal_ptr cal(ushort lay) const{_cal->setIndex(-1);return _cal;};
     virtual const scint_ptr sci(ushort lay) const{_scint->setIndex(-1);return _scint;};
     virtual const trck_ptr trk(ushort lay) const{_trck->setIndex(-1);return _trck;};
+    virtual const traj_ptr traj(ushort det) const{_traj->setIndex(-1);return _traj;};
     virtual const cher_ptr che(ushort lay) const{_cher->setIndex(-1);return _cher;};
     virtual const ft_ptr ft(ushort lay) const{_ft->setIndex(-1);return _ft;};
 
     const CovMatrix* cmat() const{_covmat->setIndex(_pcmat);return _covmat->matrix();};
  
     
-    short region() const {return _region;}
-
+    short getRegion() const {return _region;}
+    float getTheta() const;
+    float getPhi() const;
+    float getP(){_parts->setEntry(_pentry);return _parts->getP();}
+    float getCalcMass();
+    float getBeta();
+    float getGamma();
     
   protected:
 
@@ -87,7 +97,9 @@ namespace clas12 {
     cal_ptr  _cal;
     scint_ptr _scint;
     trck_ptr _trck;
+    traj_ptr _traj;
     cher_ptr _cher;
+    head_ptr _head;
  
     
     //particle index

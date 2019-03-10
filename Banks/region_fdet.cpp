@@ -9,16 +9,16 @@
 namespace clas12 {
   ///////////////////////////////////////////////////////
   /// constructor used for stand-alone
-  region_fdet::region_fdet(par_ptr pars,covmat_ptr cm, cal_ptr calp, scint_ptr scp, trck_ptr trp, cher_ptr chp):
-    region_particle(pars,cm,calp,scp,trp,chp)
+  region_fdet::region_fdet(par_ptr pars,covmat_ptr cm, cal_ptr calp, scint_ptr scp, trck_ptr trp, traj_ptr trj, cher_ptr chp):
+    region_particle(pars,cm,calp,scp,trp,trj,chp)
   {
     _region=clas12::FD;
   }
   ///////////////////////////////////////////////////////
   ///Constructor used for event,
   ///give all detector banks to prevent crashes when looking for FT 
-  region_fdet::region_fdet(par_ptr pars,covmat_ptr cm, cal_ptr calp, scint_ptr scp, trck_ptr trp, cher_ptr chp, ft_ptr ftp):
-    region_particle(pars,cm,calp,scp,trp,chp,ftp)
+  region_fdet::region_fdet(par_ptr pars,covmat_ptr cm, cal_ptr calp, scint_ptr scp, trck_ptr trp, traj_ptr trj,cher_ptr chp, ft_ptr ftp,head_ptr head):
+    region_particle(pars,cm,calp,scp,trp,trj,chp,ftp,head)
   {
     _region=clas12::FD;  
   }
@@ -51,7 +51,7 @@ namespace clas12 {
       
     //should be 1 track per particle
     _ptrck=_trck->getIndex(_pentry,clas12::DC);
-
+   
     _phtcc=_cher->getIndex( _pentry,clas12::HTCC);
     _pltcc=_cher->getIndex( _pentry,clas12::LTCC);
 
@@ -106,6 +106,16 @@ namespace clas12 {
       _cher->setIndex(_pltcc);return _cher;
     }
     _cher->setIndex(-1);return _cher;
+  }
+  
+  ///////////////////////////////////////////////////////
+  /// Get pointer to traj banks for this particle
+  /// This should be used directly to acess data
+  /// e.g. p->traj(TRAJ_HTCC)->getCx();
+  ///      p->traj(TRAJ_DC3)->getX();
+  const traj_ptr region_fdet::traj(ushort det) const {
+    _traj->getIndex(_pentry,det);
+   return _traj;
   }
   
 

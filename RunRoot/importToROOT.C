@@ -40,6 +40,7 @@
   gROOT->LoadMacro("$CLAS12TOOL/Banks/particle_detector.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/scintillator.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/tracker.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/traj.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/forwardtagger.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/cherenkov.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/calorimeter.cpp+");
@@ -48,7 +49,7 @@
   gROOT->LoadMacro("$CLAS12TOOL/Banks/region_ft.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/region_fdet.cpp+");
   gROOT->LoadMacro("$CLAS12TOOL/Banks/region_cdet.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/hallB_event.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Banks/clas12reader.cpp+");
  
 
 }

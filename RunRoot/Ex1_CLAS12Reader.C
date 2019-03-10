@@ -8,18 +8,25 @@
 #include <TDatabasePDG.h>
 #include <TLorentzVector.h>
 #include <TH1.h>
-#include <TBenchmark.h>
 #include <TChain.h>
-#include "reader.h"
-#include "hallB_event.h"
+#include <TCanvas.h>
+#include <TBenchmark.h>
+#include "clas12reader.h"
 
 using namespace clas12;
 
 //just make the code a bit neater when using unique_ptr
-using P4_=TLorentzVector;
-using p4_uptr = std::unique_ptr<P4_>;
+using P4_t=TLorentzVector;
+//using p4_ptr = std::unique_ptr<P4_t>;
+using p4_ptr = std::shared_ptr<P4_t>;
 
-void HallBEvent(){
+void SetLorentzVector(p4_ptr p4,clas12::region_part_ptr rp){
+  p4->SetXYZM(rp->par()->getPx(),rp->par()->getPy(),
+	      rp->par()->getPz(),p4->M());
+
+}
+
+void Ex1_CLAS12Reader(){
   // Record start time
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -44,48 +51,51 @@ void HallBEvent(){
    
    cout<<"Analysing hipo file "<<inputFile<<endl;
 
+   TChain fake("hipo");
+   fake.Add(inputFile.Data());
+   //get the hipo data
+   //   reader.open(inputFile.Data());
+   auto files=fake.GetListOfFiles();
+
    //some particles
    auto db=TDatabasePDG::Instance();
-   auto beam=P4_(0,0,10.6,10.6);
-   auto target=P4_(0,0,0,db->GetParticle(2212)->Mass());
-   //remember these are really just TLorentzVector* 
-   auto el=p4_uptr(new P4_(0,0,0,db->GetParticle(11)->Mass()));
-   auto pr=p4_uptr(new P4_(0,0,0,db->GetParticle(2212)->Mass()));
-   auto g1=p4_uptr(new P4_(0,0,0,0));
-   auto g2=p4_uptr(new P4_(0,0,0,0));
-   auto pip=p4_uptr(new P4_(0,0,0,db->GetParticle(211)->Mass()));
-   auto pim=p4_uptr(new P4_(0,0,0,db->GetParticle(-211)->Mass()));
+   auto beam=P4_t(0,0,10.6,10.6);
+   auto target=P4_t(0,0,0,db->GetParticle(2212)->Mass());
+   //remember these are really just TLorentzVector*
+   //but std::unique_ptr makes sure they are delted at end of scope
+   auto el=p4_ptr(new P4_t(0,0,0,db->GetParticle(11)->Mass()));
+   auto pr=p4_ptr(new P4_t(0,0,0,db->GetParticle(2212)->Mass()));
+   auto g1=p4_ptr(new P4_t(0,0,0,0));
+   auto g2=p4_ptr(new P4_t(0,0,0,0));
+   auto pip=p4_ptr(new P4_t(0,0,0,db->GetParticle(211)->Mass()));
+   auto pim=p4_ptr(new P4_t(0,0,0,db->GetParticle(-211)->Mass()));
 
    //a histogram (pre C++11 !)
    auto* hmiss=new TH1F("missM","missM",200,-2,3);
+   auto* hm2g=new TH1F("m2g","m2g",200,0,1);
+   auto* hm2gCut=new TH1F("m2gCut","m2g",200,0,1);
    
    gBenchmark->Start("timer");
    int counter=0;
+ 
    
-   //  while(reader.next()==true){// (map 4.5s for 1M events)
-   TChain chain("hipo");
-   chain.Add(inputFile.Data());
-   auto files=chain.GetListOfFiles();
-  //get the hipo data
-
    for(Int_t i=0;i<files->GetEntries();i++){
-     hipo::reader  reader;
-     reader.open(files->At(i)->GetTitle());
-
      //create the hallb event
-     hallB_event event(reader);
+      clas12reader event(files->At(i)->GetTitle());
 
-     while(event.next()==true){ 
+
+     while(event.next()==true){
        event.head()->getStartTime();
         //Loop over all particles to see how to access detector info.
-       for(auto& p : event.getDetParticles()){
-	 //  get predefined selected information
+	for(auto& p : event.getDetParticles()){
+  	 //  get predefined selected information
 	 p->getTime();
 	 p->getDetEnergy();
 	 p->getDeltaEnergy();
+
 	 // get any detector information (if exists for this particle)
 	 // there should be a get function for any entry in the bank
-	 switch(p->region()) {// (+1s per 1M)
+	 switch(p->getRegion()) {
 	 case FD :
 	   p->cal(PCAL)->getEnergy();
 	   p->cal(ECIN)->getEnergy();
@@ -96,6 +106,7 @@ void HallBEvent(){
 	   p->trk(DC)->getSector();
 	   p->che(HTCC)->getNphe();
 	   p->che(LTCC)->getNphe();
+	   p->traj(TRAJ_HTCC)->getX();
 	   break;
 	 case FT :
 	   p->ft(FTCAL)->getEnergy();
@@ -110,7 +121,8 @@ void HallBEvent(){
 	 // p->covmat()->print();
 	 p->cmat();
        }
-       // get particles by type (+1s overhead per 1M (include fill hist))
+    
+       // get particles by type
        auto electrons=event.getByID(11);
        auto gammas=event.getByID(22);
        auto protons=event.getByID(2212);
@@ -121,36 +133,35 @@ void HallBEvent(){
 	  pips.size()==1 &&pims.size() == 1){
        
 	 // set the particle momentum
-	 // if we wanted to integrate more ROOT we could
-	 // return direct TLorentzVector
 	 // i.e. auto el = electrons[0]->p4(); etc.
-	 el->SetXYZM(electrons[0]->par()->getPx(),electrons[0]->par()->getPy(),
-		     electrons[0]->par()->getPz(),el->M());
-	 pr->SetXYZM(protons[0]->par()->getPx(),protons[0]->par()->getPy(),
-		     protons[0]->par()->getPz(),pr->M());
-	 g1->SetXYZM(gammas[0]->par()->getPx(),gammas[0]->par()->getPy(),
-		     gammas[0]->par()->getPz(),0);
-	 g2->SetXYZM(gammas[1]->par()->getPx(),gammas[1]->par()->getPy(),
-		     gammas[1]->par()->getPz(),0);
-	 pip->SetXYZM(pips[0]->par()->getPx(),pips[0]->par()->getPy(),
-		      pips[0]->par()->getPz(),pip->M());
-	 pim->SetXYZM(pims[0]->par()->getPx(),pims[0]->par()->getPy(),
-		      pims[0]->par()->getPz(),pim->M());
-
+	 SetLorentzVector(el,electrons[0]);
+	 SetLorentzVector(pr,protons[0]);
+	 SetLorentzVector(g1,gammas[0]);
+	 SetLorentzVector(g2,gammas[1]);
+	 SetLorentzVector(pip,pips[0]);
+	 SetLorentzVector(pim,pims[0]);
+	
 	 TLorentzVector miss=beam+target-*el-*pr-*g1-*g2-*pip-*pim;
 	 hmiss->Fill(miss.M2());
-       
+	 TLorentzVector pi0 = *g1+*g2;
+	 hm2g->Fill(pi0.M());
+	 if(TMath::Abs(miss.M2())<0.5)hm2gCut->Fill(pi0.M());
        }
      
        counter++;
-       //if(counter==1E6) break;
-     
      }
    }
    gBenchmark->Stop("timer");
    gBenchmark->Print("timer");
+   TCanvas* can=new TCanvas();
+   can->Divide(2,1);
+   can->cd(1);
    hmiss->DrawCopy();
-   
+   can->cd(2);
+   hm2g->DrawCopy();
+   hm2gCut->SetLineColor(2);
+   hm2gCut->DrawCopy("same");
+  
    auto finish = std::chrono::high_resolution_clock::now();
    std::chrono::duration<double> elapsed = finish - start;
    std::cout << "Elapsed time: " << elapsed.count()<< " events = "<<counter<< " s\n";

@@ -19,6 +19,7 @@
 #include "calorimeter.h"
 #include "scintillator.h"
 #include "tracker.h"
+#include "traj.h"
 #include "cherenkov.h"
 
 
@@ -31,15 +32,16 @@ namespace clas12 {
   public:
 
     region_cdet(par_ptr pars,covmat_ptr cm, scint_ptr scp,
-		trck_ptr trp);
+		trck_ptr trp,traj_ptr trj);
     region_cdet(par_ptr pars,covmat_ptr cm, cal_ptr calp, scint_ptr scp,
-		trck_ptr trp, cher_ptr chp, ft_ptr ftp);
+		trck_ptr trp, traj_ptr trj, cher_ptr chp, ft_ptr ftp,head_ptr head);
     ~region_cdet()=default;
 
     
     bool sort() final;
 
     const scint_ptr sci(ushort lay) const final;
+    const traj_ptr traj(ushort det) const final;
     const trck_ptr trk(ushort lay) const final{_trck->setIndex(_ptrck);return _trck;};
     
      
