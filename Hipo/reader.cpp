@@ -365,9 +365,16 @@ void reader::showInfo(){
     printf("-------------------------------------\n");
 }
 
-int   reader::getRecordCount(){
-   return recordIndex.size();
-}
+  int   reader::getRecordCount() const {
+    return recordIndex.size();
+  }
+
+   bool  reader::loadRecord(int irec){
+     return false;    
+  }
+   bool  reader::nextInRecord(){
+     return false;
+   }
 /**
  * Print warning if the library was not compiled with LZ4 library.
  * When this message appears, the compressed files will be unreadable.

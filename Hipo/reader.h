@@ -246,13 +246,18 @@ namespace hipo {
         void  readRecord(int index);
         void  readRecord(hipo::record &record, int index);
         void  readHeaderRecord(hipo::record &record);
-        int   getRecordCount();
+        int   getRecordCount() const;
         bool  isOpen();
         void  showInfo();
         void  showBenchmark();
         void  printWarning();
         bool  next();
 
+	//for forward (hipo4) compatability
+	int getNRecords() const {return getRecordCount();}
+	bool loadRecord(int irec);
+	bool nextInRecord();
+	
         void  addListener(hipo::notification *__n){
           readerNotifications.push_back(__n);
         }

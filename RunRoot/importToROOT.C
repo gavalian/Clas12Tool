@@ -29,27 +29,27 @@
   gROOT->LoadMacro("$CLAS12TOOL/Hipo/bank.cpp+");
   
   //Clas12Banks
-  gSystem->AddIncludePath(TString("-I")+gSystem->Getenv("CLAS12TOOL")+"/Banks");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/vectors.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/header.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/particle.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/mcparticle.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/detector.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/scaler.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/vtp.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/particle_detector.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/scintillator.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/tracker.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/traj.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/forwardtagger.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/cherenkov.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/calorimeter.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/covmatrix.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_particle.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_ft.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_fdet.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/region_cdet.cpp+");
-  gROOT->LoadMacro("$CLAS12TOOL/Banks/clas12reader.cpp+");
+  gSystem->AddIncludePath(TString("-I")+gSystem->Getenv("CLAS12TOOL")+"/Clas12Banks");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/vectors.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/header.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/mcparticle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/detector.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/scaler.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/vtp.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/particle_detector.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/scintillator.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/tracker.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/traj.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/forwardtagger.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/cherenkov.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/calorimeter.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/covmatrix.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/region_particle.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/region_ft.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/region_fdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/region_cdet.cpp+");
+  gROOT->LoadMacro("$CLAS12TOOL/Clas12Banks/clas12reader.cpp+");
  
 
 }
