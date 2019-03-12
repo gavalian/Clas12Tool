@@ -6,12 +6,7 @@
 #pragma link C++ nestedclasses;
  
 //#pragma link C++ defined_in "utils.h";
-#pragma link C++ class ;
-#pragma link C++ class ;
-#pragma link C++ class ;
-#pragma link C++ class ;
-#pragma link C++ class ;
-#pragma link C++ class ;
-#pragma link C++ class ;
+#pragma link C++ class hipo::bank+;
+#pragma link C++ class hipo::reader+;
 
 #endif

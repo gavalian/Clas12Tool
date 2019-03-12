@@ -33,9 +33,13 @@
 #include "region_ft.h"
 
 #include <algorithm>
+#include <string>
+#include <iostream>
 
 
 namespace clas12 {
+  using std::cout;
+  using std::endl;
 
   class clas12reader  {
 
@@ -44,7 +48,7 @@ namespace clas12 {
 
 
     clas12reader()=default;
-    clas12reader(string filename);
+    clas12reader(std::string filename);
     ~clas12reader()=default;
 
     hipo::reader& getReader(){return _reader;}
@@ -52,8 +56,9 @@ namespace clas12 {
     bool next();
     bool nextInRecord();
     void sort();
-    void readEvent();
-   
+    bool readEvent();
+    void clearEvent();
+    
     void addARegionFDet(){
       //Forward detector needs particles, calorimeter, scintillator,
       //track, cherenkov
@@ -80,6 +85,19 @@ namespace clas12 {
     std::vector<region_part_ptr>* getDetParticlesPtr(){return &_detParticles;}
     std::vector<region_part_ptr> getByID(int id);
 
+    short getNPid(short pid){return std::count(_pids.begin(),_pids.end(), pid);};
+    void addAtLeastPid(short pid,short n){
+      _pidSelect[pid]=n;
+      _givenPids.push_back(pid);
+    }
+    void addExactPid(short pid,short n){
+      _pidSelectExact[pid]=n;
+      _givenPids.push_back(pid);
+    }
+    void addZeroOfRestPid(){_zeroOfRestPid=true;};
+    
+    bool passPidSelect();
+    
     int getNParticles() const {return _detParticles.size();}
     
   private:
@@ -110,12 +128,17 @@ namespace clas12 {
     std::vector<region_ft_ptr> _rfts;
     std::vector<region_part_ptr> _detParticles;
 
+    std::vector<short> _pids;
+    std::vector<short> _givenPids;
+    std::map<short,short> _pidSelect;
+    std::map<short,short> _pidSelectExact;
 
     ushort _nparts=0;
     ushort _n_rfdets=0;
     ushort _n_rcdets=0;
     ushort _n_rfts=0;
- 
+    bool _zeroOfRestPid=false;
+
   };
   //helper functions
   

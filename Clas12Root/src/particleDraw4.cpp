@@ -16,9 +16,9 @@ int main(int argc, char **argv) {
   app->SetPrompt("ParticleHist [%d] ");
 
   app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/liblz4\");");
-  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libHipo\");");
-  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libClas12\");");
-  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libClas12Root\");");
+  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libHipo4\");");
+  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libClas12Banks4\");");
+  app->ProcessLine("gSystem->Load(\"$CLAS12TOOL/lib/libClas12Root4\");");
   app->ProcessLine(Form("clas12root::ParticleHist hists{\"%s\"}",filename.Data()));
   if(argc==3) {
     TString script=argv[2];

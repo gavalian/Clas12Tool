@@ -8,7 +8,7 @@
 
 namespace clas12 {
 
-  clas12reader::clas12reader(string filename){
+  clas12reader::clas12reader(std::string filename){
     cout<<" clas12reader::clas12reader reading "<<filename.data()<<endl;
     _reader.open(filename.data()); //keep a pointer to the reader
 
@@ -38,9 +38,35 @@ namespace clas12 {
   }
   ///////////////////////////////////////////////////////
   ///read the data
-  void clas12reader::readEvent(){
+  void clas12reader::clearEvent(){
+    //clear previous event
+    _n_rfdets=0;
+    _n_rcdets=0;
+    _n_rfts=0;
+    
+    _detParticles.clear();
+    _detParticles.reserve(_nparts);
+    _pids.clear();
+    _pids.reserve(_nparts);
+
+  }
+  bool clas12reader::readEvent(){
     _reader.read(_event);
     _event.getStructure(*_bparts.get());
+    
+    //First check if event passes criteria
+    _nparts=_bparts->getSize();
+    _pids.clear();
+    _pids.reserve(_nparts);
+      //Loop over particles and find their Pid
+    for(ushort i=0;i<_nparts;i++){
+      _bparts->setEntry(i);
+      _pids.emplace_back(_bparts->getPid());
+    }
+    //check if event is of the right type
+    if(!passPidSelect()) return false;
+
+    //now getthe data for the rest of the banks
     _event.getStructure(*_bmcparts.get());
     _event.getStructure(*_bcovmat.get());
     _event.getStructure(*_bhead.get());
@@ -52,14 +78,23 @@ namespace clas12 {
     _event.getStructure(*_bft.get());
     _event.getStructure(*_bvtp.get());
     _event.getStructure(*_bscal.get());
+    return true;
   }
   ////////////////////////////////////////////////////////
   ///initialise next event from the reader
   bool clas12reader::next(){
-    if(!_reader.next())
-      return false;
 
-    readEvent();
+    clearEvent();
+    //keep going until we get an event that passes
+    bool validEvent=false;
+    while(_reader.next()){
+      validEvent=true;
+      if(readEvent()) //got one
+	break;
+    }
+    if(!validEvent) return false;//no more events in reader
+
+    //can proceed with valid event
     sort();
     
     return true;
@@ -67,12 +102,20 @@ namespace clas12 {
   ////////////////////////////////////////////////////////
   ///initialise next event from the reader
   bool clas12reader::nextInRecord(){
-    if(!_reader.nextInRecord())
-      return false;
-    
-    readEvent();
+     
+    clearEvent();
+    //keep going until we get an event that passes
+    bool validEvent=false;
+    while(_reader.nextInRecord()){
+      validEvent=true;
+      if(readEvent()) //got one
+	break;
+    }
+    if(!validEvent) return false;//no more events in record
+
+    //can proceed with valid event
     sort();
-    
+ 
     return true;
   }
   ////////////////////////////////////////////////////////
@@ -134,7 +177,42 @@ namespace clas12 {
       }
     }
   }
-  ////////////////////////////////////////////////////////
+  bool clas12reader::passPidSelect(){
+    //if no selections take event
+    if(_pidSelect.empty()&&_pidSelectExact.empty()) return true;
+
+    //check is there is at least enough particles
+    if(_pidSelectExact.size()+_pidSelect.size()>_nparts)
+      return false;
+
+    //check if any unwanted particles
+    if(_zeroOfRestPid){
+      auto uniquePids=_pids;//make a copy
+      std::sort(uniquePids.begin(), uniquePids.end());
+      auto ip = std::unique(uniquePids.begin(), uniquePids.begin() + _nparts); 
+      uniquePids.resize(std::distance(uniquePids.begin(), ip));
+      //now just loop over the unique particle types
+      for(auto const& pid : uniquePids){
+	//check if we have a PID not given in a selection
+	if(!(std::count(_givenPids.begin(),_givenPids.end(), pid)))
+	  return false;
+      }
+    }
+      //check for requested exact matches
+    for(auto const& select : _pidSelectExact){
+       if(!(select.second==getNPid(select.first)))
+	return false;
+    }
+    
+    //check for requeseted at least  matches
+    for(auto const& select : _pidSelect){
+      if((select.second>getNPid(select.first)))
+	return false;
+    }
+    return true;
+  }
+  
+   ////////////////////////////////////////////////////////
   ///Filter and return detParticles by given PID
   std::vector<region_part_ptr> clas12reader::getByID(int id){
     return container_filter(_detParticles, [id](region_part_ptr dr)
