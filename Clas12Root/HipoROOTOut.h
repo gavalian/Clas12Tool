@@ -20,7 +20,7 @@ namespace clas12root {
   public :
     HipoROOTOut(TString filename);
     virtual ~HipoROOTOut();
-    
+  
     void AddAction(TString varExp,TString condExp="1");
     void CompileAction();
     void CleanAction();

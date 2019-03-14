@@ -19,7 +19,7 @@ namespace clas12root {
     if(condExp==TString(""))condExp="1";
     if(condExp!=TString("1")) condExp=ExpandExpression(condExp,"");
     AddAction(varExp,condExp);
-    auto hist=new TH1F(varExp,varExp,nbins,min,max);
+    auto hist=new TH1F(varExp+"_"+condExp,varExp +" for "+condExp,nbins,min,max);
     _histList->Add(hist);
     _curHist.push_back(hist);   
     return this;
@@ -30,7 +30,7 @@ namespace clas12root {
     if(condExp==TString(""))condExp="1";
     if(condExp!=TString("1")) condExp=ExpandExpression(condExp,""); 
     AddAction(varExp,condExp);
-    auto hist=new TH2F(varExp,varExp,nbinsX,minX,maxX,nbinsY,minY,maxY);
+    auto hist=new TH2F(varExp+"_"+condExp,varExp+" for "+condExp,nbinsX,minX,maxX,nbinsY,minY,maxY);
     _histList->Add(hist);
     _curHist.push_back(hist);   
     return this;

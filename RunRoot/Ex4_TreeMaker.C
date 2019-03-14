@@ -1,5 +1,5 @@
+//particleTree4 /dir/file.hipo out.root Ex4_TreeMaker.C
 {
-  hiporoot::ParticleTree treemaker("/home/dglazier/fastdata/hipo3test/out_clas_004013.evio.99.hipo","test.root");
 
   treemaker.Branch("P.Time/F");
   treemaker.Branch("PBANK.Px/F");
@@ -10,7 +10,13 @@
   treemaker.Branch("PBANK.Vz/F");
   treemaker.Branch("PBANK.Pid/I");
 
+  //e.g. Only save electron information
   // treemaker.AddParticleCut("PBANK.Pid==11");
-  
+
+  //Event topology cuts
+  // treemaker.AddAtLeastPid(211,1); //at least 1 pi+
+  // treemaker.AddExactPid(11,1);    //exactly 1 electron
+  // treemaker.AddZeroOfRestPid();  //nothing else, if not this line any of anything else
+ 
   treemaker.Fill();
 }

@@ -1,12 +1,5 @@
+//particleDraw4 /dir/file.hipo Ex2_HipoDraw.C
 {
-
-  ParticleHist hists("/home/dglazier/fastdata/hipo3test/out_clas_004013.evio.99.hipo");
-  //OR using a chain
-  //Particle hists("");
-  //hists.GetChain()->Add("file1.hipo")
-  //hists.GetChain()->Add("file2.hipo")
-  //hists.GetChain()->Add("/dir/*.hipo")
-
 
   hists.Hist1D("P.Theta*TMath::RadToDeg()",180,0,180,"PBANK.Px");
   hists.Hist1D("P.Phi*TMath::RadToDeg()",180,-180,180,"PBANK.Px");

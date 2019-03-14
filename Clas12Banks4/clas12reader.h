@@ -33,6 +33,7 @@
 #include "region_ft.h"
 
 #include <algorithm>
+#include <vector>
 #include <string>
 #include <iostream>
 

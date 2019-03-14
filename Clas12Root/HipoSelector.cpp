@@ -21,13 +21,7 @@
 
 #include "HipoSelector.h"
 #include <TH2.h>
-#include <TCanvas.h>
 #include <TSystem.h>
-#include <TRandom.h>
-#include <TStyle.h>
-#include <chrono>
-#include <thread>
-#include <iostream>
 
 namespace clas12root{
   
@@ -38,12 +32,7 @@ namespace clas12root{
     _chain->Add(filename);
   }
   HipoSelector::HipoSelector(HipoChain* chain) : _chain(chain) {
-  
   }
-
-  // void HipoSelector::Run(){
-
-  // }
 
   void HipoSelector::Begin(TTree * /*tree*/)
   {
@@ -53,7 +42,6 @@ namespace clas12root{
 
     TString option = GetOption();
 
-    
     if(!fInput){
       fInput=new TList();
       //  fInput->SetOwner(kTRUE);
@@ -76,67 +64,38 @@ namespace clas12root{
     // The SlaveBegin() function is called after the Begin() function.
     // When running with PROOF SlaveBegin() is called on each slave server.
     // The tree argument is deprecated (on PROOF 0 is passed).
-
+    cout<<"HipoSelector::SlaveBegin "<<endl;
+    fInput->Print();
     TString option = GetOption();
     _chain=dynamic_cast<HipoChain*>(fInput->FindObject("HIPOFILES"));
   
-    _hist1=new TH1F("Time","Time",600,-100,500);   
-    fOutput->Add(_hist1);
   }
 
   Bool_t HipoSelector::Process(Long64_t entry)
   {
-    gSystem->Sleep(gRandom->Uniform()*100+0.05);
     //check if need new file
     _iRecord=entry-_NfileRecords; //get record to analyse,subtract records of previous files
     if( _iRecord>=_NcurrRecords ){
       _iFile=_chain->GetFileFromRecord(entry);
-      cout<<"Start New file "<<entry<<" "<<_iRecord<<" "<<_NcurrRecords<<" "<<_NfileRecords<<" "<<_iFile<<endl;
       _NfileRecords=_chain->GetRecordsToHere(_iFile); //Add records from previous file to give offset
        
       _c12.reset(new clas12::clas12reader(_chain->GetFileName(_iFile).Data()));
       _NcurrRecords= _c12->getReader().getNRecords(); //records in this file
       _iRecord=entry-_NfileRecords; //get first record in this file to process
-      cout<<"Stop New file "<<entry<<" "<<_iRecord<<" "<<_NcurrRecords<<" "<<_NfileRecords<<" "<<_iFile<<endl;
-      //  if(_iRecord==0)     gSystem->Exec(Form("vmtouch -vt %s",_chain->GetFileName(_iFile).Data()));
 
      }
 
     _c12->getReader().loadRecord(_iRecord);
+    
     while(_c12->nextInRecord()==true){
+      cout<<"PRCE "<<entry<<endl;
+      //abtract function to be supplied by user base class
       ProcessEvent();
     }
-
-    //cout<<"Done record "<<_iRecord<<" "<<_iFile<<endl;
     return kTRUE;
   }
   
-  Bool_t HipoSelector::ProcessEvent(){
-
-    _hist1->Fill(_c12->head()->getStartTime());
-    return kTRUE;
-    
-  }
-  
-  void HipoSelector::SlaveTerminate()
-  {
-    // The SlaveTerminate() function is called after all entries or objects
-    // have been processed. When running with PROOF SlaveTerminate() is called
-    // on each slave server.
-      
-  }
-
-  void HipoSelector::Terminate()
-  {
-    // The Terminate() function is the last function to be called during
-    // a query. It always runs on the client, it can be used to present
-    // the results graphically or save the results to file.
-
-   TCanvas *c1 = new TCanvas("c1", "Proof ProofFirst canvas",200,10,400,400);
-   _hist1 = dynamic_cast<TH1F*>(fOutput->FindObject("Time"));
-   if (_hist1) _hist1->Draw();
-   c1->Update();
-  }
+ 
 
     
 }
