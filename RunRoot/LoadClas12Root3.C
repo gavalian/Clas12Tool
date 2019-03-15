@@ -16,5 +16,6 @@ void LoadClas12Root3(){
   gSystem->Load(LIB+"libClas12Root3");
 
 
+  gROOT->SetMacroPath(Form("%s:%s/RunRoot/",gROOT->GetMacroPath(),CLAS12TOOL.Data()));
 
 }

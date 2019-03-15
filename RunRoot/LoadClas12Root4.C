@@ -15,6 +15,6 @@ void LoadClas12Root4(){
   gSystem->Load(LIB+"libClas12Banks4");
   gSystem->Load(LIB+"libClas12Root4");
 
-
+  gROOT->SetMacroPath(Form("%s:%s/RunRoot/",gROOT->GetMacroPath(),CLAS12TOOL.Data()));
 
 }

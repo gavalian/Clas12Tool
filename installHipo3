@@ -6,3 +6,4 @@ cmake ../
 make
 cmake ../
 make install
+rehash

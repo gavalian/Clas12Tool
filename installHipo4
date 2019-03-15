@@ -7,9 +7,4 @@ make
 cmake ../
 make install
 
-#setenv CLAS12TOOL_HIPO4_LIB $CLAS12TOOL/lib4
-#setenv CLAS12TOOL_HIPO4_BIN $CLAS12TOOL/bin4
-
-#setenv PATH "$PATH":"$CLAS12TOOL_HIPO4_BIN"
-
-#rehash
+rehash
