@@ -42,7 +42,7 @@ setenv PATH "$PATH":"$CLAS12TOOL/bin"
 
 To start an interactive session with pre-loaded Clas12Root us clas12root3 or clas12root4 instead of root on the command line.
 
-##Ex 1  Looping over events and getting particle information
+## Ex 1  Looping over events and getting particle information
 
 The clas12reader class performs the correlation of particle and detector inofmation (aka reverse indexing). When looping over particles you are looping over region_particle (see Clas12Banks for full reference). Each region, FT, FD and CD has its own definition of a region_particle so it will only return meaningful data (i.e. a CD particle will return 0 for FD detector information). In addition the getTime, getPath, getDetEnergy functions have predefined meaning for each region, e.g. for FT getTime returns FTCAL time, for FD it returns FTOF1A if it exists, if not it will try FTOF1B, FTOF2 then PCAL.
 
@@ -71,7 +71,7 @@ Start a ROOT note book :
 Click on the notebook CLAS12Reader3Pi.ipynb and follow the tutorial
 
 
-##Ex 2 Drawing particle histograms from hipo files
+## Ex 2 Drawing particle histograms from hipo files
 
        particleDraw4 /WHERE/IS/MY/HIPO/file.hipo
 
@@ -114,7 +114,7 @@ Start a ROOT note book :
 	
 Click on the notebook HipoDraw.ipynb and follow the tutorial
 
-##Ex 4 Filtering and Skimming into a ROOT ntuple (tree)
+## Ex 4 Filtering and Skimming into a ROOT ntuple (tree)
 
        particleTree4  /WHERE/IS/MY/HIPO/file.hipo /OUTPUT/tree.root Ex4_TreeMaker.C
 
@@ -128,7 +128,7 @@ The script $CLAS12ROOT/RunRoot/Ex4_TreeMaker.C defines which branches are to be 
      treemaker.AddAtLeastPid(211,1);//and at least 1 pi+
      treemaker.AddZeroOfRestPid(); //and zero of any other particle type (default is any)
 
-###Jupyter
+### Jupyter
 
 Start a ROOT note book :
 
@@ -137,7 +137,7 @@ Start a ROOT note book :
 Click on the notebook HipoToRootTree.ipynb and follow the tutorial
 
 
-##Ex 3 Using HipoSelector & PROOFLite
+## Ex 3 Using HipoSelector & PROOFLite
 
 This assumes you are aware of and understand the ROOT TSelector and PROOF scheme. See https://root.cern.ch/proof.
 
@@ -157,7 +157,7 @@ Note 4 = number of workers used, you should change this to however many you woul
 
 Note mySelector is hard-coded in Ex3_ProofLite.C so for your own selector you should copy and edit this script.
 
-###Jupyter
+### Jupyter
 
 Start a ROOT note book :
 
