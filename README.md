@@ -39,6 +39,10 @@ setenv PATH "$PATH":"$CLAS12TOOL/bin"
    installHipo3  and/or installHipo4
 
 
+If there are issues with cmake and your ROOTSYS you can try using the local FindROOT file. Edit the CMakeList.txt.hipo3 or 4 files removing the lines with comment ##USEROOTSYS and uncomment the line
+
+   	 #######include("cmake/FindROOT.cmake")
+	 
 ## interactive root session
 
 To start an interactive session with pre-loaded Clas12Root us clas12root3 or clas12root4 instead of root on the command line.
