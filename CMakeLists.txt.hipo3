@@ -11,18 +11,16 @@ set(CMAKE_INSTALL_MANDIR ${CMAKE_CURRENT_SOURCE_DIR}/man)
 set(CMAKE_CXX_FLAGS "-fPIC -O3")
 
 
-# You need to tell CMake where to find the ROOT installation. This can be done in a number of ways:
-#   - ROOT built with classic configure/make use the provided $ROOTSYS/etc/cmake/FindROOT.cmake
-#   - ROOT built with CMake. Add in CMAKE_PREFIX_PATH the installation prefix for ROOT
-#list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-include("cmake/FindROOT.cmake")
+##########For local ROOT cmake files comment in the line below and remove the lines commented ##USEROOTSYS
+#######include("cmake/FindROOT.cmake")
+list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS}) ############USEROOTSYS
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
-find_package(ROOT REQUIRED COMPONENTS Proof)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
+find_package(ROOT REQUIRED COMPONENTS Proof)  ###########USEROOTSYS
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
-include(${ROOT_USE_FILE})
+include(${ROOT_USE_FILE}) ##########USEROOTSYS
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 
 #hipo expects lz4 includes to be in lib...
 set(CMAKE_INSTALL_INCLUDEDIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
