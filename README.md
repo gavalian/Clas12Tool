@@ -23,11 +23,12 @@ The Clas12Root package depends on both Hipo and Clas12Banks. This provides ROOT-
 
 git clone --recurse-submodules https://github.com/dglazier/Clas12Tool.git
 
+cd Clas12Tool
+
 git checkout hipo34
 
 ## To setup Run ROOT
 
-cd Clas12Tool
 
 setenv CLAS12TOOL $PWD  (the actual path can be added in your bashrc or tchrc)
 
