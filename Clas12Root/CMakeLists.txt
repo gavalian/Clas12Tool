@@ -12,6 +12,9 @@ add_library(${CLAS12ROOT} SHARED BankHist.cpp HipoHist.cpp HipoTreeMaker.cpp Hip
 target_link_libraries(${CLAS12ROOT} ${ROOT_LIBRARIES})
 
 
+install(TARGETS ${CLAS12ROOT} 
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
 FILE(GLOB ROOT_C12ROOT_PCM ${CMAKE_BINARY_DIR}/Clas12Root/*pcm)
 
 install (FILES  ${ROOT_C12ROOT_PCM}    

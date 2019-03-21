@@ -5,6 +5,9 @@ add_library(Clas12Banks4 SHARED vectors.cpp header.cpp particle.cpp mcparticle.c
 target_link_libraries(Clas12Banks4 ${ROOT_LIBRARIES})
 
 
+install(TARGETS Clas12Banks4
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
 FILE(GLOB ROOT_CLAS12_PCM ${CMAKE_BINARY_DIR}/Clas12Banks4/*pcm)
 
 install (FILES  ${ROOT_CLAS12_PCM}     
