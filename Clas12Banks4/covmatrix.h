@@ -41,8 +41,24 @@ namespace clas12 {
     int getIndex() const {return _index;}
     int getIndex(int pindex);
     void setIndex(int ind){_index=ind;}
+    void setEntry(int ind){_index=ind;}
 
     const  CovMatrix* matrix();
+    float getC11(){ return getFloat(_morder[0][0],_index);}
+    float getC12(){ return getFloat(_morder[0][1],_index);}
+    float getC13(){ return getFloat(_morder[0][2],_index);}
+    float getC14(){ return getFloat(_morder[0][3],_index);}
+    float getC15(){ return getFloat(_morder[0][4],_index);}
+    float getC22(){ return getFloat(_morder[1][1],_index);}
+    float getC23(){ return getFloat(_morder[1][2],_index);}
+    float getC24(){ return getFloat(_morder[1][3],_index);}
+    float getC25(){ return getFloat(_morder[1][4],_index);}
+    float getC33(){ return getFloat(_morder[2][2],_index);}
+    float getC34(){ return getFloat(_morder[2][3],_index);}
+    float getC35(){ return getFloat(_morder[2][4],_index);}
+    float getC44(){ return getFloat(_morder[3][3],_index);}
+    float getC45(){ return getFloat(_morder[3][4],_index);}
+    float getC55(){ return getFloat(_morder[4][4],_index);}
 
     /**
     * This is virtual method from hipo::bank it will be called

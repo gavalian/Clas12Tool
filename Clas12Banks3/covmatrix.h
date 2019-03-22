@@ -39,9 +39,26 @@ namespace clas12 {
     int getIndex() const {return _index;}
     int getIndex(int pindex);
     void setIndex(int ind){_index=ind;}
+    void setEntry(int ind){_index=ind;}
 
     const  CovMatrix* matrix();
 
+    float getC11() const { return _matrix[0][0];}
+    float getC12() const { return _matrix[0][1];}
+    float getC13() const { return _matrix[0][2];}
+    float getC14() const { return _matrix[0][3];}
+    float getC15() const { return _matrix[0][4];}
+    float getC22() const { return _matrix[1][1];}
+    float getC23() const { return _matrix[1][2];}
+    float getC24() const { return _matrix[1][3];}
+    float getC25() const { return _matrix[1][4];}
+    float getC33() const { return _matrix[2][2];}
+    float getC34() const { return _matrix[2][3];}
+    float getC35() const { return _matrix[2][4];}
+    float getC44() const { return _matrix[3][3];}
+    float getC45() const { return _matrix[3][4];}
+    float getC55() const { return _matrix[4][4];}
+    
     void   init(const char *bankName, hipo::reader &r);
      /**
     * This is virtual method from hipo::bank it will be called

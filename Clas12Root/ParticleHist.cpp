@@ -34,6 +34,9 @@ namespace clas12root {
     _mapOfParts["DC"]="p->trk(DC)->";
     _mapOfParts["CVT"]="p->trk(CVT)->";
 
+    //Covariance Matrix
+    _mapOfParts["CovMat"]="p->covmat()->";
+   
     //Particles
     _mapOfParts["PBANK"]="p->par()->";
 
