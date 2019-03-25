@@ -7,6 +7,7 @@
 #include "covmatrix.h"
 #include <iostream>
 #include <algorithm>
+#include <iostream>
 
 namespace clas12 {
 
@@ -29,6 +30,7 @@ namespace clas12 {
     _morder[3][3] = getEntryOrder("C44");
     _morder[3][4] = getEntryOrder("C45");
     _morder[4][4] = getEntryOrder("C55");
+    std::cout<<"entry order "<<_morder[3][3]<<std::endl;
     _pindex_order  = getEntryOrder("pindex");
   }
   void  covmatrix::scanIndex(){

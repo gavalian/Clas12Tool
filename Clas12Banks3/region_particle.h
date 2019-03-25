@@ -57,7 +57,7 @@ namespace clas12 {
       _pentry=_parts->getEntry();
       //check for covarince matrix
       _pcmat=_covmat->getIndex(_pentry);
-       return true;
+        return true;
     }
 
     int getPid(){_parts->setEntry(_pentry);return _parts->getPid();}
