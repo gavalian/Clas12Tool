@@ -16,10 +16,13 @@ LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
 
-all: readEvents schema builder
+all: readEvents schema builder writeEvents
 
 readEvents: readEvents.o
 	$(CXX) -o readEvents $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+
+writeEvents: writeEvents.o
+	$(CXX) -o writeEvents $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
 schema: schema.o
 	$(CXX) -o schema $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
@@ -35,7 +38,7 @@ builder: builder.o
 
 clean:
 	@echo 'Removing all build files'
-	@rm -rf *.o readEvents schema *~
+	@rm -rf *.o readEvents schema *~ builder writeEvents
 
 %.o: %.cc
 	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)

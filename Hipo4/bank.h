@@ -40,7 +40,8 @@ namespace hipo {
 
       structure(){ structureAddress = NULL;}
       structure(int size){ allocate(size);}
-
+      structure(int __group, int __item, std::string &str);
+      
       virtual     ~structure(){}
       bool         allocate(int size);
       int          getSize();
@@ -50,6 +51,8 @@ namespace hipo {
       void         init(const char *buffer, int size);
       const char  *getAddress();
       virtual void  show();
+
+
 
       int          getIntAt   ( int index) {
         return *reinterpret_cast<int32_t*>(&structureAddress[index+8]);
@@ -72,6 +75,31 @@ namespace hipo {
 
       std::string  getStringAt(int index);
 
+      void         putIntAt(int index, int value){
+        *reinterpret_cast<int32_t*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putShortAt(int index, int16_t value){
+        *reinterpret_cast<int16_t*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putByteAt(int index, int8_t value){
+        *reinterpret_cast<int8_t*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putFloatAt(int index, float value){
+        *reinterpret_cast<float*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putDoubleAt(int index, double value){
+        *reinterpret_cast<double*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putLongAt(int index, int64_t value){
+        *reinterpret_cast<int64_t*>(&structureAddress[index+8]) = value;
+      }
+
+      void         putStringAt(int index, std::string &str);
 
       virtual void notify(){}
       friend class event;
@@ -129,6 +157,13 @@ namespace hipo {
         double getDouble(const char *name, int index);
         long   getLong(const char *name, int index);
 
+        void    putInt(const char *name, int index, int32_t value);
+        void    putShort(const char *name, int index, int16_t value);
+        void    putByte(const char *name, int index, int8_t value);
+        void    putFloat(const char *name, int index, float value);
+        void    putDouble(const char *name, int index, double value);
+        void    putLong(const char *name, int index, int64_t value);
+
         void   show();
         //virtual  void notify(){ };
 
@@ -136,6 +171,4 @@ namespace hipo {
   };
 
 }
-
-
 #endif /* EVENT_H */

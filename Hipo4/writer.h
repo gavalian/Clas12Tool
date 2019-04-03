@@ -65,8 +65,8 @@
  * Created on April 11, 2017, 2:07 PM
  */
 
-#ifndef HIPOFILE_H
-#define HIPOFILE_H
+#ifndef HIPOWRITER_H
+#define HIPOWRITER_H
 
 
 #define HIPO_FILE_HEADER_SIZE 72
@@ -85,8 +85,8 @@
 #include <stdlib.h>
 #include <memory>
 #include <climits>
-#include "record.h"
-#include "utils.h"
+#include "recordbuilder.h"
+#include "reader.h"
 
 namespace hipo {
 
@@ -96,23 +96,15 @@ namespace hipo {
     int  headerLength; // in words (usually 14)
     int  recordCount;
     int  indexArrayLength; // in bytes
-    int  bitInfo;
-    int  version;
+    int  bitInfoVersion;
     int  userHeaderLength;
     int  magicNumber;
     long userRegister;
     long trailerPosition;
-    long firstRecordPosition;
-  } fileHeader_t;
+    int  userIntegerOne;
+    int  userIntegerTwo;
+  } hipoFileHeader_t;
 
-
-  typedef struct {
-      long recordPosition;
-      int  recordLength;
-      int  recordEntries;
-      long userWordOne;
-      long userWordTwo;
-  } recordInfo_t;
   /**
 * READER index class is used to construct entire events
 * sequence from all records, and provides ability to canAdvance
@@ -120,70 +112,27 @@ namespace hipo {
 * and triggers reading of the next record when events in the current
 * record are exhausted.
 */
-class readerIndex {
+class writer {
 
    private:
-     std::vector<int>  recordEvents;
-     std::vector<long> recordPosition;
+      std::ofstream         outputStream;
+      hipo::recordbuilder   recordBuilder;
+      hipo::dictionary      writerDictionary;
+      std::vector<hipo::recordInfo_t>   writerRecordInfo;
 
-     int              currentRecord;
-     int              currentEvent;
-     int              currentRecordEvent;
-
+      void writeIndexTable();
    public:
-      readerIndex(){
 
-      };
-      ~readerIndex(){};
+     writer(){};
+     virtual ~writer(){};
 
-      bool canAdvance();
-      bool advance();
-
-      int  getEventNumber() { return currentEvent;}
-      int  getRecordNumber() { return currentRecord;}
-      int  getRecordEventNumber() { return currentRecordEvent;}
-      int  getMaxEvents();
-      void addSize(int size);
-      void addPosition(long position){ recordPosition.push_back(position);}
-      long getPosition(int index) { return recordPosition[index];}
-      void rewind(){
-        currentRecord = -1;
-        currentEvent  = -1;
-        currentRecordEvent = -1;
-      }
-      void reset(){
-        currentRecord = 0;
-        currentEvent  = 0;
-        currentRecordEvent = 0;
-      }
+     void addEvent(hipo::event &hevent);
+     void writeRecord(recordbuilder &builder);
+     void open(const char *filename);
+     void close();
+     void showSummary();
+     hipo::dictionary &getDictionary(){ return writerDictionary;}
 };
 
-  class reader {
-
-    private:
-
-        fileHeader_t      header;
-        hipo::utils       hipoutils;
-        std::ifstream     inputStream;
-        long              inputStreamSize;
-
-        hipo::record       inputRecord;
-        hipo::readerIndex  readerEventIndex;
-
-        void  readHeader();
-        void  readIndex();
-    public:
-
-        reader();
-        ~reader();
-
-        void  readDictionary(hipo::dictionary &dict);
-        void  open(const char *filename);
-        bool  hasNext();
-        bool  next();
-        bool  next(hipo::event &dataevent);
-        void  read(hipo::event &dataevent);
-        void  printWarning();
-      };
-}
+};
 #endif /* HIPOFILE_H */

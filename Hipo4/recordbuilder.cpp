@@ -52,14 +52,30 @@ namespace hipo {
   }
 
   int  recordbuilder::getRecordLengthRounding(int bufferSize){
+    if(bufferSize%4==0) return 0;
     int nwords = bufferSize/4;
-    int nbytes = 4*nwords;
-    return (bufferSize-nbytes);
+    int nbytes = 4*(nwords+1);
+    return (nbytes-bufferSize);
+  }
+
+  int  recordbuilder::getEntries(){
+    int nentries = *reinterpret_cast<int*>(&bufferRecord[12]);
+    return nentries;
   }
 
   int  recordbuilder::getRecordSize(){
       int size = *reinterpret_cast<int*>(&bufferRecord[0]);
       return size*4;
+  }
+
+  long recordbuilder::getUserWordOne(){
+    long wOne = *reinterpret_cast<long*>(&bufferRecord[40]);
+    return wOne;
+  }
+
+  long recordbuilder::getUserWordTwo(){
+    long wTwo = *reinterpret_cast<long*>(&bufferRecord[48]);
+    return wTwo;
   }
 
   void recordbuilder::build(){
@@ -79,7 +95,7 @@ namespace hipo {
       hipo::utils::writeInt(&bufferRecord[0],  8, 14); // (3) - record header lenght (in words)
       hipo::utils::writeInt(&bufferRecord[0], 12, bufferIndexEntries); // (4) event count in the record
       hipo::utils::writeInt(&bufferRecord[0], 16, bufferIndexEntries*4); // (5) length of index array in bytes
-      int versionWord = (rounding<<24)|(4);
+      int versionWord = (rounding<<24)|(6);
       hipo::utils::writeInt(&bufferRecord[0], 20, versionWord); // (6) record version number
       hipo::utils::writeInt(&bufferRecord[0], 24, 0); // (7) user header length bytes
       hipo::utils::writeInt(&bufferRecord[0], 28, 0xc0da0100); // (8) magic word
@@ -88,15 +104,16 @@ namespace hipo {
       hipo::utils::writeInt(&bufferRecord[0], 36, compressionWord);
       hipo::utils::writeLong(&bufferRecord[0], 40, 0);
       hipo::utils::writeLong(&bufferRecord[0], 48, 0);
-      printf("record::build uncompressed size = %8d, compressed size = %8d, rounding = %4d , record size = %6d, version = %X, size = %5X\n",
-            uncompressedSize,compressedSize, rounding,compressedSizeToWrite, versionWord,compressionWord);
+      printf("record::build uncompressed size = %8d, compressed size = %8d, rounding = %4d , compressed FULL = %6d, record size = %6d, version = %X, size = %5X\n",
+            uncompressedSize,compressedSize, rounding,compressedSizeToWrite, recordLength*4,versionWord,compressionWord);
   }
 
   int  recordbuilder::compressRecord(int src_size){
 
     #ifdef __LZ4__
     //(const char* src, char* dst, int srcSize, int dstCapacity, int acceleration);
-      int result = LZ4_compress_fast(&bufferData[0],&bufferRecord[56],src_size,bufferRecord.size(),2);
+      int result = LZ4_compress_fast(&bufferData[0],&bufferRecord[56],src_size,bufferRecord.size(),1);
+
       //int   result = LZ4_decompress_safe(data,output,dataLength,dataLengthUncompressed);
       //int   result = LZ4_decompress_fast(data,output,dataLengthUncompressed);
       return result;

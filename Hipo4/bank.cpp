@@ -13,6 +13,12 @@ namespace hipo {
   // to represent different objects that will be appended to the event
   //==============================================================
 
+  structure::structure(int __group, int __item, std::string &str){
+    int length = str.length();
+    initStructureBySize(__group,__item, 6, length);
+    putStringAt(0,str);
+  }
+
     bool structure::allocate(int size){
       if(structureBuffer.size()<size){
         structureBuffer.resize(size+32);
@@ -68,6 +74,11 @@ namespace hipo {
         std::string result = string_ch;
         free(string_ch);
         return result;
+    }
+
+    void         structure::putStringAt(int index, std::string &str){
+      int strLen = str.length();
+      std::memcpy(&structureBuffer[8],&str[0],strLen);
     }
 
     const char *structure::getAddress(){
@@ -210,6 +221,45 @@ long bank::getLong(const char *name, int index){
   }
   return 0;
 }
+
+void    bank::putInt(const char *name, int index, int32_t value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  putIntAt(offset,value);
+}
+void    bank::putShort(const char *name, int index, int16_t value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  putShortAt(offset,value);
+}
+void    bank::putByte(const char *name, int index, int8_t value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  putByteAt(offset,value);
+}
+void    bank::putFloat(const char *name, int index, float value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  printf("---- put float %f at position = %d\n",value,offset);
+  putFloatAt(offset,value);
+}
+void    bank::putDouble(const char *name, int index, double value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  putDoubleAt(offset,value);
+}
+void    bank::putLong(const char *name, int index, int64_t value){
+  int item = bankSchema.getEntryOrder(name);
+  int type = bankSchema.getEntryType(item);
+  int offset = bankSchema.getOffset(item, index, bankRows);
+  putLongAt(offset,value);
+}
+
 void bank::show(){
   for(int i = 0; i < bankSchema.getEntries(); i++){
     printf("%14d : ", i);
@@ -223,6 +273,5 @@ void bank::show(){
     printf("\n");
   }
 }
-
 
 }

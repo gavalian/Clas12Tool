@@ -79,7 +79,9 @@ class schema {
     int   getEntries(){ return schemaEntries.size();}
     void  show();
 
-
+    std::string  getSchemaString();
+    std::string  getSchemaStringJson();
+    
     void operator = (const schema &D ) {
          schemaName = D.schemaName;
          groupid    = D.groupid;
