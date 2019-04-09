@@ -64,13 +64,29 @@ int main(int argc, char** argv){
     for(int i = 0; i < 10000; i++){
         int  nparts = 2 + rand()%10;
         int   ndets = 5 + rand()%20;
+        partBank.setRows(nparts);
+        dataFill(partBank);
 
         printf("particles = %d, detectors = %d\n",nparts, ndets);
-
+        partBank.show();
     }
     writer.close();
 }
 
 void dataFill(hipo::bank &bank){
-
+    int    nrows = bank.getRows();
+    int nentries = bank.getSchema().getEntries();
+    for(int row = 0; row < nrows; row++){
+       for(int e = 0 ; e < nentries; e++){
+           int type = bank.getSchema().getEntryType(e);
+           if(type==1||type==2||type==3){
+              int inum = rand()%20;
+              bank.putInt(e,row,inum);
+           }
+           if(type==4){
+             float ifloat = ((float) rand()) / (float) RAND_MAX;
+             bank.putFloat(e,row,ifloat);
+           }
+       }
+    }
 }
