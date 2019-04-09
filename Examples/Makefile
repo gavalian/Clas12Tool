@@ -11,7 +11,7 @@ LZ4LIBS     := -L../Lz4/lib -llz4
 LZ4INCLUDES := -I../Lz4/lib
 
 CXX       := g++
-CXXFLAGS  += -Wall -fPIC $(ROOTCFLAGS)
+CXXFLAGS  += -Wall -fPIC $(ROOTCFLAGS) -std=c++11
 LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
