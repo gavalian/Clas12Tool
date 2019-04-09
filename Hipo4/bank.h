@@ -51,7 +51,7 @@ namespace hipo {
       void         init(const char *buffer, int size);
       const char  *getAddress();
       virtual void  show();
-
+      void         setSize(int size);
 
 
       int          getIntAt   ( int index) {
@@ -164,7 +164,8 @@ namespace hipo {
         void    putDouble(const char *name, int index, double value);
         void    putLong(const char *name, int index, int64_t value);
 
-        void   show();
+        void    show();
+        void    reset();
         //virtual  void notify(){ };
 
         virtual void notify();

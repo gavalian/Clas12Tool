@@ -4,7 +4,7 @@ ROOTLIBS    := $(shell root-config --libs) -lEG
 ROOTGLIBS   := $(shell root-config --glibs)
 
 HIPOCFLAGS  := -I../Hipo -I../Banks
-HIPOLIBS    := -L../lib -lhipo -lclas12banks
+HIPOLIBS    := -L../lib -lhipo4 
 
 LZ4LIBS     := -L../Lz4/lib -llz4
 LZ4INCLUDES := -I../Lz4/lib
@@ -18,7 +18,7 @@ CERNINCLUDES = -I$(CERN_ROOT)/include/cfortran
 CERNLIBS     = -L$(CERN_ROOT)/lib -lpacklib -lgfortran
 CERNFLAGS    = -w -Df2cFortran
 
-all: fwriter
+all: freader
 
 writeROOT: writeROOT.o
 	$(CXX) -o writeROOT $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
@@ -26,12 +26,15 @@ writeROOT: writeROOT.o
 showDictionary: showDictionary.o
 	$(CXX) -o showDictionary $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
+freader: freader.o
+	$(CXX) -o freader $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
+
 fwriter: fwriter.cc
 	$(CXX)  -o fwriter $< $(CERNFLAGS) $(CERNINCLUDES) $(CERNLIBS)
 
 clean:
 	@echo 'Removing all build files'
-	@rm -rf *.o writeROOT showDictionary *~ fwriter
+	@rm -rf *.o writeROOT showDictionary *~ fwriter freader
 
 %.o: %.cc
 	$(CXX) -c $<  -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)

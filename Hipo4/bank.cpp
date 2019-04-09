@@ -41,6 +41,10 @@ namespace hipo {
       int size = *reinterpret_cast<uint32_t *>(structureAddress+4);
       return size;
     }
+
+    void structure::setSize(int size){
+      *reinterpret_cast<uint32_t *>(structureAddress+4) = size;
+    }
     // return the type of the structure
     int structure::getType(){
       int type = (int) (*reinterpret_cast<uint8_t *>(structureAddress+3));
@@ -102,6 +106,10 @@ void    bank::setRows(int rows){
    allocate(size+12);
 }
 
+void bank::reset(){
+   setSize(0);
+   bankRows = 0;
+}
 void bank::notify(){
   int size = bankSchema.getRowLength();
   bankRows = getSize()/size;
@@ -132,6 +140,7 @@ int    bank::getShort(int item, int index){
   }
   return 0;
 }
+
 int    bank::getByte(int item, int index){
   int type = bankSchema.getEntryType(item);
   int offset = bankSchema.getOffset(item, index, bankRows);
