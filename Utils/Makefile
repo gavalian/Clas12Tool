@@ -14,8 +14,11 @@ CXXFLAGS  += -Wall -fPIC $(ROOTCFLAGS)
 LD        := g++
 LDFLAGS   := $(ROOTLDFLAGS)
 
+CERNINCLUDES = -I$(CERN_ROOT)/include/cfortran
+CERNLIBS     = -L$(CERN_ROOT)/lib -lpacklib -lgfortran
+CERNFLAGS    = -w -Df2cFortran
 
-all: showDictionary
+all: fwriter
 
 writeROOT: writeROOT.o
 	$(CXX) -o writeROOT $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
@@ -23,9 +26,12 @@ writeROOT: writeROOT.o
 showDictionary: showDictionary.o
 	$(CXX) -o showDictionary $< $(ROOTCFLAGS) $(ROOTLDFLAGS) $(HIPOLIBS) $(LZ4LIBS) $(ROOTLIBS)
 
+fwriter: fwriter.cc
+	$(CXX)  -o fwriter $< $(CERNFLAGS) $(CERNINCLUDES) $(CERNLIBS)
+
 clean:
 	@echo 'Removing all build files'
-	@rm -rf *.o writeROOT showDictionary *~
+	@rm -rf *.o writeROOT showDictionary *~ fwriter
 
 %.o: %.cc
-	$(CXX) -c $< -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)
+	$(CXX) -c $<  -O2 $(ROOTCFLAGS) $(HIPOCFLAGS) $(LZ4INCLUDES)
