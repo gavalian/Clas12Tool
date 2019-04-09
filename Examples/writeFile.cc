@@ -8,7 +8,7 @@
 //************************ Jefferson National Lab (2017) ***********
 //******************************************************************
 //* Example program for writing HIPO-4 Files..
-//* Includes defining schemas, opening a fil with dictionary
+//* Includes defining schemas, opening a file with dictionary
 //*--
 //* Author: G.Gavalian
 //*
@@ -57,22 +57,41 @@ int main(int argc, char** argv){
     writer.getDictionary().addSchema(schemaDet);
     writer.open(outputFile);
 
-    hipo::bank partBank(schemaPart,1);
-    hipo::bank detBank( schemaDet ,1);
+    //hipo::bank partBank(schemaPart,30);
+    //hipo::bank detBank( schemaDet ,30);
 
+    hipo::event outEvent;
 
     for(int i = 0; i < 10000; i++){
+
         int  nparts = 2 + rand()%10;
         int   ndets = 5 + rand()%20;
-        partBank.setRows(nparts);
+        //-------------------------------------------------
+        // Create banks with random rows based on schemas
+        hipo::bank partBank(schemaPart,nparts);
+        hipo::bank detBank( schemaDet ,ndets);
+        // Fill banks with random numbers
         dataFill(partBank);
-
+        dataFill(detBank);
+        // Printout on the screen content of the banks
         printf("particles = %d, detectors = %d\n",nparts, ndets);
         partBank.show();
+        detBank.show();
+        //-------------------------------------------------
+        // Clear output event Event append banks to the Event
+        // and write to the output file
+        outEvent.reset();
+        outEvent.addStructure(partBank);
+        outEvent.addStructure(detBank);
+        writer.addEvent(outEvent);
     }
     writer.close();
 }
-
+//********************************************************
+// SUBROUTINE FILLS RANDOM VALUES INTO THE bank
+// FIRST CHECK THE TYPE OF THE ENTRY THEN GENERATE
+// RANDOM NUMBER AND FILL.
+//********************************************************
 void dataFill(hipo::bank &bank){
     int    nrows = bank.getRows();
     int nentries = bank.getSchema().getEntries();
@@ -81,11 +100,11 @@ void dataFill(hipo::bank &bank){
            int type = bank.getSchema().getEntryType(e);
            if(type==1||type==2||type==3){
               int inum = rand()%20;
-              bank.putInt(e,row,inum);
+              bank.putInt(bank.getSchema().getEntryName(e).c_str(),row,inum);
            }
            if(type==4){
              float ifloat = ((float) rand()) / (float) RAND_MAX;
-             bank.putFloat(e,row,ifloat);
+             bank.putFloat(bank.getSchema().getEntryName(e).c_str(),row,ifloat);
            }
        }
     }

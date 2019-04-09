@@ -25,6 +25,7 @@ namespace hipo {
       }
       return true;
     }
+
     void structure::initStructureBySize(int __group, int __item, int __type, int __size){
       allocate(__size+8);
       structureAddress = &structureBuffer[0];
@@ -98,7 +99,7 @@ bank::~bank(){
 void    bank::setRows(int rows){
    bankRows = rows;
    int size = bankSchema.getSizeForRows(bankRows);
-   allocate(size+8);
+   allocate(size+12);
 }
 
 void bank::notify(){
@@ -250,7 +251,7 @@ void    bank::putFloat(const char *name, int index, float value){
   int item = bankSchema.getEntryOrder(name);
   int type = bankSchema.getEntryType(item);
   int offset = bankSchema.getOffset(item, index, bankRows);
-  printf("---- put float %f at position = %d\n",value,offset);
+  //printf("---- put float %f at position = %d\n",value,offset);
   putFloatAt(offset,value);
 }
 void    bank::putDouble(const char *name, int index, double value){
@@ -267,6 +268,8 @@ void    bank::putLong(const char *name, int index, int64_t value){
 }
 
 void bank::show(){
+
+  printf("BANK :: NAME %24s , ROWS %6d \n",bankSchema.getName().c_str(),getRows());
   for(int i = 0; i < bankSchema.getEntries(); i++){
     printf("%14d : ", i);
     for(int k = 0; k < bankRows; k++){
