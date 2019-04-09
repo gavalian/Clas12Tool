@@ -15,7 +15,6 @@
 //***********************************************************************
 #include <cstdlib>
 #include <iostream>
-#include "TTree.h"
 #include "reader.h"
 
 extern "C" {
@@ -24,6 +23,8 @@ extern "C" {
   void  hipo_read_bank_(const char *bankname, int *bankRows, int banknameLength);
   void  hipo_read_int_(const char *group, const char *item, int *nread, int *buffer, int *maxRows,
       int length_group, int length_item);
+  void hipo_read_float_(const char *group, const char *item, int *nread, float *buffer, int *maxRows,
+          int length_group, int length_item);
 };
 
 int main(int argc, char** argv) {
@@ -50,19 +51,29 @@ int main(int argc, char** argv) {
    int maxPid = 50;
    int nread;
 
+   float px[50];
+
+
    hipo_file_open_(inputFile,strlen(inputFile));
 
    while(status==0){
      hipo_file_next_(&status);
      hipo_read_bank_("REC::Particle",&bankRows,strlen("REC::Particle"));
-     printf(" number of rows = %5d\n",bankRows);
+     //printf(" number of rows = %5d\n",bankRows);
      hipo_read_int_("REC::Particle","pid",&nread,pid,&maxPid,
                 strlen("REC::Particle"),strlen("pid"));
 
      for(int i = 0; i < nread; i++){
-        printf("%6d ", pid[i]);
+        //printf("%8d ", pid[i]);
      }
-     printf("\n");
+     //printf("\n");
+
+     hipo_read_float_("REC::Particle","px",&nread,px,&maxPid,
+                strlen("REC::Particle"),strlen("px"));
+    for(int i = 0; i < nread; i++){
+        //printf("%8.5f ", px[i]);
+     }
+     //printf("\n");
      counter++;
    }
    printf("processed # events %d\n",counter);

@@ -83,7 +83,7 @@ extern "C" {
       *bankRows = eventStore[igroup]->getRows();*/
   }
 
-  void hipo_read_float_(char *group, char *item, int *nread, float *buffer, int *maxRows,
+  void hipo_read_float_(const char *group, const char *item, int *nread, float *buffer, int *maxRows,
       int length_group, int length_item){
 
       char *buffer_group = (char * ) malloc(length_group+1);
@@ -94,7 +94,7 @@ extern "C" {
       memcpy(buffer_item,item,length_item);
       buffer_item[length_item] = '\0';
 
-      printf("---->>>>> reading float (%s) (%s)\n",buffer_group,buffer_item);
+      //printf("---->>>>> reading float (%s) (%s)\n",buffer_group,buffer_item);
       /*int id_g = *group;
       int id_i = ;
       int max  = *maxRows;
@@ -105,6 +105,14 @@ extern "C" {
 	       if(i<max) buffer[i] = vec[i];
       }
       *nread = vec.size();*/
+      hipo::bank *bank = eventStore[buffer_group];
+      int  nrows = bank->getRows();
+      if(nrows>(*maxRows)) nrows = *(maxRows);
+      //printf("---->>>>> reading float (%s) (%s) (%d)\n",buffer_group,buffer_item,nrows);
+      for(int i = 0; i < nrows; i++){
+         buffer[i] = bank->getFloat(buffer_item, i);
+      }
+      *nread = nrows;
 
       free(buffer_group);
       free(buffer_item);
@@ -125,7 +133,7 @@ extern "C" {
       hipo::bank *bank = eventStore[buffer_group];
       int  nrows = bank->getRows();
       if(nrows>(*maxRows)) nrows = *(maxRows);
-      printf("---->>>>> reading float (%s) (%s) (%d)\n",buffer_group,buffer_item,nrows);
+      //printf("---->>>>> reading float (%s) (%s) (%d)\n",buffer_group,buffer_item,nrows);
       for(int i = 0; i < nrows; i++){
          buffer[i] = bank->getInt(buffer_item, i);
       }

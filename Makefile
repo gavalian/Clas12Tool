@@ -1,5 +1,6 @@
 all: 
 	@cd Lz4 ; make lz4
+	@cp Lz4/lib/liblz4.a lib/.
 	@cd Hipo4; make
 #	@cd Banks; make
 #	@cd Utils; make
