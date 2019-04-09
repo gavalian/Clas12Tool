@@ -41,7 +41,7 @@ namespace hipo {
       structure(){ structureAddress = NULL;}
       structure(int size){ allocate(size);}
       structure(int __group, int __item, std::string &str);
-      
+
       virtual     ~structure(){}
       bool         allocate(int size);
       int          getSize();
@@ -142,7 +142,7 @@ namespace hipo {
         hipo::schema  &getSchema() { return bankSchema;}
 
         int    getRows(){ return bankRows;}
-
+        void   setRows(int rows);
         int    getInt(int item, int index);
         int    getShort(int item, int index);
         int    getByte(int item, int index);

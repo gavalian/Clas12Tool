@@ -95,6 +95,12 @@ bank::~bank(){
 
 }
 
+void    bank::setRows(int rows){
+   bankRows = rows;
+   int size = bankSchema.getSizeForRows(bankRows);
+   allocate(size+8);
+}
+
 void bank::notify(){
   int size = bankSchema.getRowLength();
   bankRows = getSize()/size;

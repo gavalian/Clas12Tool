@@ -192,6 +192,7 @@ namespace hipo {
 
   void  benchmark::resume(){
     first = clock.now();
+    //auto start = clock.now();
     counter++;
   }
 
