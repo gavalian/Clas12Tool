@@ -15,14 +15,10 @@
 
 using namespace clas12;
 
-//just make the code a bit neater when using unique_ptr
-using P4_t=TLorentzVector;
-//using p4_ptr = std::unique_ptr<P4_t>;
-using p4_ptr = std::shared_ptr<P4_t>;
 
-void SetLorentzVector(p4_ptr p4,clas12::region_part_ptr rp){
-  p4->SetXYZM(rp->par()->getPx(),rp->par()->getPy(),
-	      rp->par()->getPz(),p4->M());
+void SetLorentzVector(TLorentzVector &p4,clas12::region_part_ptr rp){
+  p4.SetXYZM(rp->par()->getPx(),rp->par()->getPy(),
+	      rp->par()->getPz(),p4.M());
 
 }
 
@@ -59,18 +55,17 @@ void Ex1_CLAS12Reader(){
 
    //some particles
    auto db=TDatabasePDG::Instance();
-   auto beam=P4_t(0,0,10.6,10.6);
-   auto target=P4_t(0,0,0,db->GetParticle(2212)->Mass());
+   TLorentzVector beam(0,0,10.6,10.6);
+   TLorentzVector target(0,0,0,db->GetParticle(2212)->Mass());
    //remember these are really just TLorentzVector*
    //but std::unique_ptr makes sure they are delted at end of scope
-   auto el=p4_ptr(new P4_t(0,0,0,db->GetParticle(11)->Mass()));
-   auto pr=p4_ptr(new P4_t(0,0,0,db->GetParticle(2212)->Mass()));
-   auto g1=p4_ptr(new P4_t(0,0,0,0));
-   auto g2=p4_ptr(new P4_t(0,0,0,0));
-   auto pip=p4_ptr(new P4_t(0,0,0,db->GetParticle(211)->Mass()));
-   auto pim=p4_ptr(new P4_t(0,0,0,db->GetParticle(-211)->Mass()));
+   TLorentzVector el(0,0,0,db->GetParticle(11)->Mass());
+   TLorentzVector pr(0,0,0,db->GetParticle(2212)->Mass());
+   TLorentzVector g1(0,0,0,0);
+   TLorentzVector g2(0,0,0,0);
+   TLorentzVector pip(0,0,0,db->GetParticle(211)->Mass());
+   TLorentzVector pim(0,0,0,db->GetParticle(-211)->Mass());
 
-   //a histogram (pre C++11 !)
    auto* hmiss=new TH1F("missM","missM",200,-2,3);
    auto* hm2g=new TH1F("m2g","m2g",200,0,1);
    auto* hm2gCut=new TH1F("m2gCut","m2g",200,0,1);
@@ -141,9 +136,9 @@ void Ex1_CLAS12Reader(){
 	 SetLorentzVector(pip,pips[0]);
 	 SetLorentzVector(pim,pims[0]);
 	
-	 TLorentzVector miss=beam+target-*el-*pr-*g1-*g2-*pip-*pim;
+	 TLorentzVector miss=beam+target-el-pr-g1-g2-pip-pim;
 	 hmiss->Fill(miss.M2());
-	 TLorentzVector pi0 = *g1+*g2;
+	 TLorentzVector pi0 = g1+g2;
 	 hm2g->Fill(pi0.M());
 	 if(TMath::Abs(miss.M2())<0.5)hm2gCut->Fill(pi0.M());
        }
