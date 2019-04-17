@@ -153,7 +153,7 @@ Create a HipoSelector (similar to tree->MakeSelector("mySelector");), using the 
        makeHipoSelector mySelector
 
 You should use some meaningful name rather than mySelector.
-Edit it to perform the tasks you would like. But use the ProcessEvent function instead of the Process function as you would in a TSelector
+Edit it to perform the tasks you would like. But use the ProcessEvent function instead of the Process function as you would in a TSelector. You can use the _c12 clas12reader object to access all the data as shown in Ex1_CLAS12Reader.C
 
 e.g.
 
