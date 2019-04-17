@@ -155,6 +155,14 @@ Create a HipoSelector (similar to tree->MakeSelector("mySelector");), using the 
 You should use some meaningful name rather than mySelector.
 Edit it to perform the tasks you would like. But use the ProcessEvent function instead of the Process function as you would in a TSelector
 
+e.g.
+
+	 Bool_t HipoFileSelector::ProcessEvent(){
+
+   	    _hist1->Fill(_c12->head()->getStartTime());
+    	    return kTRUE;    
+  	 }
+
 To execute :
 
 
