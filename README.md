@@ -144,6 +144,8 @@ Click on the notebook HipoToRootTree.ipynb and follow the tutorial
 
 ## Ex 3 Using HipoSelector & PROOFLite
 
+ONLY FOR HIPO4
+
 This assumes you are aware of and understand the ROOT TSelector and PROOF scheme. See https://root.cern.ch/proof.
 
 Create a HipoSelector (similar to tree->MakeSelector("mySelector");), using the executable makeHipoSelector :
