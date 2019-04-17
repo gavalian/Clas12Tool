@@ -57,8 +57,6 @@ void Ex1_CLAS12Reader(){
    auto db=TDatabasePDG::Instance();
    TLorentzVector beam(0,0,10.6,10.6);
    TLorentzVector target(0,0,0,db->GetParticle(2212)->Mass());
-   //remember these are really just TLorentzVector*
-   //but std::unique_ptr makes sure they are delted at end of scope
    TLorentzVector el(0,0,0,db->GetParticle(11)->Mass());
    TLorentzVector pr(0,0,0,db->GetParticle(2212)->Mass());
    TLorentzVector g1(0,0,0,0);
