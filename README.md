@@ -82,7 +82,7 @@ Click on the notebook CLAS12Reader3Pi.ipynb and follow the tutorial
 You will get an interactive ROOT prompt where you can draw histograms:
 
     ParticleHist [0] hists.Hist1D("P.P",100,0,10,"P.P")
-    ParticleHist [1] hists.Hist2D("P.P:P.DetEnergy",100,0,10,100,0,5,"P.P")->Draw("2x1")
+    ParticleHist [1] hists.Hist2D("P.P:P.DetEnergy",100,0,10,100,0,5,"P.P")->Draw("(2x1)")
 
 Note you only have to call draw once, and then it only has to loop over the date once. The option (2x1) specifies the dimensions of the pads in the produced canvas, the parenthesis is required.
 
@@ -110,6 +110,7 @@ The region particle should be accessed with
 
         P.
         e.g. P.Theta , P.P , P.Phi , P.Region , P.Time , P.DetEnergy , P.DeltaEnergy , P.Path , P.Pid , P.CalcMass
+	e.g. P.Region==FT,  P.Region==FD
 
 ### Jupyter
 Start a ROOT note book :

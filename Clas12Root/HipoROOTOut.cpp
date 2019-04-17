@@ -114,7 +114,7 @@ namespace clas12root{
     delete exps;
     varExp1.ReplaceAll("@@","::");
     varExp1.ReplaceAll("{}","()");
-    cout<<"DONE TString HipoROOTOut::ExpandExpersion "<<varExp1<<endl;
+ 
     return varExp1;
   }
   
