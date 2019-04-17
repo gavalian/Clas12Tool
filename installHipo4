@@ -1,0 +1,8 @@
+rm  CMakeLists.txt
+ln -s CMakeLists.txt.hipo4 CMakeLists.txt
+mkdir build4
+cd build4
+cmake ../
+make
+cmake ../
+make install
