@@ -25,7 +25,6 @@ git clone --recurse-submodules https://github.com/dglazier/Clas12Tool.git
 
 cd Clas12Tool
 
-git checkout hipo34
 
 ## To setup Run ROOT
 
