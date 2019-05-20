@@ -88,7 +88,6 @@ namespace clas12root{
     _c12->getReader().loadRecord(_iRecord);
     
     while(_c12->nextInRecord()==true){
-      cout<<"PRCE "<<entry<<endl;
       //abtract function to be supplied by user base class
       ProcessEvent();
     }
