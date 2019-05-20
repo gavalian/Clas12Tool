@@ -1,0 +1,8 @@
+rm  CMakeLists.txt
+ln -s CMakeLists.txt.hipo3 CMakeLists.txt
+mkdir build3
+cd build3
+cmake ../
+make
+cmake ../
+make install

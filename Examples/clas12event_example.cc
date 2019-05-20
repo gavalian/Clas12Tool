@@ -15,13 +15,14 @@
 //***********************************************************************
 #include <cstdlib>
 #include <iostream>
-#include "TFile.h"
-#include "TTree.h"
+#include <chrono>
 #include "reader.h"
 #include "clas12event.h"
 
 
 int main(int argc, char** argv) {
+  // Record start time
+  auto start = std::chrono::high_resolution_clock::now();
 
    std::cout << " reading file example program (HIPO) "  << __cplusplus << std::endl;
 
@@ -42,27 +43,34 @@ int main(int argc, char** argv) {
 
    clas12::vector3      electron;
 
-   while(reader.next()==true){
+   int counter=0;
+     while(reader.next()==true){
 
-      int np = event.particles().getSize();
+      // int np = event.particles().getSize();
 
-      double starttime = event.header().getStartTime();
+      // double starttime = event.header().getStartTime();
 
-      for(int i = 0; i < np; i++){
-        int     pid = event.particles().getPid(i);
-        if(pid==11){
+      // for(int i = 0; i < np; i++){
+      //   int     pid = event.particles().getPid(i);
+      //   if(pid==11){
 
-           event.particles().getVector3(i,electron);
+      //      event.particles().getVector3(i,electron);
 
-           double beta = event.getBeta(clas12::FTOF1A,i);
-           double time = event.getTime(clas12::FTOF1A,i);
-           double ecEnergy   = event.getEnergy(clas12::EC,i);
-           double pcalEnergy = event.getEnergy(clas12::PCAL,i);
-           double sf         = ecEnergy/electron.mag();
-           printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f sf = %8.3f beta = %8.3f\n",
-                  pid,time-starttime,ecEnergy,pcalEnergy,sf, beta);
-        }
-      }
+      // 	   // double beta = event.getBeta(clas12::FTOF1A,i);
+      //      //double time = event.getTime(clas12::FTOF1A,i);
+      // 	   // double ecEnergy   = event.getEnergy(clas12::EC,i);
+      // 	   //   double pcalEnergy = event.getEnergy(clas12::PCAL,i);
+      // 	   // double sf         = ecEnergy/electron.mag();
+      //      // printf("pid = %8d time = %8.3f ec = %8.3f  pcal = %8.3f sf = %8.3f beta = %8.3f\n",
+      //      //        pid,time-starttime,ecEnergy,pcalEnergy,sf, beta);
+      //   }
+      // }
+      counter++;
+     if(counter==1E6) break;
+ 
    }
+  auto finish = std::chrono::high_resolution_clock::now();
+   std::chrono::duration<double> elapsed = finish - start;
+   std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 }
 //### END OF GENERATED CODE
