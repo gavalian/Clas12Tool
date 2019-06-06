@@ -18,7 +18,6 @@ extern "C" {
     hipo_FORT_Reader.open(buffer);
     hipo_FORT_Reader.readDictionary(hipo_FORT_Dictionary);
     free(buffer);
-    *entries = hipo_FORT_Reader.get
   }
 
   int hipo_file_next_(int* fstatus){
