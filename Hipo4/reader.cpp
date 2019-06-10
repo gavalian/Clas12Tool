@@ -41,6 +41,7 @@ namespace hipo {
 
     if(inputStream.is_open()==true){
       inputStream.close();
+
     }
 
     inputStream.open(filename, std::ios::binary);
@@ -117,7 +118,7 @@ void  reader::readIndex(){
     hipo::structure base;
     event.getStructure(base,32111,1);
     base.show();
-
+    readerEventIndex.clear();
     int rows = base.getSize()/32;
 
     printf(" number of rows = %d\n",rows);
