@@ -142,6 +142,29 @@ extern "C" {
       free(buffer_item);
     }
 
+    void hipo_read_long_(const char *group, const char *item, int *nread, int64_t *buffer, int *maxRows,
+        int length_group, int length_item){
+
+        char *buffer_group = (char * ) malloc(length_group+1);
+        memcpy(buffer_group,group,length_group);
+        buffer_group[length_group] = '\0';
+
+        char *buffer_item = (char * ) malloc(length_item+1);
+        memcpy(buffer_item,item,length_item);
+        buffer_item[length_item] = '\0';
+
+
+        hipo::bank *bank = eventStore[buffer_group];
+        int  nrows = bank->getRows();
+        if(nrows>(*maxRows)) nrows = *(maxRows);
+        //printf("---->>>>> reading float (%s) (%s) (%d)\n",buffer_group,buffer_item,nrows);
+        for(int i = 0; i < nrows; i++){
+           buffer[i] = bank->getLong(buffer_item, i);
+        }
+        *nread = nrows;
+        free(buffer_group);
+        free(buffer_item);
+      }
     /*void hipo_read_int_(int *group, int *item, int *nread, int *buffer, int *maxRows){
 
     }*/

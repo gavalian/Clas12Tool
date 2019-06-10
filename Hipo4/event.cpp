@@ -42,6 +42,7 @@ namespace hipo {
          str.notify();
        } else {
          str.initStructureBySize(group,item,1,0);
+         str.notify();
          //printf("*** error *** : structure (%5d,%5d) does not exist\n", group,item);
        }
     }

@@ -146,6 +146,7 @@ class readerIndex {
       void addSize(int size);
       void addPosition(long position){ recordPosition.push_back(position);}
       long getPosition(int index) { return recordPosition[index];}
+
       void rewind(){
         currentRecord = -1;
         currentEvent  = -1;
